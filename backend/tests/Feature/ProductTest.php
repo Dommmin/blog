@@ -2,12 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\Post;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
@@ -37,12 +38,76 @@ class ProductTest extends TestCase
         $response->assertJsonCount(1, 'data');
     }
 
-    public function test_api_returns_product()
+    public function test_api_returns_post()
     {
         User::factory()->create();
         $post = Post::factory()->create();
 
-        $response = $this->get('api/posts/' . $post->id);
+        $response = $this->get('api/posts/'.$post->id);
         $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'title' => $post->title,
+        ]);
+    }
+
+    public function test_api_store_post()
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create();
+        Tag::factory(2)->create();
+
+        $image = UploadedFile::fake()->image('1.jpg');
+
+        $this->actingAs($user);
+
+        $product = [
+            'title' => 'test',
+            'body' => 'test',
+            'slug' => 'test',
+            'tags' => Tag::pluck('id')->toArray(),
+            'thumbnail' => $image,
+            'published' => true,
+        ];
+
+        $this->post('api/posts', $product);
+
+        $post = Post::first();
+
+        $response = $this->get('api/posts/'.$post->id);
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'title' => $product['title'],
+        ]);
+    }
+
+    public function test_api_delete_post_successful()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create();
+
+        $this->actingAs($user);
+        $response = $this->delete('api/posts/'.$post->id);
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+    }
+
+    public function test_api_delete_post_unsuccessful()
+    {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $post = Post::factory()->create([
+            'user_id' => $user2->id,
+        ]);
+
+        $this->actingAs($user1);
+        $response = $this->delete('api/posts/'.$post->id);
+
+        $response->assertStatus(403);
+
+        $this->assertDatabaseHas('posts', ['id' => $post->id]);
     }
 }
