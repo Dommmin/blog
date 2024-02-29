@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -18,7 +20,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'is_admin' => true
+            'is_admin' => true,
         ]);
 
         User::factory()->create([
@@ -29,13 +31,13 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'John Doe',
             'email' => 'john@example.com',
-            'is_admin' => true
+            'is_admin' => true,
         ]);
 
         User::factory()->create([
             'name' => 'Jane Doe',
             'email' => 'jane@example.com',
-            'is_admin' => true
+            'is_admin' => true,
         ]);
 
         User::factory(10000)->create();

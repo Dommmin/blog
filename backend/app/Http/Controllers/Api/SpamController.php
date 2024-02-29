@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -21,7 +23,7 @@ class SpamController extends Controller
         return response()->noContent();
     }
 
-    private function markAsSpam(Request $request, $model, $spamable_id)
+    private function markAsSpam(Request $request, $model, $spamable_id): void
     {
         Spam::createOrFirst([
             'user_id' => auth()->id(),

@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Mail\MarkedAsSpam;
 use App\Models\Spam;
 use App\Models\User;
+use Mail;
 
 class SpamObserver
 {
@@ -22,7 +25,7 @@ class SpamObserver
             $users = User::where('is_admin', true)->get();
 
             foreach ($users as $user) {
-                \Mail::to($user)->send(new MarkedAsSpam($spam->spamable_type, $spam->spamable_id));
+                Mail::to($user)->send(new MarkedAsSpam($spam->spamable_type, $spam->spamable_id));
             }
         }
     }

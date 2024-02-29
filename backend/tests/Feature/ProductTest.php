@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Post;
@@ -38,19 +40,19 @@ class ProductTest extends TestCase
         $response->assertJsonCount(1, 'data');
     }
 
-    public function test_api_returns_post()
+    public function test_api_returns_post(): void
     {
         User::factory()->create();
         $post = Post::factory()->create();
 
-        $response = $this->get('api/posts/'.$post->id);
+        $response = $this->get('api/posts/' . $post->id);
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'title' => $post->title,
         ]);
     }
 
-    public function test_api_store_post()
+    public function test_api_store_post(): void
     {
         Storage::fake('public');
 
@@ -74,7 +76,7 @@ class ProductTest extends TestCase
 
         $post = Post::first();
 
-        $response = $this->get('api/posts/'.$post->id);
+        $response = $this->get('api/posts/' . $post->id);
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
@@ -82,20 +84,20 @@ class ProductTest extends TestCase
         ]);
     }
 
-    public function test_api_delete_post_successful()
+    public function test_api_delete_post_successful(): void
     {
         $user = User::factory()->create();
         $post = Post::factory()->create();
 
         $this->actingAs($user);
-        $response = $this->delete('api/posts/'.$post->id);
+        $response = $this->delete('api/posts/' . $post->id);
 
         $response->assertStatus(204);
 
         $this->assertDatabaseMissing('posts', ['id' => $post->id]);
     }
 
-    public function test_api_delete_post_unsuccessful()
+    public function test_api_delete_post_unsuccessful(): void
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
@@ -104,7 +106,7 @@ class ProductTest extends TestCase
         ]);
 
         $this->actingAs($user1);
-        $response = $this->delete('api/posts/'.$post->id);
+        $response = $this->delete('api/posts/' . $post->id);
 
         $response->assertStatus(403);
 

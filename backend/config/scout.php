@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -44,7 +46,7 @@ return [
 
     'queue' => [
         'connection' => 'redis',
-        'queue' => 'scout'
+        'queue' => 'scout',
     ],
 
     /*

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -19,8 +21,8 @@ class BookmarkController extends Controller
     public function store(Request $request)
     {
         return Bookmark::create([
-           'user_id' => auth()->id(),
-           'post_id' => $request->post_id,
+            'user_id' => auth()->id(),
+            'post_id' => $request->post_id,
         ]);
     }
 

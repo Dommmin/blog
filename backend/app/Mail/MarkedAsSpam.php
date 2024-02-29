@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\Comment;
@@ -13,14 +15,13 @@ use Illuminate\Queue\SerializesModels;
 
 class MarkedAsSpam extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(protected string $type, protected int $id)
-    {
-    }
+    public function __construct(protected string $type, protected int $id) {}
 
     /**
      * Get the message envelope.
@@ -55,12 +56,12 @@ class MarkedAsSpam extends Mailable implements ShouldQueue
     public function build()
     {
         $model = match ($this->type) {
-            Post::class    => Post::where('id', $this->id)->first(),
+            Post::class => Post::where('id', $this->id)->first(),
             Comment::class => Comment::where('id', $this->id)->first(),
             'default' => null,
         };
 
-        if (!$model) {
+        if ( ! $model) {
             return $this;
         }
 

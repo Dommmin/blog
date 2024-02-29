@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -19,19 +21,19 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'body' => $this->body,
             'slug' => $this->slug,
-            'published' => (bool)$this->published,
+            'published' => (bool) $this->published,
             'views_count' => $this->views_count,
             'thumbnail' => $this->thumbnail,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'votes_count' => $this->votes_count,
             'username' => $this->user->name,
-            'is_voted_by_user' => (bool)$this->isVotedByUser,
+            'is_voted_by_user' => (bool) $this->isVotedByUser,
             'tags' => TagResource::collection($this->tags),
 
-//            'comments' => $this->when($request->is('api/posts/*'), function () {
-//                return CommentResource::collection($this->comments);
-//            })
+            //            'comments' => $this->when($request->is('api/posts/*'), function () {
+            //                return CommentResource::collection($this->comments);
+            //            })
         ];
     }
 }

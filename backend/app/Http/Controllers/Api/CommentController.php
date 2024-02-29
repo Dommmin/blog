@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -14,7 +16,7 @@ class CommentController extends Controller
     public function index(Request $request)
     {
         $comments = Comment::query()
-            ->when($request->has('post_id'), function ($query) use ($request) {
+            ->when($request->has('post_id'), function ($query) use ($request): void {
                 $query->where('post_id', $request->get('post_id'));
             })
             ->simplePaginate(10);

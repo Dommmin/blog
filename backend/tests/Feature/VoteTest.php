@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Models\Post;
@@ -14,7 +16,7 @@ class VoteTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_api_store_vote()
+    public function test_api_store_vote(): void
     {
         $user = User::factory()->create();
         $post = Post::factory()->create();

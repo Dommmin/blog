@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -16,9 +18,40 @@ use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model
 {
-    use HasFactory, Searchable, HasSlug;
+    use HasFactory;
+    use HasSlug;
+    use Searchable;
 
     protected $guarded = [];
+
+    //    public function getRouteKeyName(): string
+    //    {
+    //        return 'slug';
+    //    }
+
+    public static function getProducts()
+    {
+        $request = request();
+
+        return self::query()
+            ->when($request->has('search'), function ($query) use ($request): void {
+                $query
+                    ->where('title', 'like', '%' . $request->query('search') . '%')
+                    ->orWhere('body', 'like', '%' . $request->query('search') . '%');
+            })
+            ->when($request->has('tags'), function ($query) use ($request): void {
+                $tags = $request->query('tags');
+                if (is_array($tags)) {
+                    $query->whereHas('tags', function ($query) use ($tags): void {
+                        $query->whereIn('name', $tags);
+                    });
+                }
+            })
+            ->with('user:id,name', 'isVotedByUser', 'tags:id,name')
+            ->withCount(['comments', 'votes', 'views'])
+            ->latest('id')
+            ->simplePaginate(20);
+    }
 
     public function user(): BelongsTo
     {
@@ -89,34 +122,5 @@ class Post extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
-    }
-
-//    public function getRouteKeyName(): string
-//    {
-//        return 'slug';
-//    }
-
-    public static function getProducts()
-    {
-        $request = request();
-
-        return self::query()
-            ->when($request->has('search'), function ($query) use ($request) {
-                $query
-                    ->where('title', 'like', '%' . $request->query('search') . '%')
-                    ->orWhere('body', 'like', '%' . $request->query('search') . '%');
-            })
-            ->when($request->has('tags'), function ($query) use ($request) {
-                $tags = $request->query('tags');
-                if (is_array($tags)) {
-                    $query->whereHas('tags', function ($query) use ($tags) {
-                        $query->whereIn('name', $tags);
-                    });
-                }
-            })
-            ->with('user:id,name', 'isVotedByUser', 'tags:id,name')
-            ->withCount(['comments', 'votes', 'views'])
-            ->latest('id')
-            ->simplePaginate(20);
     }
 }
