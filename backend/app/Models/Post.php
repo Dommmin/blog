@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -49,6 +50,11 @@ class Post extends Model
         return $this->hasMany(PostView::class);
     }
 
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
     public function isVotedByUser(): HasOne
     {
         return $this->hasOne(Vote::class)->where('user_id', auth()->id());
@@ -89,4 +95,28 @@ class Post extends Model
 //    {
 //        return 'slug';
 //    }
+
+    public static function getProducts()
+    {
+        $request = request();
+
+        return self::query()
+            ->when($request->has('search'), function ($query) use ($request) {
+                $query
+                    ->where('title', 'like', '%' . $request->query('search') . '%')
+                    ->orWhere('body', 'like', '%' . $request->query('search') . '%');
+            })
+            ->when($request->has('tags'), function ($query) use ($request) {
+                $tags = $request->query('tags');
+                if (is_array($tags)) {
+                    $query->whereHas('tags', function ($query) use ($tags) {
+                        $query->whereIn('name', $tags);
+                    });
+                }
+            })
+            ->with('user:id,name', 'isVotedByUser', 'tags:id,name')
+            ->withCount(['comments', 'votes', 'views'])
+            ->latest('id')
+            ->simplePaginate(20);
+    }
 }

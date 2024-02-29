@@ -8,7 +8,6 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Jobs\ProcessViewCount;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -16,18 +15,9 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $posts = Post::query()
-            ->when($request->has('search'), function ($query) use ($request) {
-                $query
-                    ->where('title', 'like', '%' . $request->get('search') . '%')
-                    ->orWhere('body', 'like', '%' . $request->get('search') . '%');
-            })
-            ->withCount(['comments', 'votes', 'views'])
-            ->with('user:id,name', 'isVotedByUser')
-            ->latest('id')
-            ->simplePaginate(20);
+        $posts = Post::getProducts();
 
         return PostResource::collection($posts);
     }
@@ -35,6 +25,7 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $validatedData = $request->validated();
+        unset($validatedData['tags']);
 
         if ($request->file('thumbnail')) {
             $path = $request->file('thumbnail')->store('images', 'public');
@@ -43,7 +34,13 @@ class PostController extends Controller
 
         $validatedData['user_id'] = auth()->id();
 
-        return Post::create($validatedData);
+        $post = Post::create($validatedData);
+
+        foreach ($request->tags as $tag) {
+            $post->tags()->attach($tag);
+        }
+
+        return new PostResource($post);
     }
 
     public function show(Post $post)
@@ -54,7 +51,7 @@ class PostController extends Controller
         ProcessViewCount::dispatch($post, $userId, $ipAddress);
 
         $data = $post
-            ->load('user:id,name', 'isVotedByUser')
+            ->load('user:id,name', 'isVotedByUser', 'tags:id,name')
             ->loadCount('votes', 'views');
 
         return new PostResource($data);
@@ -65,13 +62,17 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         $validatedData = $request->validated();
+        unset($validatedData['tags']);
 
         if ($request->file('thumbnail')) {
             $path = $request->file('thumbnail')->store('images', 'public');
             $validatedData['thumbnail'] = Storage::disk('public')->url($path);
         }
 
-        return $post->update($validatedData);
+        $post->tags()->sync($request->tags);
+        $post->update($validatedData);
+
+        return $post;
     }
 
     public function destroy(Post $post)
