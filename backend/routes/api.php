@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Api\BookmarkController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SpamController;
 use App\Http\Controllers\Api\VoteController;
-use App\Http\Controllers\Api\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Auth::loginUsingId(1);
+//Auth::loginUsingId(10004);
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -37,8 +37,8 @@ Route::post('mark-as-spam', SpamController::class);
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('posts', PostController::class)->except('index', 'show');
     Route::apiResource('comments', CommentController::class)->only('store', 'update', 'destroy');
-    Route::apiResource('votes', VoteController::class)->only('store', 'update', 'destroy');
-    Route::apiResource('bookmarks', BookmarkController::class)->only('index', 'store', 'update', 'destroy');
+    Route::apiResource('votes', VoteController::class)->only('store', 'destroy');
+    Route::apiResource('bookmarks', BookmarkController::class)->only('index', 'store', 'destroy');
 });
 
 Route::prefix('admin')->middleware('admin')->group(function () {
