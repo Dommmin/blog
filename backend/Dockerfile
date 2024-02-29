@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install gd pdo pdo_mysql zip
+RUN docker-php-ext-install gd pdo pdo_mysql zip mbstring exif pcntl bcmath
 
 # Install PECL extensions
 RUN pecl install redis \
