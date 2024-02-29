@@ -11,10 +11,16 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    libzip-dev
+    libzip-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev
 
 # Install PHP extensions
 RUN docker-php-ext-install gd pdo pdo_mysql zip mbstring exif pcntl bcmath
+
+RUN docker-php-ext-configure gd --with-jpeg --with-freetype
+RUN docker-php-ext-install -j$(nproc) gd
 
 # Install PECL extensions
 RUN pecl install redis \
