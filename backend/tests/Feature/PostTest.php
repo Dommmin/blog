@@ -12,7 +12,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class ProductTest extends TestCase
+class PostTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -94,7 +94,7 @@ class ProductTest extends TestCase
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+        $this->assertDatabaseMissing('posts', $post->toArray());
     }
 
     public function test_api_delete_post_unsuccessful(): void
