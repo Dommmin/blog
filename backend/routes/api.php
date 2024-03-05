@@ -23,8 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Auth::loginUsingId(10004);
-
 Route::middleware(['auth:sanctum'])->get('/user', fn(Request $request) => $request->user());
 
 Route::get('search', SearchController::class);
