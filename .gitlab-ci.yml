@@ -16,8 +16,8 @@ stages:
   image: php:8.2-fpm
   services:
     - name: mysql:latest
-    - name: redis:latest
-      alias: redis
+#    - name: redis:latest
+#      alias: redis
   before_script:
     - apt-get update
     - apt-get install -y redis-tools
@@ -35,7 +35,9 @@ stages:
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - cp .env.testing .env
     - php artisan key:generate
-    - mkdir -p storage/framework/{sessions,views,cache}
+    - mkdir -p storage/framework/sessions
+    - mkdir -p storage/framework/views
+    - mkdir -p storage/framework/cache
     - php artisan config:clear
     - php artisan config:clear --env=testing
     - php artisan migrate:fresh

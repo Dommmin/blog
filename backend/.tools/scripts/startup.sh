@@ -4,7 +4,9 @@
 #php artisan queue:work redis --queue=scout
 #composer install --no-dev --optimize-autoloader --no-scripts
 
-mkdir -p storage/framework/{sessions,views,cache}
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache
 php artisan storage:link
 php artisan optimize:clear
 php artisan config:cache
