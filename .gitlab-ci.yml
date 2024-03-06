@@ -25,7 +25,7 @@ stages:
     - docker-php-ext-install pcntl zip
     - docker-php-ext-install pdo_mysql
     - docker-php-ext-install gd
-    - chown -R .
+    - chmod -R 755 .
     - cp .env.example .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - mkdir -p storage/framework/{sessions,views,cache}
