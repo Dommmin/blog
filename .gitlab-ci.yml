@@ -18,24 +18,26 @@ stages:
     - name: mysql:latest
     - name: redis:latest
   before_script:
-    - cd ./backend
-    - curl -sS https://getcomposer.org/installer | php
-    - mv composer.phar /usr/local/bin/composer
-    - apt-get update && apt-get install -y libzip-dev zip libpng-dev libfreetype6-dev libjpeg62-turbo-dev
+    - apt-get update
+    - apt-get install -y redis-tools
+    - apt-get install -y libzip-dev zip libpng-dev libfreetype6-dev libjpeg62-turbo-dev
     - docker-php-ext-configure pcntl --enable-pcntl
     - docker-php-ext-install pcntl zip
     - docker-php-ext-install pdo_mysql
     - docker-php-ext-configure gd --with-freetype --with-jpeg
     - docker-php-ext-install gd
-    - cp .env.testing .env
+    - pecl install xdebug pcov swoole redis
+    - docker-php-ext-enable xdebug pcov swoole redis
+    - cd ./backend
+    - curl -sS https://getcomposer.org/installer | php
+    - mv composer.phar /usr/local/bin/composer
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - cp .env.testing .env
     - php artisan key:generate
     - mkdir -p storage/framework/{sessions,views,cache}
     - php artisan config:clear
     - php artisan config:clear --env=testing
-    - redis-cli -h redis ping
-    - php artisan cache:clear
-    - php artisan cache:clear --env=testing
+    - php artisan migrate:fresh
     - php artisan storage:link
     - php artisan optimize:clear
     - php artisan optimize:clear --env=testing
@@ -45,12 +47,12 @@ stages:
     - php artisan view:cache
     - php artisan event:cache
     - chmod -R 755 .
-    - php artisan migrate:fresh
 
 check:
   stage: test
   extends:
     - .config
   script:
+    - redis-cli -h redis ping
     - php -m
     - php artisan test --parallel --no-coverage --colors=never
