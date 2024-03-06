@@ -32,6 +32,8 @@ stages:
     - cp .env.example .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - mkdir -p storage/framework/{sessions,views,cache}
+    - php artisan config:clear
+    - php artisan cache:clear
     - php artisan storage:link
     - php artisan optimize:clear
     - php artisan config:cache
