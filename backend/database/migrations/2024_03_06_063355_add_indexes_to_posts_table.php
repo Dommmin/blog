@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('posts', function (Blueprint $table) {
             $table->index('title');
             $table->index('slug');
-            $table->index('body', 'posts_body_index');
         });
     }
 
@@ -26,7 +25,6 @@ return new class extends Migration
         Schema::table('posts', function (Blueprint $table) {
             $table->dropIndex('title');
             $table->dropIndex('slug');
-            $table->dropIndex('body');
         });
     }
 };
