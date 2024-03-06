@@ -31,7 +31,9 @@ stages:
     - php artisan key:generate
     - mkdir -p storage/framework/{sessions,views,cache}
     - php artisan config:clear
+    - php artisan config:clear --env=testing
     - php artisan cache:clear
+    - php artisan cache:clear --env=testing
     - php artisan storage:link
     - php artisan optimize:clear
     - php artisan optimize:clear --env=testing
