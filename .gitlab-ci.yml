@@ -59,6 +59,6 @@ check:
   extends:
     - .config
   script:
-    - redis-cli -h redis ping
+#    - redis-cli -h redis ping
     - php -m
     - php artisan test --parallel --no-coverage --colors=never
