@@ -40,6 +40,6 @@ class UserSeeder extends Seeder
             'is_admin' => true,
         ]);
 
-        User::factory(10000)->create();
+        User::insert(User::factory(10000)->raw());
     }
 }
