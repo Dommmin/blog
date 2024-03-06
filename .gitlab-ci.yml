@@ -26,7 +26,6 @@ stages:
     - docker-php-ext-install pdo_mysql
     - docker-php-ext-configure gd --with-freetype --with-jpeg
     - docker-php-ext-install gd
-    - chmod -R 755 .
     - cp .env.example .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - mkdir -p storage/framework/{sessions,views,cache}
@@ -38,9 +37,10 @@ stages:
     - php artisan route:cache
     - php artisan view:cache
     - php artisan event:cache
-    - php artisan migrate --force
     - php artisan key:generate
     - php artisan key:generate --env=testing
+    - chmod -R 755 .
+    - php artisan migrate --force
 
 check:
   stage: test
