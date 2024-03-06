@@ -26,10 +26,9 @@ stages:
     - docker-php-ext-install pdo_mysql
     - docker-php-ext-configure gd --with-freetype --with-jpeg
     - docker-php-ext-install gd
-    - php artisan key:generate
-    - php artisan key:generate --env=testing
     - cp .env.testing .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - php artisan key:generate
     - mkdir -p storage/framework/{sessions,views,cache}
     - php artisan config:clear
     - php artisan cache:clear
@@ -49,4 +48,4 @@ check:
   extends:
     - .config
   script:
-    - php vendor/bin/phpunit --parallel --no-coverage --colors=never
+    - php artisan test --parallel --no-coverage --colors=never
