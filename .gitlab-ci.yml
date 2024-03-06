@@ -51,4 +51,5 @@ check:
   extends:
     - .config
   script:
+    - php -m
     - php artisan test --parallel --no-coverage --colors=never
