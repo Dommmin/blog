@@ -26,6 +26,7 @@ stages:
     - docker-php-ext-install pdo_mysql
     - docker-php-ext-configure gd --with-freetype --with-jpeg
     - docker-php-ext-install gd
+    - cp .env.testing .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - mkdir -p storage/framework/{sessions,views,cache}
     - php artisan config:clear
