@@ -28,6 +28,9 @@ stages:
     - docker-php-ext-install gd
     - cp .env.testing .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - php artisan key:generate --env=testing
+    - php artisan config:cache --env=testing
+    - php artisan optimize:clear --env=testing
     - mkdir -p storage/framework/{sessions,views,cache}
     - php artisan config:clear
     - php artisan cache:clear
@@ -38,7 +41,6 @@ stages:
     - php artisan view:cache
     - php artisan event:cache
     - php artisan key:generate
-    - php artisan key:generate --env=testing
     - chmod -R 755 .
     - php artisan migrate --force
 
