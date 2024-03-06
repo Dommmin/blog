@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('posts', function (Blueprint $table) {
             $table->index('title');
             $table->index('slug');
-            $table->index('body');
+            $table->index('body', 'posts_body_index', 'FULLTEXT');
         });
     }
 
