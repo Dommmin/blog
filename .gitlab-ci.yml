@@ -8,7 +8,6 @@ variables:
 cache:
   paths:
     - backend/vendor/
-    - frontend/node_modules/
 
 stages:
   - test
@@ -25,16 +24,20 @@ stages:
     - docker-php-ext-configure pcntl --enable-pcntl
     - docker-php-ext-install pcntl zip
     - docker-php-ext-install pdo_mysql
+    - docker-php-ext-install gd
+    - chown -R .
     - cp .env.example .env
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - mkdir -p storage/framework/{sessions,views,cache}
+    - php artisan storage:link
+    - php artisan optimize:clear
+    - php artisan config:cache
+    - php artisan route:cache
+    - php artisan view:cache
+    - php artisan event:cache
+    - php artisan migrate --force
     - php artisan key:generate
     - php artisan key:generate --env=testing
-    - php artisan config:cache
-    - php artisan config:cache --env=testing
-    - php artisan optimize:clear
-    - php artisan optimize:clear --env=testing
-    - chmod -R 755 .
-    - php artisan migrate:fresh
 
 check:
   stage: test
