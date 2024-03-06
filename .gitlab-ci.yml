@@ -33,6 +33,7 @@ stages:
     - mkdir -p storage/framework/{sessions,views,cache}
     - php artisan config:clear
     - php artisan config:clear --env=testing
+    - redis-cli -h redis ping
     - php artisan cache:clear
     - php artisan cache:clear --env=testing
     - php artisan storage:link
