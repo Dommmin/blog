@@ -15,7 +15,8 @@ stages:
 .config:
   image: php:8.2-fpm
   services:
-    - mysql:latest
+    - name: mysql:latest
+    - name: redis:latest
   before_script:
     - cd ./backend
     - curl -sS https://getcomposer.org/installer | php
