@@ -20,7 +20,7 @@ stages:
     - cd ./backend
     - curl -sS https://getcomposer.org/installer | php
     - mv composer.phar /usr/local/bin/composer
-    - apt-get update && apt-get install -y libzip-dev zip
+    - apt-get update && apt-get install -y libzip-dev zip libpng-dev
     - docker-php-ext-configure pcntl --enable-pcntl
     - docker-php-ext-install pcntl zip
     - docker-php-ext-install pdo_mysql
