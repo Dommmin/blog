@@ -21,9 +21,6 @@ return new class () extends Migration {
             $table->boolean('published')->default(false);
             $table->string('thumbnail')->nullable();
             $table->timestamps();
-
-            $table->index('body');
-            $table->index('title');
         });
     }
 
