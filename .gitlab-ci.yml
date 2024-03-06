@@ -42,11 +42,11 @@ stages:
     - php artisan view:cache
     - php artisan event:cache
     - chmod -R 755 .
-    - php artisan migrate --force
+    - php artisan migrate:fresh
 
 check:
   stage: test
   extends:
     - .config
   script:
-    - php vendor/bin/phpunit --no-coverage --colors=never
+    - php artisan test --parallel --no-coverage --colors=never
