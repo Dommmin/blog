@@ -49,4 +49,4 @@ check:
   extends:
     - .config
   script:
-    - php artisan test --parallel --no-coverage --colors=never
+    - php vendor/bin/phpunit --parallel --no-coverage --colors=never
