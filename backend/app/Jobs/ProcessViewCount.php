@@ -22,7 +22,9 @@ class ProcessViewCount implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected Post $post, protected ?int $userId, protected $ipAddress) {}
+    public function __construct(protected Post $post, protected ?int $userId, protected $ipAddress)
+    {
+    }
 
     /**
      * Execute the job.

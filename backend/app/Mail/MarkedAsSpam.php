@@ -21,7 +21,9 @@ class MarkedAsSpam extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      */
-    public function __construct(protected string $type, protected int $id) {}
+    public function __construct(protected string $type, protected int $id)
+    {
+    }
 
     /**
      * Get the message envelope.
@@ -58,10 +60,10 @@ class MarkedAsSpam extends Mailable implements ShouldQueue
         $model = match ($this->type) {
             Post::class => Post::where('id', $this->id)->first(),
             Comment::class => Comment::where('id', $this->id)->first(),
-            'default' => null,
+            default => null,
         };
 
-        if ( ! $model) {
+        if (! $model) {
             return $this;
         }
 

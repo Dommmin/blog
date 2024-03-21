@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', fn(Request $request) => $request->user());
+Route::middleware(['auth:sanctum'])->get('/user', fn (Request $request) => $request->user());
 
 Route::get('search', SearchController::class);
 Route::get('most-viewed', [PostController::class, 'mostViewed']);
@@ -39,6 +39,6 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('bookmarks', BookmarkController::class)->only('index', 'store', 'destroy');
 });
 
-Route::prefix('admin')->middleware('admin')->group(function (): void {
+Route::middleware('admin')->prefix('admin')->group(function (): void {
     Route::apiResource('spams', Admin\SpamController::class);
 });

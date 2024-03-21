@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin Post
+ */
 class PostResource extends JsonResource
 {
     /**
@@ -21,7 +25,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'body' => $this->body,
             'slug' => $this->slug,
-            'published' => (bool) $this->published,
+            'published' => $this->published,
             'views_count' => $this->views_count,
             'thumbnail' => $this->thumbnail,
             'created_at' => $this->created_at,
@@ -30,10 +34,6 @@ class PostResource extends JsonResource
             'username' => $this->user->name,
             'is_voted_by_user' => (bool) $this->isVotedByUser,
             'tags' => TagResource::collection($this->tags),
-
-            //            'comments' => $this->when($request->is('api/posts/*'), function () {
-            //                return CommentResource::collection($this->comments);
-            //            })
         ];
     }
 }
