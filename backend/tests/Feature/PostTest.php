@@ -16,9 +16,11 @@ class PostTest extends TestCase
 {
     use RefreshDatabase;
 
+    private User $user;
+    private User $adminUser;
+
     public function test_api_returns_posts_list(): void
     {
-        User::factory()->create();
         $tag = Tag::factory()->create();
         $post = Post::factory()->create();
         $post->tags()->attach($tag);
@@ -42,7 +44,6 @@ class PostTest extends TestCase
 
     public function test_api_returns_post(): void
     {
-        User::factory()->create();
         $post = Post::factory()->create();
 
         $response = $this->get('api/posts/' . $post->id);
@@ -54,14 +55,13 @@ class PostTest extends TestCase
 
     public function test_api_store_post(): void
     {
+        $this->actingAs($this->user);
+
         Storage::fake('public');
 
-        $user = User::factory()->create();
         Tag::factory(2)->create();
 
         $image = UploadedFile::fake()->image('1.jpg');
-
-        $this->actingAs($user);
 
         $product = [
             'title' => 'test',
@@ -86,10 +86,12 @@ class PostTest extends TestCase
 
     public function test_api_delete_post_successful(): void
     {
-        $user = User::factory()->create();
-        $post = Post::factory()->create();
+        $this->actingAs($this->user);
 
-        $this->actingAs($user);
+        $post = Post::factory()->create([
+            'user_id' => $this->user,
+        ]);
+
         $response = $this->delete('api/posts/' . $post->id);
 
         $response->assertStatus(204);
@@ -99,17 +101,25 @@ class PostTest extends TestCase
 
     public function test_api_delete_post_unsuccessful(): void
     {
-        $user1 = User::factory()->create();
-        $user2 = User::factory()->create();
+        $this->actingAs($this->user);
+
         $post = Post::factory()->create([
-            'user_id' => $user2->id,
+            'user_id' => $this->adminUser,
         ]);
 
-        $this->actingAs($user1);
         $response = $this->delete('api/posts/' . $post->id);
 
         $response->assertStatus(403);
 
         $this->assertDatabaseHas('posts', ['id' => $post->id]);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create(['is_admin' => false]);
+        $this->adminUser = User::factory()->create(['is_admin' => true]);
+
     }
 }
