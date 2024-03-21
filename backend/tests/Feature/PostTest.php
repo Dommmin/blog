@@ -19,6 +19,15 @@ class PostTest extends TestCase
     private User $user;
     private User $adminUser;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create(['is_admin' => false]);
+        $this->adminUser = User::factory()->create(['is_admin' => true]);
+
+    }
+
     public function test_api_returns_posts_list(): void
     {
         $tag = Tag::factory()->create();
@@ -112,14 +121,5 @@ class PostTest extends TestCase
         $response->assertStatus(403);
 
         $this->assertDatabaseHas('posts', ['id' => $post->id]);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = User::factory()->create(['is_admin' => false]);
-        $this->adminUser = User::factory()->create(['is_admin' => true]);
-
     }
 }
