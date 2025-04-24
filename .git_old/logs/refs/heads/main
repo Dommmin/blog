@@ -1,4 +1,0 @@
-0000000000000000000000000000000000000000 008cf5ecbf8688a1e083f644b4193dd295e1ce55 Dominik <domijas96@gmail.com> 1745349541 +0200	clone: from https://github.com/Dommmin/laravel-docker.git
-008cf5ecbf8688a1e083f644b4193dd295e1ce55 08e92aae6cddef96c41d3a96e2078af944e2a665 Dominik <domijas96@gmail.com> 1745528318 +0200	commit: [Feat] Create Blog
-08e92aae6cddef96c41d3a96e2078af944e2a665 a3d96d852e25d63b98d1f2fe30d743e4fde27983 Dominik <domijas96@gmail.com> 1745528460 +0200	commit: [Feat] Update CI
-a3d96d852e25d63b98d1f2fe30d743e4fde27983 a593a68180cdbc65906d77820a70b628e6d531b4 Dominik <domijas96@gmail.com> 1745528736 +0200	revert: Revert "[Feat] Create Blog"
