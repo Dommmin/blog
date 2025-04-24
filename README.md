@@ -42,6 +42,7 @@ This will:
 - `make logs` - View container logs
 - `make shell` - Enter PHP container
 - `make clear` - Clear all caches
+- `make quality` - Run quality checks
 
 ## Services
 
