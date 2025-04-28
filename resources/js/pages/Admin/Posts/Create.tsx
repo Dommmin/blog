@@ -1,4 +1,4 @@
-import ComboBox from '@/components/ComboBox';
+import { ComboBox } from '@/components/ComboBox';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useAppearance } from '@/hooks/use-appearance';
 import AdminLayout from '@/layouts/admin-layout';
 import { cn } from '@/lib/utils';
 import { type Category, type DataItem } from '@/types/blog';
@@ -14,7 +15,6 @@ import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import React from 'react';
-import { useAppearance } from '@/hooks/use-appearance';
 
 type FormData = {
     title: string;
@@ -94,7 +94,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                     <ComboBox
                                         data={tags}
                                         selectedValues={data.tags}
-                                        onChange={(value) => setData('tags', value)}
+                                        onChange={(value: string[]) => setData('tags', value)}
                                         placeholder="Select tags..."
                                     />
                                     {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}

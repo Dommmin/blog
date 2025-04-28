@@ -18,11 +18,12 @@ export interface DataItem {
 export interface Post {
     id: number;
     title: string;
-    slug: string;
     content: string;
     excerpt: string;
-    published_at: string | null;
+    published_at: string;
     reading_time: number;
+    slug: string;
+    category_id: string;
     category: Category;
     tags: Tag[];
 }

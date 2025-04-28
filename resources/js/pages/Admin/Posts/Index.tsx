@@ -145,7 +145,9 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                     <Pagination className="justify-between">
                                         {posts.prev_page_url ? (
                                             <Button variant="outline" asChild>
-                                                <Link href={posts.prev_page_url} prefetch>Previous</Link>
+                                                <Link href={posts.prev_page_url} prefetch>
+                                                    Previous
+                                                </Link>
                                             </Button>
                                         ) : (
                                             <Button variant="outline" disabled>
@@ -155,7 +157,9 @@ export default function Index({ posts, flash }: PostsPageProps) {
 
                                         {posts.next_page_url ? (
                                             <Button variant="outline" asChild>
-                                                <Link href={posts.next_page_url} prefetch>Next</Link>
+                                                <Link href={posts.next_page_url} prefetch>
+                                                    Next
+                                                </Link>
                                             </Button>
                                         ) : (
                                             <Button variant="outline" disabled>

@@ -1,5 +1,4 @@
-import React from 'react';
-import ComboBox from '@/components/ComboBox';
+import { ComboBox } from '@/components/ComboBox';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,14 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useAppearance } from '@/hooks/use-appearance';
 import AdminLayout from '@/layouts/admin-layout';
 import { cn } from '@/lib/utils';
-import { type Category, type Tag } from '@/types/blog';
+import { type Category, type DataItem } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { useAppearance } from '@/hooks/use-appearance';
+import React from 'react';
 
 interface Post {
     id: number;
@@ -23,13 +23,13 @@ interface Post {
     published_at: string;
     slug: string;
     category_id: string;
-    tags: Tag[];
+    tags: { id: number; name: string }[];
 }
 
 interface EditProps {
     post: Post;
     categories: Category[];
-    tags: Tag[];
+    tags: DataItem[];
 }
 
 type FormData = {
@@ -37,7 +37,7 @@ type FormData = {
     content: string;
     published_at: string;
     category_id: string;
-    tags: number[];
+    tags: string[];
     _method: string;
 };
 
@@ -54,7 +54,7 @@ export default function Edit({ post, categories, tags }: EditProps) {
         content: post.content,
         published_at: post.published_at || '',
         category_id: post.category_id,
-        tags: post.tags.map((tag) => tag.id),
+        tags: post.tags.map((tag) => tag.id.toString()),
         _method: 'PUT',
     });
 
@@ -118,7 +118,7 @@ export default function Edit({ post, categories, tags }: EditProps) {
                                     <ComboBox
                                         data={tags}
                                         selectedValues={data.tags}
-                                        onChange={(value) => setData('tags', value)}
+                                        onChange={(value: string[]) => setData('tags', value)}
                                         placeholder="Select tags..."
                                     />
                                     {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}

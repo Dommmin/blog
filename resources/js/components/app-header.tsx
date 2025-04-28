@@ -6,16 +6,16 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuT
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
+import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { BookUser, Laptop, LogIn, Menu, Moon, NotebookPen, Sun } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { UserMenuContent } from './user-menu-content';
-import { useInitials } from '@/hooks/use-initials';
 
 const mainNavItems: NavItem[] = [
     {
