@@ -34,7 +34,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
-                            <Link href={route('about')}>About Me</Link>
+                            <Link href={route('about')} prefetch>About Me</Link>
                         </Button>
                     </div>
                     <div className="grid gap-6 md:grid-cols-3">

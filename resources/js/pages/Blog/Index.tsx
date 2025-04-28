@@ -33,8 +33,8 @@ export default function Index({ posts }: BlogIndexProps) {
                         <div className="mt-12">
                             <Pagination className="justify-between">
                                 {posts.prev_page_url ? (
-                                    <Link href={posts.prev_page_url}>
-                                        <Button variant="outline">Previous</Button>
+                                    <Link href={posts.prev_page_url} prefetch>
+                                        <Button variant="outline" className="cursor-pointer">Previous</Button>
                                     </Link>
                                 ) : (
                                     <Button variant="outline" disabled>
@@ -43,8 +43,8 @@ export default function Index({ posts }: BlogIndexProps) {
                                 )}
 
                                 {posts.next_page_url ? (
-                                    <Link href={posts.next_page_url}>
-                                        <Button variant="outline">Next</Button>
+                                    <Link href={posts.next_page_url} prefetch>
+                                        <Button variant="outline" className="cursor-pointer">Next</Button>
                                     </Link>
                                 ) : (
                                     <Button variant="outline" disabled>

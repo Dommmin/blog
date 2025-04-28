@@ -20,7 +20,7 @@ export default function PostCard({ post }: { post: Post }) {
                         <BookOpenIcon className="h-3 w-3" />
                         {post?.reading_time} min read
                     </span>
-                    <Link href={route('blog.show', post.slug)} className="flex items-center">
+                    <Link href={route('blog.show', post.slug)} className="flex items-center" prefetch>
                         <Button variant="ghost" size="sm" className="cursor-pointer gap-1">
                             Read more
                             <ArrowRightIcon className="h-3 w-3" />

@@ -13,12 +13,11 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $page = $request->get('page', 1);
-
         $posts = Cache::tags('posts')->rememberForever('blog.index.posts.'.$page, function () {
             return Post::published()
                 ->with(['category'])
                 ->latest('published_at')
-                ->paginate(12)
+                ->paginate(6)
                 ->withQueryString();
         });
 

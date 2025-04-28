@@ -50,10 +50,10 @@ export default function Edit({ post, categories, tags }: EditProps) {
         processing,
         errors,
     } = useForm<FormData>({
-        title: post.title || '',
-        content: post.content || '',
+        title: post.title,
+        content: post.content,
         published_at: post.published_at || '',
-        category_id: post.category_id.toString(),
+        category_id: post.category_id,
         tags: post.tags.map((tag) => tag.id),
         _method: 'PUT',
     });
