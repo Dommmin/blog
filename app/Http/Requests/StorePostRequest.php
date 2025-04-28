@@ -29,6 +29,16 @@ class StorePostRequest extends FormRequest
             'meta_title' => ['nullable', 'string'],
             'meta_description' => ['nullable', 'string'],
             'published_at' => ['nullable', 'string'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'tags' => ['array'],
+            'tags.*' => ['exists:tags,id'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'category_id.required' => 'The category field is required',
         ];
     }
 }

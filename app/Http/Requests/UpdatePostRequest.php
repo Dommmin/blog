@@ -28,6 +28,9 @@ class UpdatePostRequest extends FormRequest
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'published_at' => 'nullable|date',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
         ];
     }
 }

@@ -1,5 +1,6 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Icon } from '@/components/icon';
+import { LanguageSwitcher } from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -12,8 +13,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Laptop, LogIn, Menu, Moon, NotebookPen, Sun } from 'lucide-react';
-import { useState } from 'react';
+import { BookUser, Laptop, LogIn, Menu, Moon, NotebookPen, Sun } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -22,6 +22,11 @@ const mainNavItems: NavItem[] = [
         title: 'Blog',
         href: '/blog',
         icon: NotebookPen,
+    },
+    {
+        title: 'About me',
+        href: '/about',
+        icon: BookUser,
     },
 ];
 
@@ -35,7 +40,6 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
-    const [isOpen, setIsOpen] = useState(false);
     const { auth } = usePage<SharedData>().props;
     const { appearance, updateAppearance } = useAppearance();
 
@@ -138,6 +142,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             {/*<Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">*/}
                             {/*    <Search className="!size-5 opacity-80 group-hover:opacity-100" />*/}
                             {/*</Button>*/}
+                            <LanguageSwitcher />
                             <Button
                                 onClick={() => updateAppearance(nextTheme)}
                                 variant="ghost"
@@ -170,27 +175,27 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 ))}
                             </div>
                         </div>
-                        {auth.user ? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="size-10 rounded-full p-1">
-                                        <Avatar className="size-8 overflow-hidden rounded-full">
-                                            <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
-                                            <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                                {getInitials(auth.user.name)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56" align="end">
-                                    <UserMenuContent user={auth.user} />
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        ) : (
-                            <Link href={route('login')} className="group w-8 cursor-pointer">
-                                <LogIn className="!size-5 opacity-80 group-hover:opacity-100" />
-                            </Link>
-                        )}
+                        {/*{auth.user ? (*/}
+                        {/*    <DropdownMenu>*/}
+                        {/*        <DropdownMenuTrigger asChild>*/}
+                        {/*            <Button variant="ghost" className="size-10 rounded-full p-1">*/}
+                        {/*                <Avatar className="size-8 overflow-hidden rounded-full">*/}
+                        {/*                    <AvatarImage src={auth.user.avatar} alt={auth.user.name} />*/}
+                        {/*                    <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">*/}
+                        {/*                        {getInitials(auth.user.name)}*/}
+                        {/*                    </AvatarFallback>*/}
+                        {/*                </Avatar>*/}
+                        {/*            </Button>*/}
+                        {/*        </DropdownMenuTrigger>*/}
+                        {/*        <DropdownMenuContent className="w-56" align="end">*/}
+                        {/*            <UserMenuContent user={auth.user} />*/}
+                        {/*        </DropdownMenuContent>*/}
+                        {/*    </DropdownMenu>*/}
+                        {/*) : (*/}
+                        {/*    <Link href={route('login')} className="group w-8 cursor-pointer">*/}
+                        {/*        <LogIn className="!size-5 opacity-80 group-hover:opacity-100" />*/}
+                        {/*    </Link>*/}
+                        {/*)}*/}
                     </div>
                 </div>
             </div>

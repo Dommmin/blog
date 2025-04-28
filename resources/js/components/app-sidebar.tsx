@@ -4,18 +4,29 @@ import { NavUser } from '@/components/nav-user';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { ucFirst } from '@/helpers';
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Laptop, LayoutGrid, Moon, Sun } from 'lucide-react';
+import { Laptop, LayoutGrid, Moon, NotebookPen, Sun, Tag } from 'lucide-react';
 import React from 'react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
+        title: 'Categories',
+        href: '/admin/categories',
+        icon: LayoutGrid,
+    },
+    {
         title: 'Posts',
         href: '/admin/posts',
-        icon: LayoutGrid,
+        icon: NotebookPen,
+    },
+    {
+        title: 'Tags',
+        href: '/admin/tags',
+        icon: Tag,
     },
 ];
 
@@ -81,6 +92,7 @@ export function AppSidebar() {
                                     <Button variant="ghost" size="icon" aria-label={`Change theme to ${nextTheme}`}>
                                         {themeIcons[nextTheme]}
                                     </Button>
+                                    {ucFirst(themeMap[appearance])}
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
                         </DropdownMenu>

@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatDate } from '@/helpers';
 import AppLayout from '@/layouts/app-layout';
+import { type Post } from '@/types/blog';
 import { Head, Link } from '@inertiajs/react';
-import { format } from 'date-fns';
 import 'highlight.js/styles/github-dark.css';
 import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -11,21 +12,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
-interface Post {
-    title: string;
-    slug: string;
-    content: string;
-    published_at: string;
-    user: {
-        name: string;
-    };
-}
-
-interface ShowProps {
-    post: Post;
-}
-
-export default function Show({ post }: ShowProps) {
+export default function Show({ post }: { post: Post }) {
     useEffect(() => {
         const handleInitialHash = () => {
             if (window.location.hash) {
@@ -69,13 +56,7 @@ export default function Show({ post }: ShowProps) {
                             </div>
                             <CardTitle className="text-3xl">{post.title}</CardTitle>
                             <div className="text-muted-foreground flex items-center text-sm">
-                                <span>{post.published_at ? format(new Date(post.published_at), 'MMMM d, yyyy') : ''}</span>
-                                {post.user && (
-                                    <>
-                                        <span className="mx-2">•</span>
-                                        <span>By {post.user.name}</span>
-                                    </>
-                                )}
+                                <span>{formatDate(post.published_at)}</span>
                             </div>
                         </CardHeader>
                         <CardContent>

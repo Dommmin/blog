@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\CategoryRepository;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Repositories\Contracts\PostRepositoryInterface;
+use App\Repositories\Contracts\TagRepositoryInterface;
+use App\Repositories\PostRepository;
+use App\Repositories\TagRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
@@ -14,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
+        $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
     }
 
     /**

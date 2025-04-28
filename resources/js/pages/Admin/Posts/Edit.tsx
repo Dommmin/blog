@@ -1,16 +1,20 @@
+import React from 'react';
+import ComboBox from '@/components/ComboBox';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AdminLayout from '@/layouts/admin-layout';
 import { cn } from '@/lib/utils';
-import { Head, useForm } from '@inertiajs/react';
+import { type Category, type Tag } from '@/types/blog';
+import { Head, Link, useForm } from '@inertiajs/react';
 import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import React from 'react';
+import { useAppearance } from '@/hooks/use-appearance';
 
 interface Post {
     id: number;
@@ -18,53 +22,46 @@ interface Post {
     content: string;
     published_at: string;
     slug: string;
+    category_id: string;
+    tags: Tag[];
 }
 
 interface EditProps {
     post: Post;
+    categories: Category[];
+    tags: Tag[];
 }
 
-interface EditPostForm {
+type FormData = {
     title: string;
     content: string;
     published_at: string;
+    category_id: string;
+    tags: number[];
     _method: string;
-    [key: string]: string | undefined;
-}
+};
 
-export default function Edit({ post }: EditProps) {
+export default function Edit({ post, categories, tags }: EditProps) {
+    const { appearance } = useAppearance();
     const {
         data,
         setData,
         post: submitForm,
         processing,
         errors,
-    } = useForm({
+    } = useForm<FormData>({
         title: post.title || '',
         content: post.content || '',
         published_at: post.published_at || '',
+        category_id: post.category_id.toString(),
+        tags: post.tags.map((tag) => tag.id),
         _method: 'PUT',
     });
-
-    // const [preview, setPreview] = useState<string | null>(post.image ? `/storage/${post.image}` : null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         submitForm(route('admin.posts.update', post.slug));
     };
-
-    // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = e.target.files?.[0] || null;
-    //     setData('image', file);
-    //
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onloadend = () => {
-    //             setPreview(reader.result as string);
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
 
     return (
         <AdminLayout>
@@ -74,10 +71,34 @@ export default function Edit({ post }: EditProps) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
+                            <div className="mb-4">
+                                <Link href={route('admin.posts.index')} prefetch>
+                                    <Button variant="outline" size="sm" className="cursor-pointer">
+                                        ← Back to all posts
+                                    </Button>
+                                </Link>
+                            </div>
                             <CardTitle>Edit Post</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="category_id">Category</Label>
+                                    <Select value={data.category_id} onValueChange={(value) => setData('category_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {categories.map((category) => (
+                                                <SelectItem key={category.id} value={category.id.toString()}>
+                                                    {category.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.category_id && <p className="text-sm text-red-500">{errors.category_id}</p>}
+                                </div>
+
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">Title</Label>
                                     <Input id="title" type="text" value={data.title} onChange={(e) => setData('title', e.target.value)} required />
@@ -86,35 +107,23 @@ export default function Edit({ post }: EditProps) {
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="content">Content</Label>
-                                    <div data-color-mode="light" className="dark:data-[color-mode=light]:bg-card">
+                                    <div data-color-mode={appearance} className="dark:data-[color-mode=light]:bg-card">
                                         <MDEditor value={data.content} onChange={(value) => setData('content', value || '')} height={400} />
                                     </div>
                                     {errors.content && <p className="text-sm text-red-500">{errors.content}</p>}
                                 </div>
 
-                                {/*<div className="grid gap-2">*/}
-                                {/*    <Label htmlFor="image">Featured Image</Label>*/}
-                                {/*    <Input*/}
-                                {/*        id="image"*/}
-                                {/*        type="file"*/}
-                                {/*        onChange={handleImageChange}*/}
-                                {/*        accept="image/*"*/}
-                                {/*    />*/}
-                                {/*    {errors.image && (*/}
-                                {/*        <p className="text-sm text-red-500">{errors.image}</p>*/}
-                                {/*    )}*/}
-
-                                {/*    {preview && (*/}
-                                {/*        <div className="mt-2">*/}
-                                {/*            <img*/}
-                                {/*                src={preview}*/}
-                                {/*                alt="Preview"*/}
-                                {/*                className="max-w-xs h-auto rounded"*/}
-                                {/*            />*/}
-                                {/*        </div>*/}
-                                {/*    )}*/}
-                                {/*</div>*/}
-
+                                <div className="grid gap-2">
+                                    <Label>Tags</Label>
+                                    <ComboBox
+                                        data={tags}
+                                        selectedValues={data.tags}
+                                        onChange={(value) => setData('tags', value)}
+                                        placeholder="Select tags..."
+                                    />
+                                    {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
+                                </div>
+                                <Label>Publish at</Label>
                                 <div className="flex items-center space-x-2">
                                     <Popover>
                                         <PopoverTrigger asChild>
@@ -134,7 +143,6 @@ export default function Edit({ post }: EditProps) {
                                                 mode="single"
                                                 selected={new Date(data.published_at)}
                                                 onSelect={(date) => date && setData('published_at', date.toISOString())}
-                                                initialFocus
                                             />
                                         </PopoverContent>
                                     </Popover>

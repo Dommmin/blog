@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Cache;
 
 class PostObserver
 {
+    public function saving(Post $post)
+    {
+        $post->reading_time = reading_time($post->content);
+    }
+
     public function saved(Post $post)
     {
         Cache::tags('posts')->flush();

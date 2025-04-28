@@ -18,6 +18,7 @@ import { PageProps } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 interface Post {
@@ -42,6 +43,12 @@ interface PostsPageProps extends PageProps {
 }
 
 export default function Index({ posts, flash }: PostsPageProps) {
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success);
+        }
+    }, [flash.success]);
+
     const deletePost = (id: number | string) => {
         router.delete(route('admin.posts.destroy', id));
     };
@@ -54,12 +61,10 @@ export default function Index({ posts, flash }: PostsPageProps) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="bg-background dark:border-border overflow-hidden rounded-lg shadow-sm dark:border">
                         <div className="dark:border-border border-b p-6">
-                            {flash.success && toast(flash.success)}
-
                             <div className="mb-6 flex items-center justify-between">
                                 <h3 className="text-lg font-medium">Blog Posts</h3>
                                 <Button asChild>
-                                    <Link href={route('admin.posts.create')} className="cursor-pointer">
+                                    <Link href={route('admin.posts.create')} className="cursor-pointer" prefetch>
                                         <PlusIcon className="mr-2 h-4 w-4" />
                                         Create Post
                                     </Link>

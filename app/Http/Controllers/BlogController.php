@@ -16,9 +16,10 @@ class BlogController extends Controller
 
         $posts = Cache::tags('posts')->rememberForever('blog.index.posts.'.$page, function () {
             return Post::published()
-                ->with('author')
+                ->with(['category'])
                 ->latest('published_at')
-                ->paginate(12);
+                ->paginate(12)
+                ->withQueryString();
         });
 
         return Inertia::render('Blog/Index', [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ use Inertia\Inertia;
 // });
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/about', AboutController::class)->name('about');
 
 // Health check endpoint
 Route::get('/up', fn () => 'OK');

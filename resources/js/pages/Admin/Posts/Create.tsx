@@ -1,52 +1,43 @@
+import ComboBox from '@/components/ComboBox';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AdminLayout from '@/layouts/admin-layout';
 import { cn } from '@/lib/utils';
-import { Head, useForm } from '@inertiajs/react';
+import { type Category, type DataItem } from '@/types/blog';
+import { Head, Link, useForm } from '@inertiajs/react';
 import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import React from 'react';
+import { useAppearance } from '@/hooks/use-appearance';
 
-interface CreatePostForm {
+type FormData = {
     title: string;
     content: string;
     published_at: Date | null;
-    [key: string]: string | Date | null | undefined;
-}
+    category_id: string;
+    tags: string[];
+};
 
-export default function Create() {
-    const { data, setData, post, processing, errors } = useForm({
+export default function Create({ categories, tags }: { categories: Category[]; tags: DataItem[] }) {
+    const { appearance } = useAppearance();
+    const { data, setData, post, processing, errors } = useForm<FormData>({
+        category_id: '',
         title: '',
         content: '',
         published_at: null,
+        tags: [],
     });
-
-    // const [preview, setPreview] = useState<string | null>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('admin.posts.store'));
     };
-
-    // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = e.target.files?.[0] || null;
-    //     setData('image', file);
-    //
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onloadend = () => {
-    //             setPreview(reader.result as string);
-    //         };
-    //         reader.readAsDataURL(file);
-    //     } else {
-    //         setPreview(null);
-    //     }
-    // };
 
     return (
         <AdminLayout>
@@ -56,11 +47,34 @@ export default function Create() {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
+                            <div className="mb-4">
+                                <Link href={route('admin.posts.index')} prefetch>
+                                    <Button variant="outline" size="sm" className="cursor-pointer">
+                                        ← Back to all posts
+                                    </Button>
+                                </Link>
+                            </div>
                             <CardTitle>Create Post</CardTitle>
                         </CardHeader>
-
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="category_id">Category</Label>
+                                    <Select value={data.category_id} onValueChange={(value) => setData('category_id', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a category" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {categories.map((category) => (
+                                                <SelectItem key={category.id} value={category.id.toString()}>
+                                                    {category.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.category_id && <p className="text-sm text-red-500">{errors.category_id}</p>}
+                                </div>
+
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">Title</Label>
                                     <Input id="title" type="text" value={data.title} onChange={(e) => setData('title', e.target.value)} />
@@ -69,12 +83,23 @@ export default function Create() {
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="content">Content</Label>
-                                    <div data-color-mode="light" className="dark:data-[color-mode=light]:bg-card">
+                                    <div data-color-mode={appearance} className="dark:data-[color-mode=light]:bg-card">
                                         <MDEditor value={data.content} onChange={(value) => setData('content', value || '')} height={400} />
                                     </div>
                                     {errors.content && <p className="text-sm text-red-500">{errors.content}</p>}
                                 </div>
 
+                                <div className="grid gap-2">
+                                    <Label>Tags</Label>
+                                    <ComboBox
+                                        data={tags}
+                                        selectedValues={data.tags}
+                                        onChange={(value) => setData('tags', value)}
+                                        placeholder="Select tags..."
+                                    />
+                                    {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
+                                </div>
+                                <Label>Publish at</Label>
                                 <div className="flex items-center space-x-2">
                                     <Popover>
                                         <PopoverTrigger asChild>
@@ -93,9 +118,7 @@ export default function Create() {
                                             <Calendar
                                                 mode="single"
                                                 selected={data.published_at || undefined}
-                                                // @ts-expect-error - Type issues with Inertia forms
-                                                onSelect={(date) => setData('published_at', date)}
-                                                initialFocus
+                                                onSelect={(date) => setData('published_at', date || null)}
                                             />
                                         </PopoverContent>
                                     </Popover>
