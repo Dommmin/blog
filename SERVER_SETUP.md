@@ -199,11 +199,14 @@ date.timezone = Europe/Warsaw
 # Create directory structure
 sudo mkdir -p /home/deployer/laravel/{releases,shared}
 
-# Set permissions
+# Set permissions and ownership ONCE during initial setup
 sudo chown -R deployer:www-data /home/deployer/laravel
-sudo chmod -R 775 /home/deployer/laravel
-sudo chmod g+s /home/deployer/laravel
+sudo find /home/deployer/laravel -type d -exec chmod 2775 {} \;
+sudo find /home/deployer/laravel -type f -exec chmod 664 {} \;
+sudo chmod g+s /home/deployer/laravel/shared/storage
+sudo chmod g+s /home/deployer/laravel/shared/bootstrap_cache
 ```
+**You only need to do this ONCE. Do NOT repeat these commands during each deploy!**
 
 ## 6. Set Up SSH Key for GitHub Actions
 
@@ -248,11 +251,22 @@ sudo systemctl status certbot.timer
 2. Monitor the GitHub Actions workflow to ensure it completes successfully.
 3. Check your website to verify the deployment.
 
+## Permissions & Ownership – Best Practice
+- All files and directories should be owned by `deployer:www-data`.
+- All directories should have `2775` permissions (setgid for group inheritance).
+- All files should have `664` permissions.
+- Both `deployer` and `www-data` should be in the `www-data` group.
+- PHP-FPM should run as `deployer` (recommended) or `www-data` (if you want logs/cache as www-data).
+- **You do NOT need to change permissions/ownership during deploy!**
+- If you ever add new shared directories, repeat the above chown/chmod for them ONCE.
+
 ## Troubleshooting
 
-- **Permission Issues**: Ensure all directories have the correct ownership and permissions.
+- **Permission Issues**: Ensure all directories have the correct ownership and permissions (see above). If you ever have issues, repeat the chown/chmod block ONCE.
 - **Nginx Errors**: Check the Nginx error logs with `sudo tail -f /var/log/nginx/error.log`.
 - **PHP-FPM Errors**: Check the PHP-FPM error logs with `sudo tail -f /var/log/php8.3-fpm.log`.
 - **Deployment Failures**: Check the GitHub Actions logs for detailed error messages.
 
 ## Conclusion
+
+After initial setup, you do NOT need to change permissions or ownership during deploy. All deploys will work as long as the initial setup is correct.
