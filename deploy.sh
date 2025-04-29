@@ -13,8 +13,6 @@ NOW=$(date +%Y-%m-%d-%H%M%S)-$(openssl rand -hex 3)
 RELEASE_DIR="$RELEASES_DIR/$NOW"
 ARCHIVE_NAME="release.tar.gz"
 
-# Uprawnienia i właściciela katalogów ustawia się tylko raz podczas setupu serwera!
-
 echo "▶️ Tworzenie struktury katalogów..."
 mkdir -p "$RELEASES_DIR" "$SHARED_DIR/storage" "$SHARED_DIR/bootstrap_cache"
 
@@ -40,16 +38,19 @@ ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
 echo "▶️ Restart PHP-FPM (opcache)..."
 sudo systemctl restart php8.3-fpm
 
+echo "▶️ Ustawianie symlinku current..."
+ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
+
+echo "▶️ Czyszczenie plików cache Laravel..."
+rm -f "$SHARED_DIR/bootstrap_cache"/*.php
+
 echo "▶️ Optymalizacja aplikacji Laravel..."
-cd "$RELEASE_DIR"
+cd "$CURRENT_LINK"
 php artisan optimize:clear
 php artisan optimize
 
 echo "▶️ Migracje bazy danych..."
 php artisan migrate --force
-
-echo "▶️ Ustawianie symlinku current..."
-ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 
 echo "▶️ Czyszczenie starych release'ów..."
 cd "$RELEASES_DIR"
