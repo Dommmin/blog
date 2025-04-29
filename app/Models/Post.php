@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Cache;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 #[ObservedBy(PostObserver::class)]
-class Post extends Model
+class Post extends Model implements CacheInterface
 {
     use HasFactory, HasSlug;
 
@@ -23,9 +24,7 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
-    protected $appends = [
-        'published_at_formatted',
-    ];
+    protected string $tag = 'posts';
 
     public function author(): BelongsTo
     {
@@ -79,5 +78,10 @@ class Post extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function flush(): bool
+    {
+        return Cache::tags($this->tag)->flush();
     }
 }

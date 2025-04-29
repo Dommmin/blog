@@ -18,9 +18,9 @@ class PostPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Post $post): bool
+    public function view(?User $user, Post $post): bool
     {
-        return $post->isPublished() || $user->hasRole('admin');
+        return $post->isPublished() || $user?->hasRole('admin');
     }
 
     /**
