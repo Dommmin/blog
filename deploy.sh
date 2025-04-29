@@ -37,11 +37,15 @@ ln -s "$SHARED_DIR/bootstrap_cache" "$RELEASE_DIR/bootstrap/cache"
 ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
 
 echo "▶️ Nadawanie uprawnień..."
-find "$SHARED_DIR/storage" -type d -exec chmod 775 {} \;
-find "$SHARED_DIR/bootstrap_cache" -type d -exec chmod 775 {} \;
-find "$RELEASE_DIR" -type d -exec chown "$APP_USER:$APP_GROUP" {} \;
-find "$RELEASE_DIR" -type f -exec chown "$APP_USER:$APP_GROUP" {} \;
-find "$SHARED_DIR" -type d -exec chown "$APP_USER:$APP_GROUP" {} \;
+# Ustaw poprawne uprawnienia i właściciela dla shared i release
+chown -R "$APP_USER:$APP_GROUP" "$RELEASE_DIR" "$SHARED_DIR"
+find "$RELEASE_DIR" -type d -exec chmod 2775 {} \;
+find "$RELEASE_DIR" -type f -exec chmod 664 {} \;
+find "$SHARED_DIR" -type d -exec chmod 2775 {} \;
+find "$SHARED_DIR" -type f -exec chmod 664 {} \;
+# Ustaw setgid na storage i bootstrap_cache, by nowe pliki dziedziczyły grupę
+chmod g+s "$SHARED_DIR/storage"
+chmod g+s "$SHARED_DIR/bootstrap_cache"
 
 echo "▶️ Optymalizacja aplikacji Laravel..."
 cd "$RELEASE_DIR"
