@@ -9,22 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useAppearance } from '@/hooks/use-appearance';
 import AdminLayout from '@/layouts/admin-layout';
 import { cn } from '@/lib/utils';
-import { type Category, type DataItem } from '@/types/blog';
+import { type Category, type DataItem, type Post } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import React from 'react';
-
-interface Post {
-    id: number;
-    title: string;
-    content: string;
-    published_at: string;
-    slug: string;
-    category_id: string;
-    tags: { id: number; name: string }[];
-}
 
 interface EditProps {
     post: Post;
@@ -35,7 +25,7 @@ interface EditProps {
 type FormData = {
     title: string;
     content: string;
-    published_at: string;
+    published_at: Date | null;
     category_id: string;
     tags: string[];
     _method: string;
@@ -43,6 +33,7 @@ type FormData = {
 
 export default function Edit({ post, categories, tags }: EditProps) {
     const { appearance } = useAppearance();
+    const tagOptions = tags;
     const {
         data,
         setData,
@@ -52,9 +43,9 @@ export default function Edit({ post, categories, tags }: EditProps) {
     } = useForm<FormData>({
         title: post.title,
         content: post.content,
-        published_at: post.published_at || '',
-        category_id: post.category_id,
-        tags: post.tags.map((tag) => tag.id.toString()),
+        published_at: post.published_at ? new Date(post.published_at) : null,
+        category_id: post.category_id.toString(),
+        tags: post.tags.map((tag) => tag.id),
         _method: 'PUT',
     });
 
@@ -84,7 +75,7 @@ export default function Edit({ post, categories, tags }: EditProps) {
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid gap-2">
                                     <Label htmlFor="category_id">Category</Label>
-                                    <Select value={data.category_id} onValueChange={(value) => setData('category_id', value)}>
+                                    <Select value={data.category_id} onValueChange={(value: string) => setData('category_id', value)}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a category" />
                                         </SelectTrigger>
@@ -116,7 +107,7 @@ export default function Edit({ post, categories, tags }: EditProps) {
                                 <div className="grid gap-2">
                                     <Label>Tags</Label>
                                     <ComboBox
-                                        data={tags}
+                                        data={tagOptions}
                                         selectedValues={data.tags}
                                         onChange={(value: string[]) => setData('tags', value)}
                                         placeholder="Select tags..."
@@ -135,14 +126,14 @@ export default function Edit({ post, categories, tags }: EditProps) {
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {data.published_at ? format(new Date(data.published_at), 'PPP') : <span>Pick a date</span>}
+                                                {data.published_at ? format(data.published_at, 'PPP') : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
+                                        <PopoverContent>
                                             <Calendar
                                                 mode="single"
-                                                selected={new Date(data.published_at)}
-                                                onSelect={(date) => date && setData('published_at', date.toISOString())}
+                                                selected={data.published_at || undefined}
+                                                onSelect={(date) => setData('published_at', date || null)}
                                             />
                                         </PopoverContent>
                                     </Popover>

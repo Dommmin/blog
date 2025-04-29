@@ -5,7 +5,7 @@ export interface Category {
 }
 
 export interface Tag {
-    id: number;
+    id: string;
     name: string;
     created_at: string;
 }

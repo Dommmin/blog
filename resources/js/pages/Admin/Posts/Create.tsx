@@ -110,11 +110,11 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                                     !data.published_at && 'text-muted-foreground',
                                                 )}
                                             >
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                                <CalendarIcon />
                                                 {data.published_at ? format(data.published_at, 'PPP') : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
+                                        <PopoverContent>
                                             <Calendar
                                                 mode="single"
                                                 selected={data.published_at || undefined}
