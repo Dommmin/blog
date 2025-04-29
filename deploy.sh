@@ -13,10 +13,11 @@ NOW=$(date +%Y-%m-%d-%H%M%S)-$(openssl rand -hex 3)
 RELEASE_DIR="$RELEASES_DIR/$NOW"
 ARCHIVE_NAME="release.tar.gz"
 
+# Uprawnienia i właściciela katalogów ustawia się tylko raz podczas setupu serwera!
+
 echo "▶️ Tworzenie struktury katalogów..."
 mkdir -p "$RELEASES_DIR" "$SHARED_DIR/storage" "$SHARED_DIR/bootstrap_cache"
 
-# Dodajemy katalogi dla widoków i cache
 mkdir -p "$SHARED_DIR/storage/framework/views"
 mkdir -p "$SHARED_DIR/storage/framework/cache"
 mkdir -p "$SHARED_DIR/storage/framework/sessions"
@@ -35,17 +36,6 @@ rm -rf "$RELEASE_DIR/bootstrap/cache"
 ln -s "$SHARED_DIR/bootstrap_cache" "$RELEASE_DIR/bootstrap/cache"
 
 ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
-
-echo "▶️ Nadawanie uprawnień..."
-# Ustaw poprawne uprawnienia i właściciela dla shared i release
-chown -R "$APP_USER:$APP_GROUP" "$RELEASE_DIR" "$SHARED_DIR"
-find "$RELEASE_DIR" -type d -exec chmod 2775 {} \;
-find "$RELEASE_DIR" -type f -exec chmod 664 {} \;
-find "$SHARED_DIR" -type d -exec chmod 2775 {} \;
-find "$SHARED_DIR" -type f -exec chmod 664 {} \;
-# Ustaw setgid na storage i bootstrap_cache, by nowe pliki dziedziczyły grupę
-chmod g+s "$SHARED_DIR/storage"
-chmod g+s "$SHARED_DIR/bootstrap_cache"
 
 echo "▶️ Optymalizacja aplikacji Laravel..."
 cd "$RELEASE_DIR"
