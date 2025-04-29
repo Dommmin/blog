@@ -37,12 +37,11 @@ ln -s "$SHARED_DIR/bootstrap_cache" "$RELEASE_DIR/bootstrap/cache"
 ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
 
 echo "▶️ Nadawanie uprawnień..."
-# Set permissions on directories only, not files
-# This prevents permission errors on files that are currently in use by the web server
 find "$SHARED_DIR/storage" -type d -exec chmod 775 {} \;
 find "$SHARED_DIR/bootstrap_cache" -type d -exec chmod 775 {} \;
-chown -R "$APP_USER:$APP_GROUP" "$RELEASE_DIR"
-chown -R "$APP_USER:$APP_GROUP" "$SHARED_DIR"
+find "$RELEASE_DIR" -type d -exec chown "$APP_USER:$APP_GROUP" {} \;
+find "$RELEASE_DIR" -type f -exec chown "$APP_USER:$APP_GROUP" {} \;
+find "$SHARED_DIR" -type d -exec chown "$APP_USER:$APP_GROUP" {} \;
 
 echo "▶️ Optymalizacja aplikacji Laravel..."
 cd "$RELEASE_DIR"
