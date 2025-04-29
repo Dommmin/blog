@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'medium' => [
+        'token' => env('MEDIUM_TOKEN'),
+    ],
+
 ];

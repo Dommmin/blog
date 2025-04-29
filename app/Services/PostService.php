@@ -44,6 +44,7 @@ class PostService
 
         if (! empty($tags)) {
             $this->postRepository->syncTags($post, $tags);
+            $post->flush();
         }
 
         return $post;
