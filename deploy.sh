@@ -37,6 +37,9 @@ ln -s "$SHARED_DIR/bootstrap_cache" "$RELEASE_DIR/bootstrap/cache"
 
 ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
 
+echo "▶️ Restart PHP-FPM (opcache)..."
+sudo systemctl restart php8.3-fpm
+
 echo "▶️ Optymalizacja aplikacji Laravel..."
 cd "$RELEASE_DIR"
 php artisan optimize:clear
