@@ -11,18 +11,23 @@ services:
     restart: unless-stopped
     working_dir: /var/www
     volumes:
-        - ./:/var/www
+        - ./:/var/www:cached
         - ./docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini
         - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
         - ./docker/supervisord.conf:/etc/supervisor/supervisord.conf
+    environment:
+        - APP_ENV=${APP_ENV:-local}
+        - APP_DEBUG=${APP_DEBUG:-true}
     networks:
       - laravel-network
     ports:
         - "5173:5173"
         - "9000:9000"
     depends_on:
-        -   mysql
-        -   redis
+        mysql:
+            - condition: service_healthy
+        redis:
+            - condition: service_healthy
 
   nginx:
     image: nginx:alpine
@@ -35,7 +40,7 @@ services:
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
       - ./docker/nginx/log:/var/log/nginx
     depends_on:
-        -   app
+        - app
     networks:
       - laravel-network
 
@@ -69,8 +74,8 @@ services:
     restart: unless-stopped
     healthcheck:
         test: [ "CMD", "redis-cli", "ping" ]
-        interval: 10s
-        timeout: 5s
+        interval: 5s
+        timeout: 3s
         retries: 5
         start_period: 60s
     ports:
