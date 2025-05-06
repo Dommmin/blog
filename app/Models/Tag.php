@@ -17,17 +17,16 @@ class Tag extends Model implements CacheInterface
     use HasFactory, HasSlug;
 
     protected $guarded = ['id'];
-
-    protected string $tag = 'tags';
+    protected const TAG = 'tags';
 
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class)->withTimestamps();
     }
 
-    public function flush(): bool
+    public static function flush(): bool
     {
-        return Cache::tags($this->tag)->flush();
+        return Cache::tags(self::TAG)->flush();
     }
 
     public function getSlugOptions(): SlugOptions

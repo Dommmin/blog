@@ -15,9 +15,10 @@ class PostTagSeeder extends Seeder
     public function run(): void
     {
         $tags = Tag::pluck('id')->toArray();
-        $tags = Arr::random($tags, random_int(1, 3));
 
         Post::each(function (Post $post) use ($tags) {
+            $tags = Arr::random($tags, random_int(1, 3));
+
             $post->tags()->attach($tags);
         });
     }

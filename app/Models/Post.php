@@ -10,13 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Cache;
+use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 #[ObservedBy(PostObserver::class)]
 class Post extends Model implements CacheInterface
 {
-    use HasFactory, HasSlug;
+    use HasFactory, HasSlug, Searchable;
 
     protected $guarded = ['id'];
 
@@ -24,7 +25,7 @@ class Post extends Model implements CacheInterface
         'published_at' => 'datetime',
     ];
 
-    protected string $tag = 'posts';
+    protected const TAG = 'posts';
 
     public function author(): BelongsTo
     {
@@ -80,8 +81,27 @@ class Post extends Model implements CacheInterface
         return 'slug';
     }
 
-    public function flush(): bool
+    public static function flush(): bool
     {
-        return Cache::tags($this->tag)->flush();
+        return Cache::tags(self::TAG)->flush();
+    }
+
+    public function toSearchableArray(): array
+    {
+        $this->load(['category', 'tags']);
+
+        return [
+            'id' => (string) $this->id,
+            'title' => $this->title,
+            'content' => $this->content,
+            'category_name' => $this->category->name,
+            'tags_names' => $this->tags->pluck('name')->toArray(),
+            'published_at' => $this->published_at->timestamp,
+        ];
+    }
+
+    public function searchableAs(): string
+    {
+        return 'posts_index';
     }
 }

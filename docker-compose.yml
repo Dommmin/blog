@@ -95,6 +95,22 @@ services:
       networks:
           - laravel-network
 
+  typesense:
+        image: typesense/typesense:0.25.1
+        container_name: ${COMPOSE_PROJECT_NAME}_typesense
+        restart: unless-stopped
+        ports:
+            - "8108:8108"
+        environment:
+            - TYPESENSE_API_KEY=${TYPESENSE_API_KEY}
+            - TYPESENSE_DATA_DIR=/data
+            - TYPESENSE_ENABLE_CORS=true
+            - TYPESENSE_NO_POLLING=true
+        volumes:
+            - typesense_data:/data
+        networks:
+            - laravel-network
+
 networks:
   laravel-network:
     driver: bridge
@@ -103,4 +119,6 @@ volumes:
   mysql_data:
     driver: local
   mailhog_data:
+    driver: local
+  typesense_data:
     driver: local

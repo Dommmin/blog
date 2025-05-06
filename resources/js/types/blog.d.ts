@@ -26,4 +26,5 @@ export interface Post {
     category_id: string;
     category: Category;
     tags: Tag[];
+    image?: string;
 }

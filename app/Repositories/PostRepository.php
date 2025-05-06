@@ -29,7 +29,7 @@ class PostRepository implements PostRepositoryInterface
     public function create(array $data): Post
     {
         $post = Post::create($data);
-        Cache::tags('posts')->flush();
+        Post::flush();
 
         return $post;
     }
@@ -37,7 +37,7 @@ class PostRepository implements PostRepositoryInterface
     public function update(Post $post, array $data): Post
     {
         $post->update($data);
-        Cache::tags('posts')->flush();
+        Post::flush();
 
         return $post;
     }
@@ -45,7 +45,7 @@ class PostRepository implements PostRepositoryInterface
     public function delete(Post $post): bool
     {
         $result = $post->delete();
-        Cache::tags('posts')->flush();
+        Post::flush();
 
         return $result;
     }
@@ -53,17 +53,40 @@ class PostRepository implements PostRepositoryInterface
     public function syncTags(Post $post, array $tagIds): void
     {
         $post->tags()->sync($tagIds);
-        Cache::tags('posts')->flush();
+        Post::flush();
     }
 
     public function getPostsForBlog(int $page): LengthAwarePaginator
     {
-        return Cache::tags('posts')->rememberForever('blog.index.posts.'.$page, function () {
-            return Post::published()
-                ->with(['category'])
-                ->latest('published_at')
-                ->paginate(6)
-                ->withQueryString();
+        $search = request('search');
+        $sort = request('sort', 'latest');
+        $perPage = 6;
+
+        $query = Post::published()->with(['category', 'tags']);
+
+        if ($search) {
+            $ids = Post::search($search)->get()->pluck('id');
+            $query = $query->whereIn('id', $ids);
+        }
+
+        $query = match ($sort) {
+            'oldest' => $query->orderBy('published_at', 'asc'),
+            'title_asc' => $query->orderBy('title', 'asc'),
+            'title_desc' => $query->orderBy('title', 'desc'),
+            default => $query->orderBy('published_at', 'desc'),
+        };
+
+        return $query->paginate($perPage)->withQueryString();
+    }
+
+    public function getFeaturedArticles()
+    {
+        return Cache::tags('posts')->rememberForever('featured.articles', function () {
+            return Post::latest('published_at')
+                ->with(['category', 'tags'])
+                ->published()
+                ->take(4)
+                ->get();
         });
     }
 }

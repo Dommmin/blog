@@ -18,7 +18,7 @@ class Category extends Model implements CacheInterface
 
     protected $guarded = ['id'];
 
-    protected string $tag = 'categories';
+    protected const TAG = 'categories';
 
     public function post(): HasMany
     {
@@ -32,8 +32,8 @@ class Category extends Model implements CacheInterface
             ->saveSlugsTo('slug');
     }
 
-    public function flush(): bool
+    public static function flush(): bool
     {
-        return Cache::tags($this->tag)->flush();
+        return Cache::tags(self::TAG)->flush();
     }
 }

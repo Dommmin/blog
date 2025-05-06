@@ -7,5 +7,5 @@ interface CacheInterface
     /**
      * Flush the cache for the model.
      */
-    public function flush(): bool;
+    public static function flush(): bool;
 }

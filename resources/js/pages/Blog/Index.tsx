@@ -3,8 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/ui/pagination';
 import AppLayout from '@/layouts/app-layout';
 import { Post } from '@/types/blog';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useTranslations } from '@/hooks/useTranslation';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useState, useEffect } from 'react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface BlogIndexProps {
     posts: {
@@ -18,12 +22,51 @@ interface BlogIndexProps {
 
 export default function Index({ posts }: BlogIndexProps) {
     const { __ } = useTranslations();
+    const [search, setSearch] = useState('');
+    const [sort, setSort] = useState('latest');
+
+    // Debounce wyszukiwania
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            router.reload({
+                only: ['posts'],
+                data: { search, sort },
+            });
+        }, 400);
+        return () => clearTimeout(timeout);
+    }, [search, sort]);
+
     return (
         <AppLayout>
             <Head title="Blog" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+                    <div className="flex items-center justify-between gap-4 mb-8">
+                        <div className="flex-1">
+                            <Input
+                                className="w-full"
+                                placeholder={__('Search posts...')}
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-48">
+                            <Select value={sort} onValueChange={setSort}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder={__('Sort by')} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="latest">{__('Latest')}</SelectItem>
+                                    <SelectItem value="oldest">{__('Oldest')}</SelectItem>
+                                    <SelectItem value="title_asc">{__('Title A-Z')}</SelectItem>
+                                    <SelectItem value="title_desc">{__('Title Z-A')}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
                     {posts.data.length >= 1 ? (
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                             {posts.data.map((post) => (
@@ -32,7 +75,7 @@ export default function Index({ posts }: BlogIndexProps) {
                         </div>
                     ) : (
                         <div className="flex items-center justify-center">
-                            <h1 className="text-muted-foreground text-3xl tracking-widest">There are no posts yet...</h1>
+                            <h1 className="text-muted-foreground text-3xl tracking-widest">{__('No posts found')}</h1>
                         </div>
                     )}
 
