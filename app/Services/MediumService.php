@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 class MediumService
 {
     protected $token;
+
     protected $baseUrl = 'https://api.medium.com/v1';
 
     public function __construct()
@@ -17,7 +18,8 @@ class MediumService
     public function getUserId()
     {
         $response = Http::withToken($this->token)
-            ->get($this->baseUrl . '/me');
+            ->get($this->baseUrl.'/me');
+
         return $response->json('data.id');
     }
 
@@ -42,4 +44,4 @@ class MediumService
 
         return $response->json();
     }
-} 
+}

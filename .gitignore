@@ -33,3 +33,7 @@ docker/nginx/log/
 supervisord.log
 
 supervisord.pid
+
+.composer/.htaccess
+
+.composer/cache/.htaccess

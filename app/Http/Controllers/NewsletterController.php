@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\NewsletterSubscriber;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Validator;
 use App\Jobs\SendNewsletterConfirmationJob;
+use App\Models\NewsletterSubscriber;
+use Illuminate\Http\Request;
 
 class NewsletterController extends Controller
 {
@@ -38,6 +36,7 @@ class NewsletterController extends Controller
             'confirmed_at' => now(),
             'token' => null,
         ]);
+
         return redirect('/')->with('success', 'Subscription confirmed!');
     }
 }

@@ -1,15 +1,28 @@
 import PostCard from '@/components/PostCard';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Card } from '@/components/ui/card';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRightIcon, CodeIcon, GitBranchIcon, ServerIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { ArrowRightIcon, CalendarIcon, CodeIcon, GitBranchIcon, ServerIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [];
 
 export default function Home({ posts }: { posts: Post[] }) {
+    const { data, setData } = {
+        data: {
+            published_at: null,
+        },
+        setData: (key: string, value: any) => {
+            // Mock function to set data
+            console.log(`Setting ${key} to ${value}`);
+        },
+    };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Home" />
@@ -26,6 +39,24 @@ export default function Home({ posts }: { posts: Post[] }) {
                             Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions
                         </p>
                     </div>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant={'outline'}
+                                className={cn('w-[240px] justify-start text-left font-normal', !data.published_at && 'text-muted-foreground')}
+                            >
+                                <CalendarIcon />
+                                {data.published_at ? format(data.published_at, 'PPP') : <span>Pick a date</span>}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <Calendar
+                                mode="single"
+                                selected={data.published_at || undefined}
+                                onSelect={(date) => setData('published_at', date || null)}
+                            />
+                        </PopoverContent>
+                    </Popover>
                     <div className="mb-12 flex justify-center gap-4">
                         <Button size="lg" asChild>
                             <Link href={route('blog.index')} prefetch>

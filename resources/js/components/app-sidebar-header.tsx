@@ -1,10 +1,10 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
-import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
+import { type BreadcrumbItem as BreadcrumbItemType } from '@/types';
 import { Laptop, Moon, Sun } from 'lucide-react';
+import React from 'react';
 
 export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: BreadcrumbItemType[] }) {
     const { appearance, updateAppearance } = useAppearance();
@@ -35,9 +35,9 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 {/*    size="lg"*/}
                 {/*    className="text-sidebar-accent-foreground group cursor-pointer"*/}
                 {/*>*/}
-                    <Button onClick={() => updateAppearance(nextTheme)} variant="ghost" size="icon" aria-label={`Change theme to ${nextTheme}`}>
-                        {themeIcons[nextTheme]}
-                    </Button>
+                <Button onClick={() => updateAppearance(nextTheme)} variant="ghost" size="icon" aria-label={`Change theme to ${nextTheme}`}>
+                    {themeIcons[nextTheme]}
+                </Button>
                 {/*</SidebarMenuButton>*/}
             </div>
         </header>

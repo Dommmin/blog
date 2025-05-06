@@ -2,19 +2,19 @@
 
 namespace App\Mail;
 
+use App\Models\NewsletterSubscriber;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\NewsletterSubscriber;
 
 class NewsletterNewPostMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $subscriber;
+
     public $post;
 
     /**

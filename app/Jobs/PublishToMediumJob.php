@@ -33,7 +33,7 @@ class PublishToMediumJob implements ShouldQueue
             $this->post->title,
             $this->post->content, // zakładam, że content to HTML
             $this->post->tags->pluck('name')->toArray(),
-            url('/blog/' . $this->post->slug)
+            url('/blog/'.$this->post->slug)
         );
     }
 }

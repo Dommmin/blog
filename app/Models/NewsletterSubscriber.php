@@ -21,6 +21,6 @@ class NewsletterSubscriber extends Model
 
     public function isConfirmed()
     {
-        return !is_null($this->confirmed_at);
+        return ! is_null($this->confirmed_at);
     }
 }
