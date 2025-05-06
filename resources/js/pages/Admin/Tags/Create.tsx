@@ -30,7 +30,7 @@ export default function Create() {
                         <CardHeader>
                             <div className="mb-4">
                                 <Link href={route('admin.tags.index')} prefetch>
-                                    <Button variant="outline" size="sm" className="cursor-pointer">
+                                    <Button variant="outline" size="sm">
                                         ← Back to all Tags
                                     </Button>
                                 </Link>

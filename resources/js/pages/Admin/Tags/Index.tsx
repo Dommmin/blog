@@ -86,7 +86,7 @@ export default function Index({ tags, flash }: PostsPageProps) {
                                                         </Button>
                                                         <AlertDialog>
                                                             <AlertDialogTrigger asChild>
-                                                                <Button size="sm" variant="destructive" className="cursor-pointer">
+                                                                <Button size="sm" variant="destructive">
                                                                     <TrashIcon className="h-4 w-4" />
                                                                 </Button>
                                                             </AlertDialogTrigger>

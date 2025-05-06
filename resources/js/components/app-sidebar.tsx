@@ -1,14 +1,10 @@
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { ucFirst } from '@/helpers';
-import { Appearance, useAppearance } from '@/hooks/use-appearance';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Laptop, LayoutGrid, Moon, NotebookPen, Sun, Tag } from 'lucide-react';
+import { LayoutGrid, NotebookPen, Tag } from 'lucide-react';
 import React from 'react';
 import AppLogo from './app-logo';
 
@@ -30,36 +26,7 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const footerNavItems: NavItem[] = [
-    // {
-    //     title: 'Repository',
-    //     href: 'https://github.com/laravel/react-starter-kit',
-    //     icon: Folder,
-    // },
-    // {
-    //     title: 'Documentation',
-    //     href: 'https://laravel.com/docs/starter-kits',
-    //     icon: BookOpen,
-    // },
-];
-
 export function AppSidebar() {
-    const { appearance, updateAppearance } = useAppearance();
-
-    const themeMap: Record<Appearance, Appearance> = {
-        light: 'dark',
-        dark: 'system',
-        system: 'light',
-    };
-
-    const themeIcons: Record<Appearance, React.ReactNode> = {
-        light: <Sun className="!size-5 opacity-80 group-hover:opacity-100" />,
-        dark: <Moon className="!size-5 opacity-80 group-hover:opacity-100" />,
-        system: <Laptop className="!size-5 opacity-80 group-hover:opacity-100" />,
-    };
-
-    const nextTheme: Appearance = themeMap[appearance];
-
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -79,25 +46,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton
-                                    onClick={() => updateAppearance(nextTheme)}
-                                    size="lg"
-                                    className="text-sidebar-accent-foreground group cursor-pointer"
-                                >
-                                    <Button variant="ghost" size="icon" aria-label={`Change theme to ${nextTheme}`}>
-                                        {themeIcons[nextTheme]}
-                                    </Button>
-                                    {ucFirst(themeMap[appearance])}
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
+                <NavFooter items={[]} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

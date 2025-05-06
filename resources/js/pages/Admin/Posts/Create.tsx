@@ -49,7 +49,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                         <CardHeader>
                             <div className="mb-4">
                                 <Link href={route('admin.posts.index')} prefetch>
-                                    <Button variant="outline" size="sm" className="cursor-pointer">
+                                    <Button variant="outline" size="sm">
                                         ← Back to all posts
                                     </Button>
                                 </Link>

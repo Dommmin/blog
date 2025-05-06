@@ -34,7 +34,7 @@ export default function Index({ posts }: BlogIndexProps) {
                             <Pagination className="justify-between">
                                 {posts.prev_page_url ? (
                                     <Link href={posts.prev_page_url} prefetch>
-                                        <Button variant="outline" className="cursor-pointer">
+                                        <Button variant="outline">
                                             Previous
                                         </Button>
                                     </Link>
@@ -46,7 +46,7 @@ export default function Index({ posts }: BlogIndexProps) {
 
                                 {posts.next_page_url ? (
                                     <Link href={posts.next_page_url} prefetch>
-                                        <Button variant="outline" className="cursor-pointer">
+                                        <Button variant="outline">
                                             Next
                                         </Button>
                                     </Link>

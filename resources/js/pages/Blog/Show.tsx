@@ -49,7 +49,7 @@ export default function Show({ post }: { post: Post }) {
                         <CardHeader>
                             <div className="mb-4">
                                 <Link href={route('blog.index')} prefetch>
-                                    <Button variant="outline" size="sm" className="cursor-pointer">
+                                    <Button variant="outline" size="sm">
                                         ← Back to all posts
                                     </Button>
                                 </Link>
