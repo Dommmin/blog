@@ -7,3 +7,8 @@ function reading_time($content, $wpm = 200): int
 
     return ceil($wordCount / $wpm) ?: 1;
 }
+
+function available_locales(): array
+{
+    return explode(',', config('app.available_locales', 'en'));
+}

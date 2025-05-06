@@ -1,29 +1,22 @@
+import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 
-type Replacements = Record<string, string | number>;
+export function useTranslations() {
+    const { translations, locale } = usePage<SharedData>().props;
 
-export function useTranslation() {
-    // Add type assertion to access the props
-    const { translations, locale } = usePage().props as any;
+    const __ = (key: string, replacements: Record<string, string> = {}) => {
+        let translation = translations[key] || key;
 
-    const t = (key: string, replacements: Replacements = {}) => {
-        // Handle nested keys like 'messages.welcome'
-        let translation = key.split('.').reduce((acc: any, part) => {
-            return acc?.[part];
-        }, translations);
-
-        if (!translation) return key;
-
-        // Handle replacements like :name or :count
-        Object.keys(replacements).forEach((key) => {
-            translation = translation.replace(new RegExp(`:${key}`, 'g'), replacements[key].toString());
+        Object.keys(replacements).forEach(r => {
+            translation = translation.replace(`:${r}`, replacements[r]);
         });
 
         return translation;
     };
 
     return {
-        t,
-        locale,
+        __,
+        trans: __,
+        locale
     };
 }

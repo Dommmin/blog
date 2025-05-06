@@ -6,10 +6,13 @@ import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRightIcon, CodeIcon, GitBranchIcon, ServerIcon } from 'lucide-react';
+import { useTranslations } from '@/hooks/useTranslation';
 
 const breadcrumbs: BreadcrumbItem[] = [];
 
 export default function Home({ posts }: { posts: Post[] }) {
+    const { __ } = useTranslations();
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Home" />
@@ -29,13 +32,13 @@ export default function Home({ posts }: { posts: Post[] }) {
                     <div className="mb-12 flex justify-center gap-4">
                         <Button size="lg" asChild>
                             <Link href={route('blog.index')} prefetch>
-                                Read the Blog
+                                {__('Read the Blog')}
                                 <ArrowRightIcon className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
                             <Link href={route('about')} prefetch>
-                                About Me
+                                {__('About me')}
                             </Link>
                         </Button>
                     </div>
@@ -70,7 +73,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                 <section className="px-4 py-16">
                     <div className="mx-auto max-w-5xl">
                         <div className="mb-8 flex items-center justify-between">
-                            <h2 className="text-2xl font-bold">Featured Articles</h2>
+                            <h2 className="text-2xl font-bold">{__('Featured Articles')}</h2>
                             <Button variant="ghost" size="sm" asChild className="gap-1">
                                 <Link href={route('blog.index')} prefetch>
                                     View all

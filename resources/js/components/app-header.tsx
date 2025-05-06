@@ -16,21 +16,7 @@ import { BookUser, Laptop, LogIn, Menu, Moon, NotebookPen, Sun } from 'lucide-re
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { UserMenuContent } from './user-menu-content';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Blog',
-        href: '/blog',
-        icon: NotebookPen,
-    },
-    {
-        title: 'About me',
-        href: '/about',
-        icon: BookUser,
-    },
-];
-
-const rightNavItems: NavItem[] = [];
+import { useTranslations } from '@/hooks/useTranslation';
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
@@ -39,6 +25,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
+    const { __ } = useTranslations();
     const { appearance, updateAppearance } = useAppearance();
     const { auth } = usePage<SharedData>().props;
 
@@ -55,6 +42,21 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     };
 
     const nextTheme: Appearance = themeMap[appearance];
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Blog',
+            href: '/blog',
+            icon: NotebookPen,
+        },
+        {
+            title: __('About me'),
+            href: '/about',
+            icon: BookUser,
+        },
+    ];
+
+    const rightNavItems: NavItem[] = [];
 
     const page = usePage<SharedData>();
     const getInitials = useInitials();

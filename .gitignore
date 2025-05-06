@@ -27,13 +27,7 @@ yarn-error.log
 /.config/
 /.local/
 /.bash_history
-
 docker/nginx/log/
-
 supervisord.log
-
 supervisord.pid
-
-.composer/.htaccess
-
-.composer/cache/.htaccess
+.composer/

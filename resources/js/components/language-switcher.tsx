@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { router, usePage } from '@inertiajs/react';
 import { CheckIcon } from 'lucide-react';
-import { useState } from 'react';
 
 type Language = {
     code: string;
@@ -20,26 +20,24 @@ const languages: Language[] = [
         name: 'Polski',
         flag: '🇵🇱',
     },
+    {
+        code: 'de',
+        name: 'Deutsch',
+        flag: '🇩🇪',
+    }
 ];
 
 export function LanguageSwitcher() {
-    // In a real implementation, this would come from your app's state/context
-    const [currentLang, setCurrentLang] = useState('en');
+    const props = usePage().props;
+    const currentLang = props.locale;
 
     const switchLanguage = (langCode: string) => {
-        setCurrentLang(langCode);
-
-        // For a real implementation, you would:
-        // 1. Set a cookie or localStorage value
-        // 2. Redirect to the same page with the new locale in URL if using URL-based localization
-        // 3. Or just refresh the page if using session-based localization
-
-        // Example for URL-based switching (like mydomain.com/en/about -> mydomain.com/pl/about)
-        // const currentPath = router.page.url.split('/').slice(2).join('/');
-        // router.visit(`/${langCode}/${currentPath}`);
-
-        // For now, just simulate the change
-        console.log(`Language switched to ${langCode}`);
+        router.post(route('locale.change'), {
+            locale: langCode,
+        }, {
+            preserveState: true,
+            preserveScroll: true,
+        })
     };
 
     return (
