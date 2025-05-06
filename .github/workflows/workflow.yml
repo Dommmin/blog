@@ -1,4 +1,4 @@
-name: Deploy Laravel App
+name: Zero Downtime Deployment
 
 on:
   push:
@@ -70,6 +70,7 @@ jobs:
           composer larastan
           composer pint
           npm run format
+          npm run types
           npm run lint
 
       - name: Run tests (with Pest)
@@ -139,9 +140,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup SSH Key
-        uses: webfactory/ssh-agent@v0.8.0
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Setup known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Download release artifact
         uses: actions/download-artifact@v4
@@ -153,18 +159,14 @@ jobs:
         run: |
           echo "${{ vars.ENV_FILE }}" > .env
 
-      - name: Ensure remote base directory exists
-        run: |
-          ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p /home/${{ secrets.SSH_USER }}/laravel/shared"
-
       - name: Upload release to server
         run: |
-          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no release.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/laravel/
+          scp -vvv -P ${{ secrets.SSH_PORT }} release.tar.gz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/laravel/
 
       - name: Upload .env file to shared directory
         run: |
-          scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no .env ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/laravel/shared/.env
+          scp -P ${{ secrets.SSH_PORT }} .env ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/laravel/shared/.env
 
       - name: Run deploy script on server
         run: |
-          ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash -s' < ./deploy.sh
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash -s' < ./deploy.sh

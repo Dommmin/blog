@@ -13,7 +13,7 @@ NOW=$(date +%Y-%m-%d-%H%M%S)-$(openssl rand -hex 3)
 RELEASE_DIR="$RELEASES_DIR/$NOW"
 ARCHIVE_NAME="release.tar.gz"
 
-echo "▶️ Tworzenie struktury katalogów..."
+echo "▶️ Create directories..."
 mkdir -p "$RELEASES_DIR" "$SHARED_DIR/storage" "$SHARED_DIR/bootstrap_cache"
 
 mkdir -p "$SHARED_DIR/storage/framework/views"
@@ -21,12 +21,12 @@ mkdir -p "$SHARED_DIR/storage/framework/cache"
 mkdir -p "$SHARED_DIR/storage/framework/sessions"
 mkdir -p "$SHARED_DIR/storage/logs"
 
-echo "▶️ Rozpakowywanie paczki..."
+echo "▶️ Unpacking release..."
 mkdir "$RELEASE_DIR"
 tar -xzf "$APP_BASE/$ARCHIVE_NAME" -C "$RELEASE_DIR"
 rm "$APP_BASE/$ARCHIVE_NAME"
 
-echo "▶️ Linkowanie shared zasobów..."
+echo "▶️ Symlink storage..."
 rm -rf "$RELEASE_DIR/storage"
 ln -s "$SHARED_DIR/storage" "$RELEASE_DIR/storage"
 
@@ -35,25 +35,20 @@ ln -s "$SHARED_DIR/bootstrap_cache" "$RELEASE_DIR/bootstrap/cache"
 
 ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
 
-echo "▶️ Restart PHP-FPM (opcache)..."
-sudo systemctl restart php8.3-fpm
-
-echo "▶️ Ustawianie symlinku current..."
-ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
-
-echo "▶️ Czyszczenie plików cache Laravel..."
-rm -f "$SHARED_DIR/bootstrap_cache"/*.php
-
-echo "▶️ Optymalizacja aplikacji Laravel..."
-cd "$CURRENT_LINK"
+echo "▶️ Optimizing application..."
+cd "$RELEASE_DIR"
 php artisan optimize:clear
 php artisan optimize
+php artisan storage:link
 
-echo "▶️ Migracje bazy danych..."
+echo "▶️ Migrating database..."
 php artisan migrate --force
 
-echo "▶️ Czyszczenie starych release'ów..."
+echo "▶️ Symlink current..."
+ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
+
+echo "▶️ Cleaning old releases..."
 cd "$RELEASES_DIR"
 ls -dt */ | tail -n +6 | xargs -r rm -rf
 
-echo "✅ Deployment zakończony: $NOW"
+echo "✅ Deploy finished: $NOW"
