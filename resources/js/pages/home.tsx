@@ -1,12 +1,12 @@
 import PostCard from '@/components/PostCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRightIcon, CodeIcon, GitBranchIcon, ServerIcon } from 'lucide-react';
-import { useTranslations } from '@/hooks/useTranslation';
 
 const breadcrumbs: BreadcrumbItem[] = [];
 

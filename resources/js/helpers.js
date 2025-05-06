@@ -1,10 +1,10 @@
 import { format } from 'date-fns';
-import { enUS, pl, de } from 'date-fns/locale';
+import { de, enUS, pl } from 'date-fns/locale';
 
 function formatDate(date, locale = 'en') {
     let formatString = 'yyyy-MM-dd';
 
-    switch(locale) {
+    switch (locale) {
         case 'en':
             locale = enUS;
             break;

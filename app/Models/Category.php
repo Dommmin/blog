@@ -32,8 +32,8 @@ class Category extends Model implements CacheInterface
             ->saveSlugsTo('slug');
     }
 
-    public static function flush(): bool
+    public static function flush(): void
     {
-        return Cache::tags(self::TAG)->flush();
+        Cache::tags(self::TAG)->flush();
     }
 }

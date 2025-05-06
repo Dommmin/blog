@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class BlogController extends Controller
 {
-    public function __construct(private readonly PostRepository $repository) {}
+    public function __construct(private readonly PostRepository $repository, private readonly CommentRepository $commentRepository) {}
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
-        $page = $request->get('page', 1);
+        $filters = $request->only(['search', 'sort']);
 
         return Inertia::render('Blog/Index', [
-            'posts' => $this->repository->getPostsForBlog($page),
+            'posts' => $this->repository->getPostsForBlog($filters),
         ]);
     }
 
@@ -29,6 +31,7 @@ class BlogController extends Controller
 
         return Inertia::render('Blog/Show', [
             'post' => $this->repository->find($post->slug),
+            'comments' => $this->commentRepository->getPaginatedForPost($post),
         ]);
     }
 }

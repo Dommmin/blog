@@ -1,14 +1,13 @@
 import PostCard from '@/components/PostCard';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Pagination } from '@/components/ui/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { Post } from '@/types/blog';
 import { Head, Link, router } from '@inertiajs/react';
-import { useTranslations } from '@/hooks/useTranslation';
-import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { useState, useEffect } from 'react';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { useEffect, useState } from 'react';
 
 interface BlogIndexProps {
     posts: {
@@ -23,9 +22,8 @@ interface BlogIndexProps {
 export default function Index({ posts }: BlogIndexProps) {
     const { __ } = useTranslations();
     const [search, setSearch] = useState('');
-    const [sort, setSort] = useState('latest');
+    const [sort, setSort] = useState('');
 
-    // Debounce wyszukiwania
     useEffect(() => {
         const timeout = setTimeout(() => {
             router.reload({
@@ -34,7 +32,7 @@ export default function Index({ posts }: BlogIndexProps) {
             });
         }, 400);
         return () => clearTimeout(timeout);
-    }, [search, sort]);
+    }, [sort, search]);
 
     return (
         <AppLayout>
@@ -42,14 +40,13 @@ export default function Index({ posts }: BlogIndexProps) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-                    <div className="flex items-center justify-between gap-4 mb-8">
+                    <div className="mb-8 flex items-center justify-between gap-4">
                         <div className="flex-1">
                             <Input
                                 className="w-full"
                                 placeholder={__('Search posts...')}
                                 value={search}
-                                onChange={e => setSearch(e.target.value)}
+                                onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
                         <div className="w-48">

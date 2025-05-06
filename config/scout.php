@@ -17,6 +17,7 @@ return [
     |            "database", "collection", "null"
     |
     */
+    'enabled' => env('SCOUT_ENABLED', false),
 
     'driver' => env('SCOUT_DRIVER', 'algolia'),
 
@@ -183,36 +184,36 @@ return [
         ],
         // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
         'model-settings' => [
-             Post::class => [
-                 'collection-schema' => [
-                     'fields' => [
-                         [
-                             'name' => 'title',
-                             'type' => 'string',
-                         ],
-                         [
-                             'name' => 'content',
-                             'type' => 'string',
-                         ],
-                         [
-                             'name' => 'category_name',
-                             'type' => 'string',
-                         ],
-                         [
-                                'name' => 'tags_names',
-                                'type' => 'string[]',
+            Post::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'title',
+                            'type' => 'string',
                         ],
-                         [
-                             'name' => 'published_at',
-                             'type' => 'int64',
-                         ],
-                     ],
-                     'default_sorting_field' => 'published_at',
-                 ],
-                 'search-parameters' => [
-                     'query_by' => 'title,content,category_name,tags_names',
-                 ],
-             ],
+                        [
+                            'name' => 'content',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'category_name',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'tags_names',
+                            'type' => 'string[]',
+                        ],
+                        [
+                            'name' => 'published_at',
+                            'type' => 'int64',
+                        ],
+                    ],
+                    'default_sorting_field' => 'published_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'title,content,category_name,tags_names',
+                ],
+            ],
         ],
     ],
 

@@ -17,6 +17,7 @@ class Tag extends Model implements CacheInterface
     use HasFactory, HasSlug;
 
     protected $guarded = ['id'];
+
     protected const TAG = 'tags';
 
     public function posts(): BelongsToMany
@@ -24,9 +25,9 @@ class Tag extends Model implements CacheInterface
         return $this->belongsToMany(Post::class)->withTimestamps();
     }
 
-    public static function flush(): bool
+    public static function flush(): void
     {
-        return Cache::tags(self::TAG)->flush();
+        Cache::tags(self::TAG)->flush();
     }
 
     public function getSlugOptions(): SlugOptions

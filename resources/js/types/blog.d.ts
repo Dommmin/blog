@@ -27,4 +27,31 @@ export interface Post {
     category: Category;
     tags: Tag[];
     image?: string;
+    comments_count: number;
+}
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Comment {
+    id: number;
+    post_id: number;
+    user_id: number;
+    author: User;
+    content: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CommentData {
+    data: Comment[];
+    current_page: number;
+    last_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
 }

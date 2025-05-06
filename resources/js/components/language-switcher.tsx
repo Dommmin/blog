@@ -24,7 +24,7 @@ const languages: Language[] = [
         code: 'de',
         name: 'Deutsch',
         flag: '🇩🇪',
-    }
+    },
 ];
 
 export function LanguageSwitcher() {
@@ -32,12 +32,16 @@ export function LanguageSwitcher() {
     const currentLang = props.locale;
 
     const switchLanguage = (langCode: string) => {
-        router.post(route('locale.change'), {
-            locale: langCode,
-        }, {
-            preserveState: true,
-            preserveScroll: true,
-        })
+        router.post(
+            route('locale.change'),
+            {
+                locale: langCode,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     return (

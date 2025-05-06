@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
@@ -40,6 +41,11 @@ class Post extends Model implements CacheInterface
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function scopePublished(Builder $query): Builder
@@ -81,9 +87,9 @@ class Post extends Model implements CacheInterface
         return 'slug';
     }
 
-    public static function flush(): bool
+    public static function flush(): void
     {
-        return Cache::tags(self::TAG)->flush();
+        Cache::tags(self::TAG)->flush();
     }
 
     public function toSearchableArray(): array
@@ -94,7 +100,7 @@ class Post extends Model implements CacheInterface
             'id' => (string) $this->id,
             'title' => $this->title,
             'content' => $this->content,
-            'category_name' => $this->category->name,
+            //            'category_name' => $this->category->name,
             'tags_names' => $this->tags->pluck('name')->toArray(),
             'published_at' => $this->published_at->timestamp,
         ];

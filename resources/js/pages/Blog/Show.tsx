@@ -1,42 +1,21 @@
+import CommentCard from '@/components/CommentCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Pagination } from '@/components/ui/pagination';
 import { formatDate } from '@/helpers';
+import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
-import { type Post } from '@/types/blog';
+import { type CommentData, type Post } from '@/types/blog';
 import { Head, Link } from '@inertiajs/react';
 import 'highlight.js/styles/github-dark.css';
-import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
-export default function Show({ post }: { post: Post }) {
-    useEffect(() => {
-        const handleInitialHash = () => {
-            if (window.location.hash) {
-                const targetId = window.location.hash.replace('#', '');
-                const targetElement = document.getElementById(targetId);
-
-                if (targetElement) {
-                    setTimeout(() => {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                        });
-                    }, 100);
-                }
-            }
-        };
-
-        handleInitialHash();
-
-        return () => {
-            window.history.replaceState(null, '', window.location.pathname);
-        };
-    }, []);
-
+export default function Show({ post, comments }: { post: Post; comments: CommentData }) {
+    const { __ } = useTranslations();
     return (
         <AppLayout>
             <Head title={post.title}>
@@ -79,6 +58,44 @@ export default function Show({ post }: { post: Post }) {
                                     {post.content}
                                 </ReactMarkdown>
                             </div>
+                        </CardContent>
+                    </Card>
+                    <Card className="mt-8">
+                        <CardHeader>
+                            <CardTitle className="text-2xl">Comments ({post.comments_count})</CardTitle>
+                            {comments.data.map((comment) => (
+                                <CommentCard comment={comment} />
+                            ))}
+                            <div className="text-muted-foreground flex items-center text-sm">
+                                <span>Leave a comment</span>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            {(comments.prev_page_url || comments.next_page_url) && (
+                                <div className="mt-12">
+                                    <Pagination className="justify-between">
+                                        {comments.prev_page_url ? (
+                                            <Link href={comments.prev_page_url} prefetch>
+                                                <Button variant="outline">{__('Previous')}</Button>
+                                            </Link>
+                                        ) : (
+                                            <Button variant="outline" disabled>
+                                                {__('Previous')}
+                                            </Button>
+                                        )}
+
+                                        {comments.next_page_url ? (
+                                            <Link href={comments.next_page_url} prefetch>
+                                                <Button variant="outline">{__('Next')}</Button>
+                                            </Link>
+                                        ) : (
+                                            <Button variant="outline" disabled>
+                                                {__('Next')}
+                                            </Button>
+                                        )}
+                                    </Pagination>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </div>

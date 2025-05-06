@@ -7,7 +7,7 @@ export function useTranslations() {
     const __ = (key: string, replacements: Record<string, string> = {}) => {
         let translation = translations[key] || key;
 
-        Object.keys(replacements).forEach(r => {
+        Object.keys(replacements).forEach((r) => {
             translation = translation.replace(`:${r}`, replacements[r]);
         });
 
@@ -17,6 +17,6 @@ export function useTranslations() {
     return {
         __,
         trans: __,
-        locale
+        locale,
     };
 }

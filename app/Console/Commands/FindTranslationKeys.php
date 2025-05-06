@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 class FindTranslationKeys extends Command
 {
     protected $signature = 'translations:find';
+
     protected $description = 'Find translation keys in codebase';
 
     public function handle()
@@ -22,7 +23,7 @@ class FindTranslationKeys extends Command
             $this->scanDirectory($path, $keys);
         }
 
-        $this->info('Found ' . count($keys) . ' unique translation keys:');
+        $this->info('Found '.count($keys).' unique translation keys:');
         sort($keys);
 
         foreach ($keys as $key) {
@@ -36,7 +37,7 @@ class FindTranslationKeys extends Command
 
     protected function scanDirectory($directory, &$keys)
     {
-        if (!File::isDirectory($directory)) {
+        if (! File::isDirectory($directory)) {
             return;
         }
 
@@ -51,19 +52,19 @@ class FindTranslationKeys extends Command
             // Wyszukaj klucze w React
             preg_match_all('/\{__\([\'"]([^\'"]+)[\'"]\)/', $contents, $matches3);
 
-            if (!empty($matches1[1])) {
+            if (! empty($matches1[1])) {
                 foreach ($matches1[1] as $match) {
                     $keys[] = $match;
                 }
             }
 
-            if (!empty($matches2[1])) {
+            if (! empty($matches2[1])) {
                 foreach ($matches2[1] as $match) {
                     $keys[] = $match;
                 }
             }
 
-            if (!empty($matches3[1])) {
+            if (! empty($matches3[1])) {
                 foreach ($matches3[1] as $match) {
                     $keys[] = $match;
                 }
@@ -89,7 +90,7 @@ class FindTranslationKeys extends Command
             $addedCount = 0;
 
             foreach ($keys as $key) {
-                if (!isset($existingTranslations[$key])) {
+                if (! isset($existingTranslations[$key])) {
                     $newTranslations[$key] = $locale === 'en' ? $key : '';
                     $addedCount++;
                 }

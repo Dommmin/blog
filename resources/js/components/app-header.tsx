@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
 import { useInitials } from '@/hooks/use-initials';
+import { useTranslations } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -16,7 +17,6 @@ import { BookUser, Laptop, LogIn, Menu, Moon, NotebookPen, Sun } from 'lucide-re
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { UserMenuContent } from './user-menu-content';
-import { useTranslations } from '@/hooks/useTranslation';
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 

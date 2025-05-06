@@ -22,7 +22,9 @@ class PostRepository implements PostRepositoryInterface
     public function find(string $slug): ?Post
     {
         return Cache::tags('posts')->rememberForever('post.'.$slug, function () use ($slug) {
-            return Post::where('slug', $slug)->first();
+            return Post::where('slug', $slug)
+                ->withCount('comments')
+                ->first();
         });
     }
 
@@ -56,15 +58,17 @@ class PostRepository implements PostRepositoryInterface
         Post::flush();
     }
 
-    public function getPostsForBlog(int $page): LengthAwarePaginator
+    public function getPostsForBlog(array $filters): LengthAwarePaginator
     {
-        $search = request('search');
-        $sort = request('sort', 'latest');
+        $search = $filters['search'] ?? null;
+        $sort = $filters['sort'] ?? 'latest';
         $perPage = 6;
 
-        $query = Post::published()->with(['category', 'tags']);
+        $query = Post::published()
+            ->with(['category', 'tags'])
+            ->withCount('comments');
 
-        if ($search) {
+        if ($search && config('scout.enabled')) {
             $ids = Post::search($search)->get()->pluck('id');
             $query = $query->whereIn('id', $ids);
         }
