@@ -7,6 +7,6 @@ import '@inertiajs/react';
 
 declare module '@inertiajs/react' {
     interface FormDataType {
-        [key: string]: any;
+        [key: string]: string | number | boolean | File | null | undefined | FormDataType | FormDataType[];
     }
 }

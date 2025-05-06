@@ -3,26 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class BlogController extends Controller
 {
+    public function __construct(private readonly PostRepository $repository) {}
+
     public function index(Request $request)
     {
         $page = $request->get('page', 1);
-        $posts = Cache::tags('posts')->rememberForever('blog.index.posts.'.$page, function () {
-            return Post::published()
-                ->with(['category'])
-                ->latest('published_at')
-                ->paginate(6)
-                ->withQueryString();
-        });
 
         return Inertia::render('Blog/Index', [
-            'posts' => $posts,
+            'posts' => $this->repository->getPostsForBlog($page),
         ]);
     }
 
@@ -32,12 +27,8 @@ class BlogController extends Controller
             abort(404);
         }
 
-        $post = Cache::tags('posts')->rememberForever('post.'.$post->slug, function () use ($post) {
-            return $post->load('author');
-        });
-
         return Inertia::render('Blog/Show', [
-            'post' => $post,
+            'post' => $this->repository->find($post->slug),
         ]);
     }
 }

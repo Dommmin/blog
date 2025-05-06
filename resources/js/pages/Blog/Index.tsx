@@ -22,13 +22,18 @@ export default function Index({ posts }: BlogIndexProps) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        {posts.data.map((post) => (
-                            <PostCard post={post} />
-                        ))}
-                    </div>
+                    {posts.data.length >= 1 ? (
+                        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                            {posts.data.map((post) => (
+                                <PostCard post={post} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex items-center justify-center">
+                            <h1 className="text-muted-foreground text-3xl tracking-widest">There are no posts yet...</h1>
+                        </div>
+                    )}
 
-                    {/* Pagination */}
                     {(posts.prev_page_url || posts.next_page_url) && (
                         <div className="mt-12">
                             <Pagination className="justify-between">

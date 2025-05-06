@@ -6,12 +6,12 @@ import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
-interface CreateTagForm {
+type TagFormData = {
     name: string;
-}
+};
 
 export default function Create() {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<TagFormData>({
         name: '',
     });
 

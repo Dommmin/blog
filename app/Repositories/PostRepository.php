@@ -55,4 +55,15 @@ class PostRepository implements PostRepositoryInterface
         $post->tags()->sync($tagIds);
         Cache::tags('posts')->flush();
     }
+
+    public function getPostsForBlog(int $page): LengthAwarePaginator
+    {
+        return Cache::tags('posts')->rememberForever('blog.index.posts.'.$page, function () {
+            return Post::published()
+                ->with(['category'])
+                ->latest('published_at')
+                ->paginate(6)
+                ->withQueryString();
+        });
+    }
 }

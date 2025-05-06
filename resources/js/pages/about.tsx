@@ -1,4 +1,4 @@
-import { GitHubIcon, LinkedInIcon, TwitterIcon } from '@/components/social-icons';
+import { GitHubIcon, LinkedInIcon } from '@/components/social-icons';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
@@ -6,7 +6,6 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
 
-// Define breadcrumbs for the About page
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'About',
@@ -24,14 +23,13 @@ export default function About() {
                     <div className="grid items-start gap-8 md:grid-cols-[1fr_2fr]">
                         <div className="flex flex-col items-center gap-4 md:items-start">
                             <div className="border-primary/10 bg-muted h-48 w-48 overflow-hidden rounded-xl border-4">
-                                {/* You can add your actual photo here */}
                                 <div className="from-primary/10 to-primary/5 flex h-full w-full items-center justify-center bg-gradient-to-br">
-                                    <span className="text-primary/70 text-4xl font-bold">JP</span>
+                                    <img src="/avatar.jpeg" alt="avatar" />
                                 </div>
                             </div>
                             <div className="flex gap-3">
                                 <a
-                                    href="https://github.com/yourusername"
+                                    href="https://github.com/Dommmin"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -39,15 +37,7 @@ export default function About() {
                                     <GitHubIcon className="h-5 w-5" />
                                 </a>
                                 <a
-                                    href="https://twitter.com/yourusername"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-muted-foreground hover:text-primary transition-colors"
-                                >
-                                    <TwitterIcon className="h-5 w-5" />
-                                </a>
-                                <a
-                                    href="https://linkedin.com/in/yourusername"
+                                    href="https://www.linkedin.com/in/dominik-jasi%C5%84ski/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-muted-foreground hover:text-primary transition-colors"
@@ -57,7 +47,7 @@ export default function About() {
                             </div>
                         </div>
                         <div>
-                            <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-4xl">John Programmer</h1>
+                            <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-4xl">Dominik Jasiński</h1>
                             <p className="text-muted-foreground mb-4 text-xl">PHP Developer & DevOps Engineer</p>
                             <div className="prose dark:prose-invert max-w-none">
                                 <p>
@@ -78,9 +68,9 @@ export default function About() {
                             </div>
                             <div className="mt-6">
                                 <Button asChild variant="outline" className="gap-2">
-                                    <a href="mailto:contact@yourdomain.com">
+                                    <a href="mailto:domijas96@gmail.com">
                                         <MailIcon className="h-4 w-4" />
-                                        contact@yourdomain.com
+                                        Contact Me
                                     </a>
                                 </Button>
                             </div>
@@ -141,22 +131,10 @@ export default function About() {
                         {[
                             {
                                 year: '2020 - Present',
-                                role: 'Senior PHP Developer & DevOps Engineer',
-                                company: 'Tech Solutions Inc.',
+                                role: 'PHP Developer & DevOps Engineer',
+                                company: 'Ideo Sp. z o.o.',
                                 description:
                                     'Leading backend development with Laravel and implementing DevOps practices to streamline development workflows.',
-                            },
-                            {
-                                year: '2017 - 2020',
-                                role: 'PHP Developer',
-                                company: 'WebDev Agency',
-                                description: 'Developed and maintained Symfony applications, migrated legacy systems to modern frameworks.',
-                            },
-                            {
-                                year: '2015 - 2017',
-                                role: 'Junior Web Developer',
-                                company: 'StartUp Hub',
-                                description: 'Started my journey with PHP, worked on various web applications and e-commerce solutions.',
                             },
                         ].map((item, index) => (
                             <div key={index} className="relative mb-10">
