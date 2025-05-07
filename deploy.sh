@@ -40,9 +40,9 @@ cd "$RELEASE_DIR"
 php artisan optimize:clear
 
 # Reset opcache if available
-if [ -f /var/run/php/php8.3-fpm.sock ]; then
-    echo "▶️ Resetting PHP Opcache..."
-    curl -X GET http://localhost/opcache-reset.php || true
+if command -v opcache_reset &> /dev/null; then
+    echo "▶️ Resetting OPcache..."
+    php -r "opcache_reset();" || true
 fi
 
 # Reset Redis cache if available
