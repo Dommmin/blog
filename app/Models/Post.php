@@ -75,6 +75,19 @@ class Post extends Model implements CacheInterface
         return $this->published_at->format('F j, Y');
     }
 
+    public static function getSuggestions(string $query)
+    {
+        return self::search($query)
+                ->take(5)
+                ->get()
+                ->filter(fn ($post) => $post->published_at < now())
+                ->map(fn ($post) => [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                ])
+                ->values();
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

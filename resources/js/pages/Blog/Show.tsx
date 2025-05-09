@@ -29,7 +29,7 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                             <div className="mb-4">
                                 <Link href={route('blog.index')} prefetch>
                                     <Button variant="outline" size="sm">
-                                        ← Back to all posts
+                                        ← {__('Back to all posts')}
                                     </Button>
                                 </Link>
                             </div>
@@ -75,7 +75,7 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                                 <div className="mt-12">
                                     <Pagination className="justify-between">
                                         {comments.prev_page_url ? (
-                                            <Link href={comments.prev_page_url} prefetch>
+                                            <Link preserveScroll href={comments.prev_page_url} prefetch>
                                                 <Button variant="outline">{__('Previous')}</Button>
                                             </Link>
                                         ) : (
@@ -84,8 +84,14 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                                             </Button>
                                         )}
 
+                                        <div>
+                                            <span className="text-muted-foreground">
+                                                {__('Page')} {comments.current_page} {__('of')} {comments.last_page}
+                                            </span>
+                                        </div>
+
                                         {comments.next_page_url ? (
-                                            <Link href={comments.next_page_url} prefetch>
+                                            <Link preserveScroll href={comments.next_page_url} prefetch>
                                                 <Button variant="outline">{__('Next')}</Button>
                                             </Link>
                                         ) : (

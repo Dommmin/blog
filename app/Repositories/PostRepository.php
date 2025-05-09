@@ -61,6 +61,7 @@ class PostRepository implements PostRepositoryInterface
     public function getPostsForBlog(array $filters): LengthAwarePaginator
     {
         $search = $filters['search'] ?? null;
+        $sort = $filters['sort'] ?? 'latest';
         $perPage = 6;
 
         $query = Post::published()
@@ -71,6 +72,13 @@ class PostRepository implements PostRepositoryInterface
             $ids = Post::search($search)->get()->pluck('id');
             $query = $query->whereIn('id', $ids);
         }
+
+        $query = match ($sort) {
+            'oldest' => $query->orderBy('published_at', 'asc'),
+            'title_asc' => $query->orderBy('title', 'asc'),
+            'title_desc' => $query->orderBy('title', 'desc'),
+            default => $query->orderBy('published_at', 'desc'),
+        };
 
         return $query->paginate($perPage)->withQueryString();
     }

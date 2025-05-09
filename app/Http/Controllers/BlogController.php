@@ -34,4 +34,17 @@ class BlogController extends Controller
             'comments' => $this->commentRepository->getPaginatedForPost($post),
         ]);
     }
+
+    public function suggestPosts(Request $request)
+    {
+        $query = $request->input('query');
+
+        if (!$query || !config('scout.enabled')) {
+            return response()->json([]);
+        }
+
+        $results = Post::getSuggestions($query);
+
+        return response()->json($results);
+    }
 }

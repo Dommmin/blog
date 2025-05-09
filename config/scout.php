@@ -203,7 +203,7 @@ return [
                     'filter_by' => 'published_at:<' . now()->timestamp,
                     'drop_tokens_threshold' => 1,
                     'typo_tokens_threshold' => 100,
-                    'prefix' => true, // kluczowy punkt
+                    'prefix' => true,
                 ],
             ],
         ],
