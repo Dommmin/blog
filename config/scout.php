@@ -162,7 +162,7 @@ return [
 
     'typesense' => [
         'client-settings' => [
-            'api_key' => env('TYPESENSE_API_KEY', 'xyz'),
+            'api_key' => env('TYPESENSE_API_KEY'),
             'nodes' => [
                 [
                     'host' => env('TYPESENSE_HOST', 'localhost'),
@@ -177,44 +177,35 @@ return [
                 'path' => env('TYPESENSE_PATH', ''),
                 'protocol' => env('TYPESENSE_PROTOCOL', 'http'),
             ],
-            'connection_timeout_seconds' => env('TYPESENSE_CONNECTION_TIMEOUT_SECONDS', 2),
-            'healthcheck_interval_seconds' => env('TYPESENSE_HEALTHCHECK_INTERVAL_SECONDS', 30),
-            'num_retries' => env('TYPESENSE_NUM_RETRIES', 3),
-            'retry_interval_seconds' => env('TYPESENSE_RETRY_INTERVAL_SECONDS', 1),
+            'connection_timeout_seconds' => 2,
+            'healthcheck_interval_seconds' => 30,
+            'num_retries' => 3,
+            'retry_interval_seconds' => 1,
         ],
-        // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
+
         'model-settings' => [
             Post::class => [
                 'collection-schema' => [
                     'fields' => [
-                        [
-                            'name' => 'title',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'content',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'category_name',
-                            'type' => 'string',
-                        ],
-                        [
-                            'name' => 'tags_names',
-                            'type' => 'string[]',
-                        ],
-                        [
-                            'name' => 'published_at',
-                            'type' => 'int64',
-                        ],
+                        ['name' => 'title',         'type' => 'string'],
+                        ['name' => 'content',       'type' => 'string'],
+                        ['name' => 'category_name', 'type' => 'string'],
+                        ['name' => 'tags_names',    'type' => 'string[]'],
+                        ['name' => 'published_at',  'type' => 'int32'],
                     ],
                     'default_sorting_field' => 'published_at',
                 ],
+
                 'search-parameters' => [
                     'query_by' => 'title,content,category_name,tags_names',
+                    'query_by_weights' => '5,3,2,1',
+                    'sort_by' => 'published_at:desc',
+                    'filter_by' => 'published_at:<' . now()->timestamp,
+                    'drop_tokens_threshold' => 1,
+                    'typo_tokens_threshold' => 100,
+                    'prefix' => true, // kluczowy punkt
                 ],
             ],
         ],
     ],
-
 ];

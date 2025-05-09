@@ -100,7 +100,7 @@ class Post extends Model implements CacheInterface
             'id' => (string) $this->id,
             'title' => $this->title,
             'content' => $this->content,
-            //            'category_name' => $this->category->name,
+            'category_name' => $this->category->name ?? '',
             'tags_names' => $this->tags->pluck('name')->toArray(),
             'published_at' => $this->published_at->timestamp,
         ];
