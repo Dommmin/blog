@@ -1,13 +1,25 @@
 {
     "A reset link will be sent if the account exists.": "",
     "About me": "Über mich",
+    "Back to all posts": "Zurück zu allen Beiträgen",
     "Featured Articles": "Ausgewählte Artikel",
+    "Latest": "Neueste",
     "Next": "Nächster",
+    "No posts found": "Keine Beiträge gefunden",
+    "Oldest": "Älteste",
+    "Page": "Seite",
     "Previous": "Vorheriger",
     "Read more": "Mehr lesen",
     "Read the Blog": "Blog lesen",
+    "Search posts...": "Beiträge suchen...",
+    "Sort by": "Sortieren nach",
+    "Title A-Z": "Titel A-Z",
+    "Title Z-A": "Titel Z-A",
     "auth.failed": "",
     "auth.password": "",
     "auth.throttle": "",
-    "min read": "min. Lesezeit"
+    "comment": "",
+    "comments": "Kommentare",
+    "min read": "min. Lesezeit",
+    "of": "von"
 }

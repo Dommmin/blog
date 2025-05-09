@@ -1,13 +1,25 @@
 {
     "A reset link will be sent if the account exists.": "A reset link will be sent if the account exists.",
     "About me": "About me",
+    "Back to all posts": "Back to all posts",
     "Featured Articles": "Featured Articles",
+    "Latest": "Latest",
     "Next": "Next",
+    "No posts found": "No posts found",
+    "Oldest": "Oldest",
+    "Page": "Page",
     "Previous": "Previous",
     "Read more": "Read more",
     "Read the Blog": "Read the Blog",
+    "Search posts...": "Search posts...",
+    "Sort by": "Sort by",
+    "Title A-Z": "Title A-Z",
+    "Title Z-A": "Title Z-A",
     "auth.failed": "auth.failed",
     "auth.password": "auth.password",
     "auth.throttle": "auth.throttle",
-    "min read": "min read"
+    "comment": "comment",
+    "comments": "comments",
+    "min read": "min read",
+    "of": "of"
 }
