@@ -3,11 +3,12 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NewsletterController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::post('/locale', [App\Http\Controllers\LocaleController::class, 'change'])->name('locale.change');
+Route::post('/locale', [LocaleController::class, 'change'])->name('locale.change');
 Route::get('/', HomeController::class)->name('home');
 Route::get('/about', AboutController::class)->name('about');
 

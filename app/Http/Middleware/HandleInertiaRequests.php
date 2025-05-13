@@ -68,12 +68,15 @@ class HandleInertiaRequests extends Middleware
     protected function getTranslations(): array
     {
         $locale = Session::get('locale', config('app.locale'));
-        $path = lang_path("$locale.json");
 
-        if (file_exists($path)) {
-            return json_decode(file_get_contents($path), true) ?? [];
-        }
+        return cache()->tags('translations')->rememberForever("translations_{$locale}", function () use ($locale) {
+            $path = lang_path("$locale.json");
 
-        return [];
+            if (file_exists($path)) {
+                return json_decode(file_get_contents($path), true) ?? [];
+            }
+
+            return [];
+        });
     }
 }
