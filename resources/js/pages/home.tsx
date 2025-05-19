@@ -85,7 +85,7 @@ export default function Home({ posts }: { posts: Post[] }) {
 
                         <div className="grid gap-6 md:grid-cols-2">
                             {posts.map((post) => (
-                                <PostCard post={post} />
+                                <PostCard key={post.id} post={post} />
                             ))}
                         </div>
                     </div>
