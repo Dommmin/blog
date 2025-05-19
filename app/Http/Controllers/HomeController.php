@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function __construct(private readonly PostRepository $repository) {}
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, ?string $locale)
     {
         return Inertia::render('home', [
             'posts' => $this->repository->getFeaturedArticles(),

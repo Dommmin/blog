@@ -13,9 +13,9 @@ use Inertia\Inertia;
 Route::get('/up', fn () => 'OK');
 Route::get('/{any}', function ($any = '') {
     return redirect(app()->getLocale().'/'.$any);
-})->where('any', '^(?!admin|login|register|forgot-password|verify-email|reset-password|confirm-password|('.implode('|', available_locales()).')).*$');
+})->where('any', '^(?!admin|login|register|forgot-password|verify-email|reset-password|confirm-password|settings|('.implode('|', available_locales()).')).*$');
 
-Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'web'], function () {
+Route::group(['prefix' => '{locale?}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'web'], function () {
     Route::get('/', HomeController::class)->name('home');
     Route::post('/locale', [LocaleController::class, 'change'])->name('locale.change');
     Route::get('/about', AboutController::class)->name('about');
@@ -29,10 +29,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
         ->middleware('auth')
         ->name('blog.comments.store');
 
-    require __DIR__.'/settings.php';
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/settings.php';
 require __DIR__.'/admin.php';
 
 Route::fallback(function () {

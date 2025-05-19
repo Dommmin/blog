@@ -8,8 +8,8 @@ test('password can be updated', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from('/en/settings/password')
-        ->put('/en/settings/password', [
+        ->from('/settings/password')
+        ->put('/settings/password', [
             'current_password' => 'password',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
@@ -17,7 +17,7 @@ test('password can be updated', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect('/en/settings/password');
+        ->assertRedirect('/settings/password');
 
     expect(Hash::check('new-password', $user->refresh()->password))->toBeTrue();
 });
@@ -27,8 +27,8 @@ test('correct password must be provided to update password', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from('/en/settings/password')
-        ->put('/en/settings/password', [
+        ->from('/settings/password')
+        ->put('/settings/password', [
             'current_password' => 'wrong-password',
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
@@ -36,5 +36,5 @@ test('correct password must be provided to update password', function () {
 
     $response
         ->assertSessionHasErrors('current_password')
-        ->assertRedirect('/en/settings/password');
+        ->assertRedirect('/settings/password');
 });
