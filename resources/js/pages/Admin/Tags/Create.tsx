@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
+import { useTranslations } from '@/hooks/useTranslation';
 
 type TagFormData = {
     name: string;
@@ -14,6 +15,8 @@ export default function Create() {
     const { data, setData, post, processing, errors } = useForm<TagFormData>({
         name: '',
     });
+
+    const { locale } = useTranslations();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,7 +32,7 @@ export default function Create() {
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.tags.index')} prefetch>
+                                <Link href={route('admin.tags.index', { locale })} prefetch>
                                     <Button variant="outline" size="sm">
                                         ← Back to all Tags
                                     </Button>

@@ -6,8 +6,11 @@ import AdminLayout from '@/layouts/admin-layout';
 import { Tag } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
+import { useTranslations } from '@/hooks/useTranslation';
 
 export default function Edit({ tag }: { tag: Tag }) {
+    const { locale } = useTranslations();
+
     const {
         data,
         setData,
@@ -33,7 +36,7 @@ export default function Edit({ tag }: { tag: Tag }) {
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.tags.index')} prefetch>
+                                <Link href={route('admin.tags.index', { locale })} prefetch>
                                     <Button variant="outline" size="sm">
                                         ← Back to all Tags
                                     </Button>

@@ -45,12 +45,14 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const mainNavItems: NavItem[] = [
         {
             title: 'Blog',
-            href: '/' + locale + '/blog',
+            href: route('blog.index', { locale }),
+            current: route().current('blog.index'),
             icon: NotebookPen,
         },
         {
             title: __('About me'),
-            href: '/' + locale + '/about',
+            href: route('about', { locale }),
+            current: route().current('about'),
             icon: BookUser,
         },
     ];
@@ -108,7 +110,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         </Sheet>
                     </div>
 
-                    <Link href={route('home', { locale: page.props.locale})} prefetch className="flex items-center space-x-2">
+                    <Link href={route('home', { locale: page.props.locale })} prefetch className="flex items-center space-x-2">
                         <AppLogo />
                     </Link>
 
@@ -130,7 +132,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             {item.icon && <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />}
                                             {item.title}
                                         </Link>
-                                        {page.url === item.href && (
+                                        {item.current && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
                                         )}
                                     </NavigationMenuItem>

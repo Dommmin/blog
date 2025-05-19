@@ -9,22 +9,25 @@ import AppLogo from './app-logo';
 import { useTranslations } from '@/hooks/useTranslation';
 
 export function AppSidebar() {
-    const { __, locale} = useTranslations();
+    const { __, locale } = useTranslations();
 
     const mainNavItems: NavItem[] = [
         {
             title: __('Categories'),
-            href: route('admin.categories.index', locale),
+            href: route('admin.categories.index', { locale }),
+            current: route().current('admin.categories.*'),
             icon: LayoutGrid,
         },
         {
-            title: 'Posts',
-            href: '/admin/posts',
+            title: __('Posts'),
+            href: route('admin.posts.index', { locale }),
+            current: route().current('admin.posts.*'),
             icon: NotebookPen,
         },
         {
-            title: 'Tags',
-            href: '/admin/tags',
+            title: __('Tags'),
+            href: route('admin.tags.index', { locale }),
+            current: route().current('admin.tags.*'),
             icon: Tag,
         },
     ];

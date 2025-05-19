@@ -5,15 +5,17 @@ import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
+import { useTranslations } from '@/hooks/useTranslation';
 
 export default function Create() {
+    const { locale } = useTranslations();
     const { data, setData, post, processing, errors } = useForm({
         name: '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('admin.categories.store'));
+        post(route('admin.categories.store', { locale }));
     };
 
     return (
@@ -25,7 +27,7 @@ export default function Create() {
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.categories.index')} prefetch>
+                                <Link href={route('admin.categories.index', { locale })} prefetch>
                                     <Button variant="outline" size="sm" className="cursor-pointer">
                                         ← Back to all Categories
                                     </Button>

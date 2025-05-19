@@ -6,8 +6,10 @@ import AdminLayout from '@/layouts/admin-layout';
 import { type Category } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
+import { useTranslations } from '@/hooks/useTranslation';
 
 export default function Edit({ category }: { category: Category }) {
+    const { __, locale } = useTranslations();
     const {
         data,
         setData,
@@ -33,9 +35,9 @@ export default function Edit({ category }: { category: Category }) {
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.categories.index')} prefetch>
+                                <Link href={route('admin.categories.index', { locale: locale })} prefetch>
                                     <Button variant="outline" size="sm" className="cursor-pointer">
-                                        ← Back to all Categories
+                                        ← {__('Back to all Categories')}
                                     </Button>
                                 </Link>
                             </div>

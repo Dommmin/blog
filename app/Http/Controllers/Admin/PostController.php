@@ -45,7 +45,7 @@ class PostController extends Controller
         return to_route('admin.posts.index')->with('success', 'Post created successfully');
     }
 
-    public function edit(Post $post): Response
+    public function edit(string $locale, Post $post): Response
     {
         return Inertia::render('Admin/Posts/Edit', [
             'post' => $post->load('tags'),
@@ -54,17 +54,17 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(UpdatePostRequest $request, Post $post): RedirectResponse
+    public function update(UpdatePostRequest $request, string $locale, Post $post): RedirectResponse
     {
         $this->postService->updatePost($post, $request->validated());
 
-        return to_route('admin.posts.index')->with('success', 'Post updated successfully');
+        return to_route('admin.posts.index', ['locale' => $locale])->with('success', 'Post updated successfully');
     }
 
-    public function destroy(Post $post): RedirectResponse
+    public function destroy(string $locale, Post $post): RedirectResponse
     {
         $this->postService->deletePost($post);
 
-        return to_route('admin.posts.index')->with('success', 'Post deleted successfully');
+        return to_route('admin.posts.index', ['locale' => $locale])->with('success', 'Post deleted successfully');
     }
 }

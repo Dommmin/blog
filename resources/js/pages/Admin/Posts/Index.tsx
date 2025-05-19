@@ -52,7 +52,7 @@ export default function Index({ posts, flash }: PostsPageProps) {
     }, [flash.success]);
 
     const deletePost = (id: number | string) => {
-        router.delete(route('admin.posts.destroy', id));
+        router.delete(route('admin.posts.destroy', { post: id, locale: locale }));
     };
 
     return (
@@ -66,7 +66,7 @@ export default function Index({ posts, flash }: PostsPageProps) {
                             <div className="mb-6 flex items-center justify-between">
                                 <h3 className="text-lg font-medium">Blog Posts</h3>
                                 <Button asChild>
-                                    <Link href={route('admin.posts.create')} className="cursor-pointer" prefetch>
+                                    <Link href={route('admin.posts.create', { locale })} className="cursor-pointer" prefetch>
                                         <PlusIcon className="mr-2 h-4 w-4" />
                                         Create Post
                                     </Link>
@@ -98,12 +98,12 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('blog.show', { post: post.slug, locale: locale})} prefetch="hover">
+                                                            <Link href={route('blog.show', { post: post.slug, locale: locale })} prefetch="hover">
                                                                 <EyeIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('admin.posts.edit', post.slug)} prefetch="hover">
+                                                            <Link href={route('admin.posts.edit', { post: post.slug, locale: locale })} prefetch="hover">
                                                                 <PencilIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>

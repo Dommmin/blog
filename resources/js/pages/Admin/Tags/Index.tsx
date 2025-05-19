@@ -21,6 +21,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from '@/hooks/useTranslation';
 
 interface PostsPageProps extends PageProps {
     posts: {
@@ -34,6 +35,8 @@ interface PostsPageProps extends PageProps {
 }
 
 export default function Index({ tags, flash }: PostsPageProps) {
+    const { locale } = useTranslations();
+
     useEffect(() => {
         if (flash.success) {
             toast.success(flash.success);
@@ -55,7 +58,7 @@ export default function Index({ tags, flash }: PostsPageProps) {
                             <div className="mb-6 flex items-center justify-between">
                                 <h3 className="text-lg font-medium">Blog Tags</h3>
                                 <Button asChild>
-                                    <Link href={route('admin.tags.create')} className="cursor-pointer" prefetch>
+                                    <Link href={route('admin.tags.create', { locale })} className="cursor-pointer" prefetch>
                                         <PlusIcon className="mr-2 h-4 w-4" />
                                         Create Tag
                                     </Link>
@@ -80,7 +83,7 @@ export default function Index({ tags, flash }: PostsPageProps) {
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('admin.tags.edit', tag.id)} prefetch="hover">
+                                                            <Link href={route('admin.tags.edit', { tag: tag.id, locale })} prefetch="hover">
                                                                 <PencilIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>

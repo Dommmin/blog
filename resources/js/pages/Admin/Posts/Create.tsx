@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAppearance } from '@/hooks/use-appearance';
+import { useTranslations } from '@/hooks/useTranslation';
 import AdminLayout from '@/layouts/admin-layout';
 import { cn } from '@/lib/utils';
 import { type Category, type DataItem } from '@/types/blog';
@@ -26,6 +27,8 @@ type FormData = {
 
 export default function Create({ categories, tags }: { categories: Category[]; tags: DataItem[] }) {
     const { appearance } = useAppearance();
+    const { locale } = useTranslations();
+
     const { data, setData, post, processing, errors } = useForm<FormData>({
         category_id: '',
         title: '',
@@ -48,7 +51,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.posts.index')} prefetch>
+                                <Link href={route('admin.posts.index', { locale })} prefetch>
                                     <Button variant="outline" size="sm">
                                         ← Back to all posts
                                     </Button>
