@@ -10,9 +10,9 @@ use Inertia\Inertia;
 
 // Health check endpoint
 Route::get('/up', fn () => 'OK');
-Route::get('/', function () {
-    return redirect(app()->getLocale());
-});
+Route::get('/{any}', function ($any = '') {
+    return redirect(app()->getLocale() . '/' . $any);
+})->where('any', '^(?!admin|(' . implode('|', available_locales()) . ')).*$');
 
 Route::fallback(function () {
     return Inertia::render('Errors/404');

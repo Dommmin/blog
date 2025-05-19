@@ -194,7 +194,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Link href={route('login')} className="group w-8 cursor-pointer">
+                            <Link href={route('login', { locale: locale })} className="group w-8 cursor-pointer">
                                 <LogIn className="!size-5 opacity-80 group-hover:opacity-100" />
                             </Link>
                         )}

@@ -40,7 +40,7 @@ class TagController extends Controller
         return to_route('admin.tags.index')->with('success', 'Tag created successfully');
     }
 
-    public function edit(string $locale, Tag $tag): Response
+    public function edit(Tag $tag): Response
     {
         return Inertia::render('Admin/Tags/Edit', [
             'tag' => $tag,

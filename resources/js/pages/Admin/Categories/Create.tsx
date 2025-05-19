@@ -8,14 +8,14 @@ import React from 'react';
 import { useTranslations } from '@/hooks/useTranslation';
 
 export default function Create() {
-    const { locale } = useTranslations();
+    const { __, locale } = useTranslations();
     const { data, setData, post, processing, errors } = useForm({
         name: '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('admin.categories.store', { locale }));
+        post(route('admin.categories.store'));
     };
 
     return (
@@ -27,9 +27,9 @@ export default function Create() {
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.categories.index', { locale })} prefetch>
+                                <Link href={route('admin.categories.index')} prefetch>
                                     <Button variant="outline" size="sm" className="cursor-pointer">
-                                        ← Back to all Categories
+                                        ← {__('Back to all Categories')}
                                     </Button>
                                 </Link>
                             </div>

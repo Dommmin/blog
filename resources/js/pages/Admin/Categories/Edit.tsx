@@ -35,7 +35,7 @@ export default function Edit({ category }: { category: Category }) {
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.categories.index', { locale: locale })} prefetch>
+                                <Link href={route('admin.categories.index')} prefetch>
                                     <Button variant="outline" size="sm" className="cursor-pointer">
                                         ← {__('Back to all Categories')}
                                     </Button>

@@ -57,7 +57,7 @@ export default function Index({ categories, flash }: PostsPageProps) {
                             <div className="mb-6 flex items-center justify-between">
                                 <h3 className="text-lg font-medium">Blog categories</h3>
                                 <Button asChild>
-                                    <Link href={route('admin.categories.create', { locale: locale })} className="cursor-pointer" prefetch>
+                                    <Link href={route('admin.categories.create')} className="cursor-pointer" prefetch>
                                         <PlusIcon className="mr-2 h-4 w-4" />
                                         {__('Create Category')}
                                     </Link>
@@ -82,7 +82,7 @@ export default function Index({ categories, flash }: PostsPageProps) {
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('admin.categories.edit', { category: category.id, locale: locale })} prefetch="hover">
+                                                            <Link href={route('admin.categories.edit', { category: category.id })} prefetch="hover">
                                                                 <PencilIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>

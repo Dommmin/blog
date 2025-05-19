@@ -14,19 +14,19 @@ export function AppSidebar() {
     const mainNavItems: NavItem[] = [
         {
             title: __('Categories'),
-            href: route('admin.categories.index', { locale }),
+            href: route('admin.categories.index'),
             current: route().current('admin.categories.*'),
             icon: LayoutGrid,
         },
         {
             title: __('Posts'),
-            href: route('admin.posts.index', { locale }),
+            href: route('admin.posts.index'),
             current: route().current('admin.posts.*'),
             icon: NotebookPen,
         },
         {
             title: __('Tags'),
-            href: route('admin.tags.index', { locale }),
+            href: route('admin.tags.index'),
             current: route().current('admin.tags.*'),
             icon: Tag,
         },

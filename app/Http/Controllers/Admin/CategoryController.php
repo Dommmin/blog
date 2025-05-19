@@ -13,11 +13,11 @@ use Inertia\Response;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request, string $locale): Response
+    public function index(Request $request): Response
     {
         $page = $request->get('page', 1);
 
-        $categories = Cache::tags('categories')->rememberForever('admin.categories.index.'.$locale.'.'.$page, function () {
+        $categories = Cache::tags('categories')->rememberForever('admin.categories.index.'.$page, function () {
             return Category::query()
                 ->latest('created_at')
                 ->paginate(10);
@@ -28,36 +28,36 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function create(string $locale): Response
+    public function create(): Response
     {
         return Inertia::render('Admin/Categories/Create');
     }
 
-    public function store(StoreCategoryRequest $request, string $locale): RedirectResponse
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
         Category::create($request->validated());
 
-        return to_route('admin.categories.index', ['locale' => $locale])->with('success', __('Category created successfully'));
+        return to_route('admin.categories.index')->with('success', __('Category created successfully'));
     }
 
-    public function edit(string $locale, Category $category): Response
+    public function edit(Category $category): Response
     {
         return Inertia::render('Admin/Categories/Edit', [
             'category' => $category,
         ]);
     }
 
-    public function update(StoreCategoryRequest $request, string $locale, Category $category): RedirectResponse
+    public function update(StoreCategoryRequest $request, Category $category): RedirectResponse
     {
         $category->update($request->validated());
 
-        return to_route('admin.categories.index', ['locale' => $locale])->with('success', __('Category updated successfully'));
+        return to_route('admin.categories.index')->with('success', __('Category updated successfully'));
     }
 
-    public function destroy(string $locale, Category $category): RedirectResponse
+    public function destroy(Category $category): RedirectResponse
     {
         $category->delete();
 
-        return to_route('admin.categories.index', ['locale' => $locale])->with('success', __('Category deleted successfully'));
+        return to_route('admin.categories.index')->with('success', __('Category deleted successfully'));
     }
 }

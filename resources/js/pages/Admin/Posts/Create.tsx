@@ -27,7 +27,7 @@ type FormData = {
 
 export default function Create({ categories, tags }: { categories: Category[]; tags: DataItem[] }) {
     const { appearance } = useAppearance();
-    const { locale } = useTranslations();
+    const { __, locale } = useTranslations();
 
     const { data, setData, post, processing, errors } = useForm<FormData>({
         category_id: '',
@@ -51,9 +51,9 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.posts.index', { locale })} prefetch>
+                                <Link href={route('admin.posts.index')} prefetch>
                                     <Button variant="outline" size="sm">
-                                        ← Back to all posts
+                                        ← {__('Back to all posts')}
                                     </Button>
                                 </Link>
                             </div>

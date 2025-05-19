@@ -32,7 +32,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     </DropdownMenuItem>
                 ) : user.admin ? (
                     <DropdownMenuItem asChild>
-                        <Link className="block w-full" href={route('admin.home', { locale: locale })} as="button" prefetch onClick={cleanup}>
+                        <Link className="block w-full" href={route('admin.home')} as="button" prefetch onClick={cleanup}>
                             <PanelBottom className="mr-2" />
                             {__('Panel')}
                         </Link>
