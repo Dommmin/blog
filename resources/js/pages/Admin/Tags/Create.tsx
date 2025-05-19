@@ -16,7 +16,7 @@ export default function Create() {
         name: '',
     });
 
-    const { locale } = useTranslations();
+    const { locale, __ } = useTranslations();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,7 +25,7 @@ export default function Create() {
 
     return (
         <AdminLayout>
-            <Head title="Create Tag" />
+            <Head title={__('Create Tag')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -34,23 +34,23 @@ export default function Create() {
                             <div className="mb-4">
                                 <Link href={route('admin.tags.index', { locale })} prefetch>
                                     <Button variant="outline" size="sm">
-                                        ← Back to all Tags
+                                        ← {__('Back to all Tags')}
                                     </Button>
                                 </Link>
                             </div>
-                            <CardTitle>Create Tag</CardTitle>
+                            <CardTitle>{__('Create Tag')}</CardTitle>
                         </CardHeader>
 
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="title">Title</Label>
+                                    <Label htmlFor="title">{__('Title')}</Label>
                                     <Input id="title" type="text" value={data.name} onChange={(e) => setData('name', e.target.value)} />
                                     {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                                 </div>
 
                                 <Button type="submit" disabled={processing} className="w-full">
-                                    Save Tag
+                                    {__('Save Tag')}
                                 </Button>
                             </form>
                         </CardContent>

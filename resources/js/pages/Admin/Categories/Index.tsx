@@ -48,14 +48,14 @@ export default function Index({ categories, flash }: PostsPageProps) {
 
     return (
         <AdminLayout>
-            <Head title="Manage categories" />
+            <Head title={__('Manage Categories')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="bg-background dark:border-border overflow-hidden rounded-lg shadow-sm dark:border">
                         <div className="dark:border-border border-b p-6">
                             <div className="mb-6 flex items-center justify-between">
-                                <h3 className="text-lg font-medium">Blog categories</h3>
+                                <h3 className="text-lg font-medium">{__('Blog Categories')}</h3>
                                 <Button asChild>
                                     <Link href={route('admin.categories.create')} className="cursor-pointer" prefetch>
                                         <PlusIcon className="mr-2 h-4 w-4" />
@@ -67,9 +67,9 @@ export default function Index({ categories, flash }: PostsPageProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Title</TableHead>
-                                            <TableHead>Created</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead>{__('Title')}</TableHead>
+                                            <TableHead>{__('Created')}</TableHead>
+                                            <TableHead className="text-right">{__('Actions')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -94,15 +94,15 @@ export default function Index({ categories, flash }: PostsPageProps) {
                                                             </AlertDialogTrigger>
                                                             <AlertDialogContent>
                                                                 <AlertDialogHeader>
-                                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                    <AlertDialogTitle>{__('Are you sure?')}</AlertDialogTitle>
                                                                     <AlertDialogDescription>
-                                                                        This action cannot be undone. This will permanently delete this post.
+                                                                        {__('This action cannot be undone. This will permanently delete this category.')}
                                                                     </AlertDialogDescription>
                                                                 </AlertDialogHeader>
                                                                 <AlertDialogFooter>
-                                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                    <AlertDialogCancel>{__('Cancel')}</AlertDialogCancel>
                                                                     <AlertDialogAction onClick={() => deleteCategory(category.id)}>
-                                                                        Delete
+                                                                        {__('Delete')}
                                                                     </AlertDialogAction>
                                                                 </AlertDialogFooter>
                                                             </AlertDialogContent>

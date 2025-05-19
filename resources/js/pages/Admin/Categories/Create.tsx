@@ -20,7 +20,7 @@ export default function Create() {
 
     return (
         <AdminLayout>
-            <Head title="Create Category" />
+            <Head title={__('Create Category')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -33,19 +33,19 @@ export default function Create() {
                                     </Button>
                                 </Link>
                             </div>
-                            <CardTitle>Create Category</CardTitle>
+                            <CardTitle>{__('Create Category')}</CardTitle>
                         </CardHeader>
 
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="title">Title</Label>
+                                    <Label htmlFor="title">{__('Title')}</Label>
                                     <Input id="title" type="text" value={data.name} onChange={(e) => setData('name', e.target.value)} />
                                     {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                                 </div>
 
                                 <Button type="submit" disabled={processing} className="w-full">
-                                    Save Category
+                                    {__('Save Category')}
                                 </Button>
                             </form>
                         </CardContent>

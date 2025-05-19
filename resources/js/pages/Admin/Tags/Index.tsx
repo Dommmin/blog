@@ -35,7 +35,7 @@ interface PostsPageProps extends PageProps {
 }
 
 export default function Index({ tags, flash }: PostsPageProps) {
-    const { locale } = useTranslations();
+    const { __, locale } = useTranslations();
 
     useEffect(() => {
         if (flash.success) {
@@ -49,18 +49,18 @@ export default function Index({ tags, flash }: PostsPageProps) {
 
     return (
         <AdminLayout>
-            <Head title="Manage Tags" />
+            <Head title={__('Manage Tags')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="bg-background dark:border-border overflow-hidden rounded-lg shadow-sm dark:border">
                         <div className="dark:border-border border-b p-6">
                             <div className="mb-6 flex items-center justify-between">
-                                <h3 className="text-lg font-medium">Blog Tags</h3>
+                                <h3 className="text-lg font-medium">{__('Blog Tags')}</h3>
                                 <Button asChild>
                                     <Link href={route('admin.tags.create', { locale })} className="cursor-pointer" prefetch>
                                         <PlusIcon className="mr-2 h-4 w-4" />
-                                        Create Tag
+                                        {__('Create Tag')}
                                     </Link>
                                 </Button>
                             </div>
@@ -68,9 +68,9 @@ export default function Index({ tags, flash }: PostsPageProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Title</TableHead>
-                                            <TableHead>Created</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
+                                            <TableHead>{__('Title')}</TableHead>
+                                            <TableHead>{__('Created')}</TableHead>
+                                            <TableHead className="text-right">{__('Actions')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -95,14 +95,14 @@ export default function Index({ tags, flash }: PostsPageProps) {
                                                             </AlertDialogTrigger>
                                                             <AlertDialogContent>
                                                                 <AlertDialogHeader>
-                                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                    <AlertDialogTitle>{__('Are you sure?')}</AlertDialogTitle>
                                                                     <AlertDialogDescription>
-                                                                        This action cannot be undone. This will permanently delete this post.
+                                                                        {__('This action cannot be undone. This will permanently delete this tag.')}
                                                                     </AlertDialogDescription>
                                                                 </AlertDialogHeader>
                                                                 <AlertDialogFooter>
-                                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                                    <AlertDialogAction onClick={() => deleteTag(tag.id)}>Delete</AlertDialogAction>
+                                                                    <AlertDialogCancel>{__('Cancel')}</AlertDialogCancel>
+                                                                    <AlertDialogAction onClick={() => deleteTag(tag.id)}>{__('Delete')}</AlertDialogAction>
                                                                 </AlertDialogFooter>
                                                             </AlertDialogContent>
                                                         </AlertDialog>
@@ -114,8 +114,8 @@ export default function Index({ tags, flash }: PostsPageProps) {
                                 </Table>
                             ) : (
                                 <div className="p-6 text-center">
-                                    <h3 className="text-lg font-medium">No tags found</h3>
-                                    <p className="text-muted-foreground mt-2 text-sm">You have not created any tags yet.</p>
+                                    <h3 className="text-lg font-medium">{__('No tags found')}</h3>
+                                    <p className="text-muted-foreground mt-2 text-sm">{__('You have not created any tags yet.')}</p>
                                 </div>
                             )}
 
@@ -125,21 +125,21 @@ export default function Index({ tags, flash }: PostsPageProps) {
                                     <Pagination className="justify-between">
                                         {tags.prev_page_url ? (
                                             <Button variant="outline" asChild>
-                                                <Link href={tags.prev_page_url}>Previous</Link>
+                                                <Link href={tags.prev_page_url}>{__('Previous')}</Link>
                                             </Button>
                                         ) : (
                                             <Button variant="outline" disabled>
-                                                Previous
+                                                {__('Previous')}
                                             </Button>
                                         )}
 
                                         {tags.next_page_url ? (
                                             <Button variant="outline" asChild>
-                                                <Link href={tags.next_page_url}>Next</Link>
+                                                <Link href={tags.next_page_url}>{__('Next')}</Link>
                                             </Button>
                                         ) : (
                                             <Button variant="outline" disabled>
-                                                Next
+                                                {__('Next')}
                                             </Button>
                                         )}
                                     </Pagination>

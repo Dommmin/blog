@@ -6,7 +6,7 @@ import { formatDate } from '@/helpers';
 import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type CommentData, type Post } from '@/types/blog';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import 'highlight.js/styles/github-dark.css';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
@@ -16,6 +16,19 @@ import remarkGfm from 'remark-gfm';
 
 export default function Show({ post, comments }: { post: Post; comments: CommentData }) {
     const { __, locale } = useTranslations();
+
+    const { data, setData, post: submitForm, processing, errors } = useForm({
+        content: '',
+        post_id: post.id,
+    });
+
+    async function handleCommentSubmit(event: React.FormEvent) {
+        event.preventDefault();
+        submitForm(route('blog.comments.store', { post: post.id, locale: locale }), {
+            onSuccess: () => setData('content', ''),
+        });
+    }
+
     return (
         <AppLayout>
             <Head title={post.title}>
@@ -62,15 +75,27 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                     </Card>
                     <Card className="mt-8">
                         <CardHeader>
-                            <CardTitle className="text-2xl">Comments ({post.comments_count})</CardTitle>
+                            <CardTitle className="text-2xl">{__('Comments')} ({post.comments_count})</CardTitle>
                             {comments.data.map((comment) => (
-                                <CommentCard comment={comment} />
+                                <CommentCard key={comment.id} comment={comment} />
                             ))}
                             <div className="text-muted-foreground flex items-center text-sm">
                                 <span>Leave a comment</span>
                             </div>
                         </CardHeader>
                         <CardContent>
+                            <form onSubmit={handleCommentSubmit} className="mt-4">
+                                <textarea
+                                    className="w-full p-2 border rounded"
+                                    placeholder="Write your comment here..."
+                                    value={data.content}
+                                    onChange={(e) => setData('content', e.target.value)}
+                                    required
+                                />
+                                <Button type="submit" variant="outline" className="mt-2" disabled={processing}>
+                                    {__('Submit Comment')}
+                                </Button>
+                            </form>
                             {(comments.prev_page_url || comments.next_page_url) && (
                                 <div className="mt-12">
                                     <Pagination className="justify-between">

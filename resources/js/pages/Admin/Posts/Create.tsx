@@ -44,7 +44,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
 
     return (
         <AdminLayout>
-            <Head title="Create Post" />
+            <Head title={__('Create Post')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -57,15 +57,15 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                     </Button>
                                 </Link>
                             </div>
-                            <CardTitle>Create Post</CardTitle>
+                            <CardTitle>{__('Create Post')}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="category_id">Category</Label>
+                                    <Label htmlFor="category_id">{__('Category')}</Label>
                                     <Select value={data.category_id} onValueChange={(value) => setData('category_id', value)}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a category" />
+                                            <SelectValue placeholder={__('Select a category')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {categories.map((category) => (
@@ -79,13 +79,13 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="title">Title</Label>
+                                    <Label htmlFor="title">{__('Title')}</Label>
                                     <Input id="title" type="text" value={data.title} onChange={(e) => setData('title', e.target.value)} />
                                     {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="content">Content</Label>
+                                    <Label htmlFor="content">{__('Content')}</Label>
                                     <div data-color-mode={appearance} className="dark:data-[color-mode=light]:bg-card">
                                         <MDEditor value={data.content} onChange={(value) => setData('content', value || '')} height={400} />
                                     </div>
@@ -93,7 +93,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label>Tags</Label>
+                                    <Label>{__('Tags')}</Label>
                                     <ComboBox
                                         data={tags}
                                         selectedValues={data.tags}
@@ -102,7 +102,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                     />
                                     {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
                                 </div>
-                                <Label>Publish at</Label>
+                                <Label>{__('Publish at')}</Label>
                                 <div className="flex items-center space-x-2">
                                     <Popover>
                                         <PopoverTrigger asChild>
@@ -114,7 +114,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                                 )}
                                             >
                                                 <CalendarIcon />
-                                                {data.published_at ? format(data.published_at, 'PPP') : <span>Pick a date</span>}
+                                                {data.published_at ? format(data.published_at, 'PPP') : <span>{__('Pick a date')}</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent>
@@ -128,7 +128,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                 </div>
 
                                 <Button type="submit" disabled={processing} className="w-full">
-                                    Save Post
+                                    {__('Save Post')}
                                 </Button>
                             </form>
                         </CardContent>

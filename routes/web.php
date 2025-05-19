@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,7 +13,7 @@ use Inertia\Inertia;
 Route::get('/up', fn () => 'OK');
 Route::get('/{any}', function ($any = '') {
     return redirect(app()->getLocale() . '/' . $any);
-})->where('any', '^(?!admin|(' . implode('|', available_locales()) . ')).*$');
+})->where('any', '^(?!admin|login|register|password|(' . implode('|', available_locales()) . ')).*$');
 
 Route::fallback(function () {
     return Inertia::render('Errors/404');
@@ -28,9 +29,13 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
     Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
     Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
 
+    Route::post('/blog/{post}/comments', [CommentController::class, 'store'])
+        ->middleware('auth')
+        ->name('blog.comments.store');
+
     require __DIR__.'/settings.php';
-    require __DIR__.'/auth.php';
 });
 
+require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
 
