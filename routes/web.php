@@ -13,7 +13,7 @@ use Inertia\Inertia;
 Route::get('/up', fn () => 'OK');
 Route::get('/{any}', function ($any = '') {
     return redirect(app()->getLocale().'/'.$any);
-})->where('any', '^(?!admin|login|register|password|('.implode('|', available_locales()).')).*$');
+})->where('any', '^(?!admin|login|register|forgot-password|('.implode('|', available_locales()).')).*$');
 
 Route::fallback(function () {
     return Inertia::render('Errors/404');
