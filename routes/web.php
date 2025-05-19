@@ -2,18 +2,18 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Health check endpoint
 Route::get('/up', fn () => 'OK');
 Route::get('/{any}', function ($any = '') {
-    return redirect(app()->getLocale() . '/' . $any);
-})->where('any', '^(?!admin|login|register|password|(' . implode('|', available_locales()) . ')).*$');
+    return redirect(app()->getLocale().'/'.$any);
+})->where('any', '^(?!admin|login|register|password|('.implode('|', available_locales()).')).*$');
 
 Route::fallback(function () {
     return Inertia::render('Errors/404');
@@ -38,4 +38,3 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
-

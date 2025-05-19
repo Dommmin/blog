@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { router, usePage } from '@inertiajs/react';
-import { CheckIcon } from 'lucide-react';
 import axios from 'axios';
+import { CheckIcon } from 'lucide-react';
 
 type Language = {
     code: string;
@@ -39,8 +39,8 @@ export function LanguageSwitcher() {
             })
             .then(() => {
                 router.visit('/' + langCode + window.location.pathname.substring(3) + window.location.search);
-            })
-    }
+            });
+    };
 
     return (
         <DropdownMenu>

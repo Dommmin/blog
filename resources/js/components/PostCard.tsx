@@ -32,7 +32,7 @@ export default function PostCard({ post }: { post: Post }) {
                         <BookOpenIcon className="h-3 w-3" />
                         {post.reading_time} {__('min read')}
                     </span>
-                    <Link href={route('blog.show', { post: post.slug, locale})} className="flex items-center" prefetch>
+                    <Link href={route('blog.show', { post: post.slug, locale })} className="flex items-center" prefetch>
                         <Button variant="ghost" size="sm" className="gap-1">
                             {__('Read more')}
                             <ArrowRightIcon className="h-3 w-3" />

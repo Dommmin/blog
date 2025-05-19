@@ -76,9 +76,7 @@ export default function Index({ posts }: BlogIndexProps) {
                                 onKeyDown={(e) => {
                                     if (e.key === 'ArrowDown') {
                                         e.preventDefault();
-                                        setHighlightedIndex((prev) =>
-                                            Math.min(prev + 1, suggestions.length - 1)
-                                        );
+                                        setHighlightedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
                                     } else if (e.key === 'ArrowUp') {
                                         e.preventDefault();
                                         setHighlightedIndex((prev) => Math.max(prev - 1, 0));
@@ -101,9 +99,7 @@ export default function Index({ posts }: BlogIndexProps) {
                                         <li
                                             key={s.id}
                                             className={`cursor-pointer px-4 py-2 ${
-                                                i === highlightedIndex
-                                                    ? 'bg-muted font-medium'
-                                                    : 'hover:bg-muted'
+                                                i === highlightedIndex ? 'bg-muted font-medium' : 'hover:bg-muted'
                                             }`}
                                             onMouseDown={() => {
                                                 setSearch(s.title);
@@ -141,9 +137,7 @@ export default function Index({ posts }: BlogIndexProps) {
                         </div>
                     ) : (
                         <div className="flex items-center justify-center">
-                            <h1 className="text-muted-foreground text-3xl tracking-widest">
-                                {__('No posts found')}
-                            </h1>
+                            <h1 className="text-muted-foreground text-3xl tracking-widest">{__('No posts found')}</h1>
                         </div>
                     )}
 

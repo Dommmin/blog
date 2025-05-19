@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/ui/pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useTranslations } from '@/hooks/useTranslation';
 import AdminLayout from '@/layouts/admin-layout';
 import { PageProps } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -20,7 +21,6 @@ import { format } from 'date-fns';
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { useTranslations } from '@/hooks/useTranslation';
 
 interface Post {
     id: number;

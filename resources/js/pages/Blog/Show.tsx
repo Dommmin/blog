@@ -17,7 +17,13 @@ import remarkGfm from 'remark-gfm';
 export default function Show({ post, comments }: { post: Post; comments: CommentData }) {
     const { __, locale } = useTranslations();
 
-    const { data, setData, post: submitForm, processing, errors } = useForm({
+    const {
+        data,
+        setData,
+        post: submitForm,
+        processing,
+        errors,
+    } = useForm({
         content: '',
         post_id: post.id,
     });
@@ -75,7 +81,9 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                     </Card>
                     <Card className="mt-8">
                         <CardHeader>
-                            <CardTitle className="text-2xl">{__('Comments')} ({post.comments_count})</CardTitle>
+                            <CardTitle className="text-2xl">
+                                {__('Comments')} ({post.comments_count})
+                            </CardTitle>
                             {comments.data.map((comment) => (
                                 <CommentCard key={comment.id} comment={comment} />
                             ))}
@@ -86,7 +94,7 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                         <CardContent>
                             <form onSubmit={handleCommentSubmit} className="mt-4">
                                 <textarea
-                                    className="w-full p-2 border rounded"
+                                    className="w-full rounded border p-2"
                                     placeholder="Write your comment here..."
                                     value={data.content}
                                     onChange={(e) => setData('content', e.target.value)}

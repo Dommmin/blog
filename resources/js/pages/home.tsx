@@ -32,13 +32,13 @@ export default function Home({ posts }: { posts: Post[] }) {
                     </div>
                     <div className="mb-12 flex justify-center gap-4">
                         <Button size="lg" asChild>
-                            <Link href={route('blog.index', { locale: page.props.locale})} prefetch>
+                            <Link href={route('blog.index', { locale: page.props.locale })} prefetch>
                                 {__('Read the Blog')}
                                 <ArrowRightIcon className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
-                            <Link href={route('about', { locale: page.props.locale})} prefetch>
+                            <Link href={route('about', { locale: page.props.locale })} prefetch>
                                 {__('About me')}
                             </Link>
                         </Button>
@@ -76,7 +76,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                         <div className="mb-8 flex items-center justify-between">
                             <h2 className="text-2xl font-bold">{__('Featured Articles')}</h2>
                             <Button variant="ghost" size="sm" asChild className="gap-1">
-                                <Link href={route('blog.index', { locale: page.props.locale})} prefetch>
+                                <Link href={route('blog.index', { locale: page.props.locale })} prefetch>
                                     {__('View all')}
                                     <ArrowRightIcon className="h-4 w-4" />
                                 </Link>

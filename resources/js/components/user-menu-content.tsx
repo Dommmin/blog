@@ -1,10 +1,10 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { useTranslations } from '@/hooks/useTranslation';
 import { type User } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutDashboard, LogOut, PanelBottom, Settings } from 'lucide-react';
-import { useTranslations } from '@/hooks/useTranslation';
 
 interface UserMenuContentProps {
     user: User;

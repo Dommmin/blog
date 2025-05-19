@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/ui/pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatDate } from '@/helpers';
+import { useTranslations } from '@/hooks/useTranslation';
 import AdminLayout from '@/layouts/admin-layout';
 import { PageProps } from '@/types';
 import { type Category } from '@/types/blog';
@@ -21,7 +22,6 @@ import { Head, Link, router } from '@inertiajs/react';
 import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { useTranslations } from '@/hooks/useTranslation';
 
 interface PostsPageProps extends PageProps {
     posts: {
@@ -96,7 +96,9 @@ export default function Index({ categories, flash }: PostsPageProps) {
                                                                 <AlertDialogHeader>
                                                                     <AlertDialogTitle>{__('Are you sure?')}</AlertDialogTitle>
                                                                     <AlertDialogDescription>
-                                                                        {__('This action cannot be undone. This will permanently delete this category.')}
+                                                                        {__(
+                                                                            'This action cannot be undone. This will permanently delete this category.',
+                                                                        )}
                                                                     </AlertDialogDescription>
                                                                 </AlertDialogHeader>
                                                                 <AlertDialogFooter>

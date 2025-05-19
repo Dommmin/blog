@@ -1,11 +1,11 @@
 import { GitHubIcon, LinkedInIcon } from '@/components/social-icons';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
-import {useTranslations} from "@/hooks/useTranslation";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

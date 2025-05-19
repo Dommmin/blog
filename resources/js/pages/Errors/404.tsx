@@ -10,7 +10,7 @@ export default function Error404() {
                 <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-gray-100">Page Not Found</h1>
                 <p className="mb-8 text-xl text-gray-600 dark:text-gray-400">Oops! The page you're looking for doesn't exist or has been moved.</p>
                 <Button asChild>
-                    <Link href={route('home', { locale: page.props.locale})} prefetch>
+                    <Link href={route('home', { locale: page.props.locale })} prefetch>
                         Back to Homepage
                     </Link>
                 </Button>
