@@ -12,9 +12,10 @@ class CommentRepository implements CommentRepositoryInterface
 {
     public function getPaginatedForPost(Post $post): LengthAwarePaginator
     {
-        return Cache::tags('comments')->rememberForever('comments.'.request()->get('page', 1), function () {
+        return Cache::tags('comments')->rememberForever('comments.'. $post->slug . request()->get('page', 1), function () use ($post) {
             return Comment::query()
                 ->with(['author'])
+                ->where('post_id', $post->id)
                 ->latest('created_at')
                 ->paginate(10);
         });

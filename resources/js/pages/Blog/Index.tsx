@@ -28,8 +28,6 @@ export default function Index({ posts }: BlogIndexProps) {
     const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    console.log(suggestions);
-
     useEffect(() => {
         const timeout = setTimeout(() => {
             if (search.length >= 2) {

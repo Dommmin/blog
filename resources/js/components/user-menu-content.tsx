@@ -4,12 +4,14 @@ import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { type User } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutDashboard, LogOut, PanelBottom, Settings } from 'lucide-react';
+import { useTranslations } from '@/hooks/useTranslation';
 
 interface UserMenuContentProps {
     user: User;
 }
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
+    const { __, locale } = useTranslations();
     const cleanup = useMobileNavigation();
 
     return (
@@ -23,31 +25,31 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuGroup>
                 {route().current('admin.*') ? (
                     <DropdownMenuItem asChild>
-                        <Link className="block w-full" href={route('home')} as="button" prefetch onClick={cleanup}>
+                        <Link className="block w-full" href={route('home', { locale: locale })} as="button" prefetch onClick={cleanup}>
                             <LayoutDashboard className="mr-2" />
-                            Home
+                            {__('Home')}
                         </Link>
                     </DropdownMenuItem>
                 ) : user.admin ? (
                     <DropdownMenuItem asChild>
-                        <Link className="block w-full" href={route('admin.home')} as="button" prefetch onClick={cleanup}>
+                        <Link className="block w-full" href={route('admin.home', { locale: locale })} as="button" prefetch onClick={cleanup}>
                             <PanelBottom className="mr-2" />
-                            Panel
+                            {__('Panel')}
                         </Link>
                     </DropdownMenuItem>
                 ) : null}
                 <DropdownMenuItem asChild>
-                    <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
+                    <Link className="block w-full" href={route('profile.edit', { locale: locale })} as="button" prefetch onClick={cleanup}>
                         <Settings className="mr-2" />
-                        Settings
+                        {__(`Settings`)}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-                <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={cleanup}>
+                <Link className="block w-full" method="post" href={route('logout', { locale: locale })} as="button" onClick={cleanup}>
                     <LogOut className="mr-2" />
-                    Log out
+                    {__('Log out')}
                 </Link>
             </DropdownMenuItem>
         </>

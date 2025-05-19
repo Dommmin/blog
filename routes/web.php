@@ -8,23 +8,29 @@ use App\Http\Controllers\NewsletterController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::post('/locale', [LocaleController::class, 'change'])->name('locale.change');
-Route::get('/', HomeController::class)->name('home');
-Route::get('/about', AboutController::class)->name('about');
-
 // Health check endpoint
 Route::get('/up', fn () => 'OK');
-
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
-
-Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
-Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
+Route::get('/', function () {
+    return redirect(app()->getLocale());
+});
 
 Route::fallback(function () {
     return Inertia::render('Errors/404');
 });
 
+Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'web'], function () {
+    Route::get('/', HomeController::class)->name('home');
+    Route::post('/locale', [LocaleController::class, 'change'])->name('locale.change');
+    Route::get('/about', AboutController::class)->name('about');
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{post}', [BlogController::class, 'show'])->name('blog.show');
+
+    Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+    Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
+
+    require __DIR__.'/settings.php';
+    require __DIR__.'/auth.php';
+});
+
 require __DIR__.'/admin.php';
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+

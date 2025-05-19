@@ -23,7 +23,7 @@ class BlogController extends Controller
         ]);
     }
 
-    public function show(Request $request, Post $post)
+    public function show(Request $request, $locale, Post $post)
     {
         if (! Gate::allows('view', $post)) {
             abort(404);

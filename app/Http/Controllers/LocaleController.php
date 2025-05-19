@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class LocaleController extends Controller
 {
-    public function change(Request $request): RedirectResponse
+    public function change(Request $request)
     {
         $locale = $request->get('locale', 'en');
 
@@ -16,6 +15,6 @@ class LocaleController extends Controller
             Session::put('locale', $locale);
         }
 
-        return redirect()->back();
+        return response()->json(['locale' => $locale]);
     }
 }

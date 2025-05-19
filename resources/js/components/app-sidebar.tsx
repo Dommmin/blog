@@ -6,33 +6,36 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LayoutGrid, NotebookPen, Tag } from 'lucide-react';
 import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Categories',
-        href: '/admin/categories',
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Posts',
-        href: '/admin/posts',
-        icon: NotebookPen,
-    },
-    {
-        title: 'Tags',
-        href: '/admin/tags',
-        icon: Tag,
-    },
-];
+import { useTranslations } from '@/hooks/useTranslation';
 
 export function AppSidebar() {
+    const { __, locale} = useTranslations();
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: __('Categories'),
+            href: route('admin.categories.index', locale),
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Posts',
+            href: '/admin/posts',
+            icon: NotebookPen,
+        },
+        {
+            title: 'Tags',
+            href: '/admin/tags',
+            icon: Tag,
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={route('admin.home')} prefetch>
+                            <Link href={route('admin.home', { locale: locale })} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

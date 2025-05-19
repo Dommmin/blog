@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { router, usePage } from '@inertiajs/react';
 import { CheckIcon } from 'lucide-react';
+import axios from 'axios';
 
 type Language = {
     code: string;
@@ -32,17 +33,14 @@ export function LanguageSwitcher() {
     const currentLang = props.locale;
 
     const switchLanguage = (langCode: string) => {
-        router.post(
-            route('locale.change'),
-            {
+        axios
+            .post(route('locale.change', { locale: langCode }), {
                 locale: langCode,
-            },
-            {
-                preserveState: true,
-                preserveScroll: true,
-            },
-        );
-    };
+            })
+            .then(() => {
+                router.visit('/' + langCode + window.location.pathname.substring(3) + window.location.search);
+            })
+    }
 
     return (
         <DropdownMenu>

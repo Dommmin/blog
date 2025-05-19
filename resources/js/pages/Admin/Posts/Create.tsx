@@ -30,7 +30,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
         category_id: '',
         title: '',
         content: '',
-        published_at: null,
+        published_at: new Date(),
         tags: [],
     });
 

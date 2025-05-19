@@ -15,7 +15,7 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
 export default function Show({ post, comments }: { post: Post; comments: CommentData }) {
-    const { __ } = useTranslations();
+    const { __, locale } = useTranslations();
     return (
         <AppLayout>
             <Head title={post.title}>
@@ -27,7 +27,7 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('blog.index')} prefetch>
+                                <Link href={route('blog.index', { locale: locale })} prefetch>
                                     <Button variant="outline" size="sm">
                                         ← {__('Back to all posts')}
                                     </Button>

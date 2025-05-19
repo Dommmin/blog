@@ -40,7 +40,7 @@ class CategoryController extends Controller
         return to_route('admin.categories.index')->with('success', 'Category created successfully');
     }
 
-    public function edit(Category $category): Response
+    public function edit(string $locale, Category $category): Response
     {
         return Inertia::render('Admin/Categories/Edit', [
             'category' => $category,

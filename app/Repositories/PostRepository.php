@@ -88,6 +88,7 @@ class PostRepository implements PostRepositoryInterface
         return Cache::tags('posts')->rememberForever('featured.articles', function () {
             return Post::latest('published_at')
                 ->with(['category', 'tags'])
+                ->withCount('comments')
                 ->published()
                 ->take(4)
                 ->get();

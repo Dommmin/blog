@@ -5,13 +5,14 @@ import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowRightIcon, CodeIcon, GitBranchIcon, ServerIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [];
 
 export default function Home({ posts }: { posts: Post[] }) {
     const { __ } = useTranslations();
+    const page = usePage();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -31,13 +32,13 @@ export default function Home({ posts }: { posts: Post[] }) {
                     </div>
                     <div className="mb-12 flex justify-center gap-4">
                         <Button size="lg" asChild>
-                            <Link href={route('blog.index')} prefetch>
+                            <Link href={route('blog.index', { locale: page.props.locale})} prefetch>
                                 {__('Read the Blog')}
                                 <ArrowRightIcon className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
-                            <Link href={route('about')} prefetch>
+                            <Link href={route('about', { locale: page.props.locale})} prefetch>
                                 {__('About me')}
                             </Link>
                         </Button>
@@ -75,8 +76,8 @@ export default function Home({ posts }: { posts: Post[] }) {
                         <div className="mb-8 flex items-center justify-between">
                             <h2 className="text-2xl font-bold">{__('Featured Articles')}</h2>
                             <Button variant="ghost" size="sm" asChild className="gap-1">
-                                <Link href={route('blog.index')} prefetch>
-                                    View all
+                                <Link href={route('blog.index', { locale: page.props.locale})} prefetch>
+                                    {__('View all')}
                                     <ArrowRightIcon className="h-4 w-4" />
                                 </Link>
                             </Button>
@@ -91,27 +92,26 @@ export default function Home({ posts }: { posts: Post[] }) {
                 </section>
             )}
 
-            {/* Newsletter Section (Optional) */}
             <section className="px-4 py-16">
                 <div className="mx-auto max-w-5xl">
                     <Card className="overflow-hidden">
                         <div className="relative p-8 md:p-12">
                             <div className="max-w-md">
-                                <h2 className="mb-4 text-2xl font-bold">Stay Updated</h2>
+                                <h2 className="mb-4 text-2xl font-bold">{__('Stay Updated')}</h2>
                                 <p className="text-muted-foreground mb-6">
-                                    Get notified about new articles and resources on PHP development and DevOps practices.
+                                    {__('Get notified about new articles and resources on PHP development and DevOps practices')}.
                                 </p>
                                 <div className="flex flex-col gap-3 sm:flex-row">
                                     <div className="flex-1">
                                         <input
                                             type="email"
                                             className="focus:ring-primary w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
-                                            placeholder="Your email address"
+                                            placeholder={__('Enter your email')}
                                         />
                                     </div>
-                                    <Button>Subscribe</Button>
+                                    <Button>{__('Subscribe')}</Button>
                                 </div>
-                                <p className="text-muted-foreground mt-3 text-xs">I respect your privacy. Unsubscribe at any time.</p>
+                                <p className="text-muted-foreground mt-3 text-xs">{__('I respect your privacy. Unsubscribe at any time')}.</p>
                             </div>
                         </div>
                     </Card>

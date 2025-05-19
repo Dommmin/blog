@@ -5,6 +5,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
+import {useTranslations} from "@/hooks/useTranslation";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -14,6 +15,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function About() {
+    const { __ } = useTranslations();
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="About Me" />
@@ -70,7 +73,7 @@ export default function About() {
                                 <Button asChild variant="outline" className="gap-2">
                                     <a href="mailto:domijas96@gmail.com">
                                         <MailIcon className="h-4 w-4" />
-                                        Contact Me
+                                        {__('Contact Me')}
                                     </a>
                                 </Button>
                             </div>
@@ -80,7 +83,7 @@ export default function About() {
 
                 {/* Technical Skills section */}
                 <section className="mb-16">
-                    <h2 className="mb-6 text-2xl font-bold">Technical Skills</h2>
+                    <h2 className="mb-6 text-2xl font-bold">{__('Technical Skills')}</h2>
                     <div className="grid gap-6 md:grid-cols-3">
                         <Card className="p-6">
                             <div className="bg-primary/10 mb-4 flex h-12 w-12 items-center justify-center rounded-full">
@@ -126,7 +129,7 @@ export default function About() {
 
                 {/* Experience Timeline */}
                 <section>
-                    <h2 className="mb-6 text-2xl font-bold">Professional Journey</h2>
+                    <h2 className="mb-6 text-2xl font-bold">{__('Professional Journey')}</h2>
                     <div className="border-primary/20 relative border-l pl-8">
                         {[
                             {

@@ -20,6 +20,7 @@ import { format } from 'date-fns';
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from '@/hooks/useTranslation';
 
 interface Post {
     id: number;
@@ -43,6 +44,7 @@ interface PostsPageProps extends PageProps {
 }
 
 export default function Index({ posts, flash }: PostsPageProps) {
+    const { __, locale } = useTranslations();
     useEffect(() => {
         if (flash.success) {
             toast.success(flash.success);
@@ -96,7 +98,7 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('blog.show', post.slug)} prefetch="hover">
+                                                            <Link href={route('blog.show', { post: post.slug, locale: locale})} prefetch="hover">
                                                                 <EyeIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>

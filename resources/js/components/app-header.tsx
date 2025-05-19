@@ -25,7 +25,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
-    const { __ } = useTranslations();
+    const { __, locale } = useTranslations();
     const { appearance, updateAppearance } = useAppearance();
     const { auth } = usePage<SharedData>().props;
 
@@ -42,16 +42,15 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     };
 
     const nextTheme: Appearance = themeMap[appearance];
-
     const mainNavItems: NavItem[] = [
         {
             title: 'Blog',
-            href: '/blog',
+            href: '/' + locale + '/blog',
             icon: NotebookPen,
         },
         {
             title: __('About me'),
-            href: '/about',
+            href: '/' + locale + '/about',
             icon: BookUser,
         },
     ];
@@ -109,7 +108,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         </Sheet>
                     </div>
 
-                    <Link href={route('home')} prefetch className="flex items-center space-x-2">
+                    <Link href={route('home', { locale: page.props.locale})} prefetch className="flex items-center space-x-2">
                         <AppLogo />
                     </Link>
 

@@ -5,30 +5,32 @@ import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
-
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: '/settings/profile',
-        icon: null,
-    },
-    {
-        title: 'Password',
-        href: '/settings/password',
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: '/settings/appearance',
-        icon: null,
-    },
-];
+import { useTranslations } from '@/hooks/useTranslation';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
-    // When server-side rendering, we only render the layout on the client...
+    const { __, locale } = useTranslations();
+
     if (typeof window === 'undefined') {
         return null;
     }
+
+    const sidebarNavItems: NavItem[] = [
+        {
+            title: __('Profile'),
+            href: '/settings/profile',
+            icon: null,
+        },
+        {
+            title: __('Password'),
+            href: '/settings/password',
+            icon: null,
+        },
+        {
+            title: __('Appearance'),
+            href: '/settings/appearance',
+            icon: null,
+        },
+    ];
 
     const currentPath = window.location.pathname;
 
