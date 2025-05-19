@@ -13,7 +13,7 @@ use Inertia\Inertia;
 Route::get('/up', fn () => 'OK');
 Route::get('/{any}', function ($any = '') {
     return redirect(app()->getLocale().'/'.$any);
-})->where('any', '^(?!admin|login|register|forgot-password|verify-email|reset-password|confirm-password('.implode('|', available_locales()).')).*$');
+})->where('any', '^(?!admin|login|register|forgot-password|verify-email|reset-password|confirm-password|('.implode('|', available_locales()).')).*$');
 
 Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'web'], function () {
     Route::get('/', HomeController::class)->name('home');
