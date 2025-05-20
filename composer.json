@@ -16,6 +16,7 @@
         "laravel/horizon": "^5.31",
         "laravel/scout": "^10.14",
         "laravel/tinker": "^2.10.1",
+        "sentry/sentry-laravel": "^4.13",
         "spatie/laravel-permission": "^6.17",
         "spatie/laravel-sitemap": "^7.3",
         "spatie/laravel-sluggable": "^3.7",

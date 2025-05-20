@@ -28,7 +28,6 @@ Route::group(['prefix' => '{locale?}', 'where' => ['locale' => '[a-zA-Z]{2}'], '
     Route::post('/blog/{post}/comments', [CommentController::class, 'store'])
         ->middleware('auth')
         ->name('blog.comments.store');
-
 });
 
 require __DIR__.'/auth.php';
