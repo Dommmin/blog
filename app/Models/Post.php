@@ -77,6 +77,19 @@ class Post extends Model implements CacheInterface
 
     public static function getSuggestions(string $query)
     {
+        if (! config('scout.enabled')) {
+            return self::query()
+                ->where('title', 'like', "%{$query}%")
+                ->where('published_at', '<=', now())
+                ->take(5)
+                ->get()
+                ->map(fn ($post) => [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                ])
+                ->values();
+        }
+
         return self::search($query)
             ->take(5)
             ->get()

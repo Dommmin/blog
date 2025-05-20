@@ -39,7 +39,7 @@ class BlogController extends Controller
     {
         $query = $request->input('query');
 
-        if (! $query || ! config('scout.enabled')) {
+        if (trim($query) === '') {
             return response()->json([]);
         }
 

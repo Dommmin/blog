@@ -45,7 +45,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const mainNavItems: NavItem[] = [
         {
             title: 'Blog',
-            href: route('blog.index', { locale }),
+            href: route('blog.index'),
             current: route().current('blog.index'),
             icon: NotebookPen,
         },

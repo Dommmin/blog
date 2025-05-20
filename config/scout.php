@@ -18,7 +18,6 @@ return [
     |
     */
     'enabled' => env('SCOUT_ENABLED', false),
-
     'driver' => env('SCOUT_DRIVER', 'algolia'),
 
     /*
