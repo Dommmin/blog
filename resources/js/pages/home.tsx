@@ -5,14 +5,13 @@ import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { ArrowRightIcon, CodeIcon, GitBranchIcon, ServerIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [];
 
 export default function Home({ posts }: { posts: Post[] }) {
-    const { __ } = useTranslations();
-    const page = usePage();
+    const { __, locale } = useTranslations();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -24,21 +23,21 @@ export default function Home({ posts }: { posts: Post[] }) {
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <div className="mb-8 text-center">
                         <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                            Exploring <span className="text-primary">PHP</span> & <span className="text-primary">DevOps</span>
+                            {__('Exploring')} <span className="text-primary">{__('PHP')}</span> & <span className="text-primary">{__('DevOps')}</span>
                         </h1>
                         <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-                            Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions
+                            {__('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions')}
                         </p>
                     </div>
                     <div className="mb-12 flex justify-center gap-4">
                         <Button size="lg" asChild>
-                            <Link href={route('blog.index', { locale: page.props.locale })} prefetch>
+                            <Link href={route('blog.index', { locale })} prefetch>
                                 {__('Read the Blog')}
                                 <ArrowRightIcon className="ml-2 h-4 w-4" />
                             </Link>
                         </Button>
                         <Button size="lg" variant="outline" asChild>
-                            <Link href={route('about', { locale: page.props.locale })} prefetch>
+                            <Link href={route('about', { locale })} prefetch>
                                 {__('About me')}
                             </Link>
                         </Button>
@@ -48,22 +47,22 @@ export default function Home({ posts }: { posts: Post[] }) {
                             <div className="bg-primary/10 mx-auto mb-4 w-fit rounded-full p-3">
                                 <CodeIcon className="text-primary h-8 w-8" />
                             </div>
-                            <h3 className="mb-2 text-xl font-semibold">PHP Frameworks</h3>
-                            <p className="text-muted-foreground">Laravel & Symfony tips, patterns, and architectural insights</p>
+                            <h3 className="mb-2 text-xl font-semibold">{__('PHP Frameworks')}</h3>
+                            <p className="text-muted-foreground">{__('Laravel & Symfony tips, patterns, and architectural insights')}</p>
                         </Card>
                         <Card className="border-primary/20 p-6 text-center transition-all hover:shadow-md">
                             <div className="bg-primary/10 mx-auto mb-4 w-fit rounded-full p-3">
                                 <ServerIcon className="text-primary h-8 w-8" />
                             </div>
-                            <h3 className="mb-2 text-xl font-semibold">DevOps</h3>
-                            <p className="text-muted-foreground">CI/CD pipelines, containerization, and infrastructure as code</p>
+                            <h3 className="mb-2 text-xl font-semibold">{__('DevOps')}</h3>
+                            <p className="text-muted-foreground">{__('CI/CD pipelines, containerization')}</p>
                         </Card>
                         <Card className="border-primary/20 p-6 text-center transition-all hover:shadow-md">
                             <div className="bg-primary/10 mx-auto mb-4 w-fit rounded-full p-3">
                                 <GitBranchIcon className="text-primary h-8 w-8" />
                             </div>
-                            <h3 className="mb-2 text-xl font-semibold">Best Practices</h3>
-                            <p className="text-muted-foreground">Clean code, testing strategies, and development workflows</p>
+                            <h3 className="mb-2 text-xl font-semibold">{__('Best Practices')}</h3>
+                            <p className="text-muted-foreground">{__('Clean code, testing strategies, and development workflows')}</p>
                         </Card>
                     </div>
                 </div>
@@ -76,7 +75,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                         <div className="mb-8 flex items-center justify-between">
                             <h2 className="text-2xl font-bold">{__('Featured Articles')}</h2>
                             <Button variant="ghost" size="sm" asChild className="gap-1">
-                                <Link href={route('blog.index', { locale: page.props.locale })} prefetch>
+                                <Link href={route('blog.index', { locale })} prefetch>
                                     {__('View all')}
                                     <ArrowRightIcon className="h-4 w-4" />
                                 </Link>

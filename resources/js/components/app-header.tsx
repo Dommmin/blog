@@ -45,7 +45,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const mainNavItems: NavItem[] = [
         {
             title: 'Blog',
-            href: route('blog.index'),
+            href: route('blog.index', { locale }),
             current: route().current('blog.index'),
             icon: NotebookPen,
         },
@@ -110,7 +110,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         </Sheet>
                     </div>
 
-                    <Link href={route('home', { locale: page.props.locale })} prefetch className="flex items-center space-x-2">
+                    <Link href={route('home', { locale })} prefetch className="flex items-center space-x-2">
                         <AppLogo />
                     </Link>
 
