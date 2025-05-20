@@ -11,7 +11,7 @@ class PostRepository implements PostRepositoryInterface
 {
     public function getPaginated(int $perPage = 10): LengthAwarePaginator
     {
-        return Cache::tags('posts')->rememberForever('admin.posts.index.'.request()->get('page', 1), function () use ($perPage) {
+        return Cache::tags('posts')->rememberForever('admin.posts.index.' . request()->get('page', 1), function () use ($perPage) {
             return Post::query()
                 ->with('author')
                 ->latest('created_at')
@@ -21,7 +21,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function find(string $slug): ?Post
     {
-        return Cache::tags('posts')->rememberForever('post.'.$slug, function () use ($slug) {
+        return Cache::tags('posts')->rememberForever('post.' . $slug, function () use ($slug) {
             return Post::where('slug', $slug)
                 ->withCount('comments')
                 ->first();

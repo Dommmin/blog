@@ -98,7 +98,7 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                                         data={tags}
                                         selectedValues={data.tags}
                                         onChange={(value: string[]) => setData('tags', value)}
-                                        placeholder="Select tags..."
+                                        placeholder={__('Select tags...')}
                                     />
                                     {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
                                 </div>

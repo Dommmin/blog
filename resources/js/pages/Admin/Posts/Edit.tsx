@@ -110,7 +110,7 @@ export default function Edit({ post, categories, tags }: EditProps) {
                                         data={tagOptions}
                                         selectedValues={data.tags}
                                         onChange={(value: string[]) => setData('tags', value)}
-                                        placeholder="Select tags..."
+                                        placeholder={__('Select tags...')}
                                     />
                                     {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
                                 </div>
