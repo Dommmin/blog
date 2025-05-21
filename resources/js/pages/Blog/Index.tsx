@@ -7,8 +7,8 @@ import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { Post } from '@/types/blog';
 import { Head, Link, router } from '@inertiajs/react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface BlogIndexProps {
     posts: {
@@ -17,7 +17,7 @@ interface BlogIndexProps {
         last_page: number;
         prev_page_url: string | null;
         next_page_url: string | null;
-    },
+    };
     filters: {
         search: string;
         sort: string;
@@ -49,23 +49,26 @@ export default function Index({ posts, filters }: BlogIndexProps) {
         setHighlightedIndex(-1);
     }, []);
 
-    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setHighlightedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setHighlightedIndex((prev) => Math.max(prev - 1, 0));
-        } else if (e.key === 'Enter' && highlightedIndex >= 0) {
-            e.preventDefault();
-            const selected = suggestions[highlightedIndex];
-            if (selected) {
-                handleSuggestionSelect(selected);
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setHighlightedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setHighlightedIndex((prev) => Math.max(prev - 1, 0));
+            } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+                e.preventDefault();
+                const selected = suggestions[highlightedIndex];
+                if (selected) {
+                    handleSuggestionSelect(selected);
+                }
+            } else if (e.key === 'Escape') {
+                setSuggestionsOpen(false);
             }
-        } else if (e.key === 'Escape') {
-            setSuggestionsOpen(false);
-        }
-    }, [suggestions, highlightedIndex, handleSuggestionSelect]);
+        },
+        [suggestions, highlightedIndex, handleSuggestionSelect],
+    );
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -96,14 +99,8 @@ export default function Index({ posts, filters }: BlogIndexProps) {
         return () => window.removeEventListener('click', handleClickOutside);
     }, []);
 
-    const metaDescription = useMemo(() =>
-        __('Browse our collection of blog posts about technology, programming, and software development.'),
-        [__]
-    );
-    const metaTitle = useMemo(() =>
-        __('Blog - Technology and Programming Articles'),
-        [__]
-    );
+    const metaDescription = useMemo(() => __('Browse our collection of blog posts about technology, programming, and software development.'), [__]);
+    const metaTitle = useMemo(() => __('Blog - Technology and Programming Articles'), [__]);
 
     return (
         <AppLayout>
@@ -188,12 +185,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
                         <div className="mt-12">
                             <Pagination className="justify-between">
                                 {posts.prev_page_url ? (
-                                    <Link
-                                        preserveScroll
-                                        href={posts.prev_page_url}
-                                        prefetch
-                                        aria-label={__('Previous page')}
-                                    >
+                                    <Link preserveScroll href={posts.prev_page_url} prefetch aria-label={__('Previous page')}>
                                         <Button variant="outline">{__('Previous')}</Button>
                                     </Link>
                                 ) : (
@@ -207,12 +199,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
                                 </div>
 
                                 {posts.next_page_url ? (
-                                    <Link
-                                        preserveScroll
-                                        href={posts.next_page_url}
-                                        prefetch
-                                        aria-label={__('Next page')}
-                                    >
+                                    <Link preserveScroll href={posts.next_page_url} prefetch aria-label={__('Next page')}>
                                         <Button variant="outline">{__('Next')}</Button>
                                     </Link>
                                 ) : (

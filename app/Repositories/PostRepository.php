@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use Arr;
 use App\Models\Post;
 use App\Repositories\Contracts\PostRepositoryInterface;
+use Arr;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
@@ -13,7 +13,7 @@ class PostRepository implements PostRepositoryInterface
 {
     public function getPaginated(int $perPage = 10): LengthAwarePaginator
     {
-        return Cache::tags('posts')->rememberForever('admin.posts.index.' . request()->get('page', 1), function () use ($perPage) {
+        return Cache::tags('posts')->rememberForever('admin.posts.index.'.request()->get('page', 1), function () use ($perPage) {
             return Post::query()
                 ->with('author')
                 ->latest('created_at')
@@ -64,7 +64,7 @@ class PostRepository implements PostRepositoryInterface
             ->published()
             ->language(app()->getLocale());
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {
                 $q->where('title', 'like', "%{$filters['search']}%")
                     ->orWhere('content', 'like', "%{$filters['search']}%");
@@ -86,7 +86,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function getFeaturedArticles(string $locale = 'en')
     {
-        return Cache::tags('posts')->rememberForever('featured.articles.' . $locale, function () use ($locale) {
+        return Cache::tags('posts')->rememberForever('featured.articles.'.$locale, function () use ($locale) {
             return Post::latest('published_at')
                 ->with(['category', 'tags'])
                 ->withCount('comments')

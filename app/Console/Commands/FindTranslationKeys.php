@@ -23,7 +23,7 @@ class FindTranslationKeys extends Command
             $this->scanDirectory($path, $keys);
         }
 
-        $this->info('Found ' . count($keys) . ' unique translation keys:');
+        $this->info('Found '.count($keys).' unique translation keys:');
         sort($keys);
 
         foreach ($keys as $key) {
@@ -111,7 +111,7 @@ class FindTranslationKeys extends Command
     /**
      * Poprawnie obsługuje odkodowanie znaków escapowanych
      *
-     * @param string $string
+     * @param  string  $string
      * @return string
      */
     protected function unescapeString($string)
