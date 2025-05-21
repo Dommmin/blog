@@ -93,6 +93,8 @@ namespace App\Models{
  * @property string $title
  * @property string|null $image
  * @property string $slug
+ * @property string $language
+ * @property string|null $translation_key
  * @property string $content
  * @property string|null $excerpt
  * @property int $reading_time
@@ -108,8 +110,11 @@ namespace App\Models{
  * @property-read string $published_at_formatted
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Post> $translations
+ * @property-read int|null $translations_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post draft()
  * @method static \Database\Factories\PostFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post language(string $language)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post published()
@@ -120,12 +125,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereExcerpt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereLanguage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereMetaDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereMetaTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereReadingTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereTranslationKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereUserId($value)
  */
