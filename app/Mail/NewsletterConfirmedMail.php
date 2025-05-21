@@ -51,7 +51,7 @@ class NewsletterConfirmedMail extends Mailable
                 'unsubscribeUrl' => URL::temporarySignedRoute(
                     'newsletter.unsubscribe',
                     now()->addDays(7),
-                    ['email' => $this->subscriber->email]
+                    ['email' => $this->subscriber->email, 'locale' => $this->locale ?? app()->getLocale()]
                 ),
             ],
         );

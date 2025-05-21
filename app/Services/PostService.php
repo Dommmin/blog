@@ -27,11 +27,6 @@ class PostService
         $tags = $data['tags'] ?? [];
         unset($data['tags']);
 
-        // Generate translation key for new posts
-        if (! isset($data['translation_key'])) {
-            $data['translation_key'] = Str::uuid()->toString();
-        }
-
         $post = $this->postRepository->create($data);
 
         if (! empty($tags)) {

@@ -26,9 +26,9 @@ class SendNewPostToSubscribers implements ShouldQueue
     public function handle()
     {
         $subscribers = NewsletterSubscriber::whereNotNull('confirmed_at')->get();
+
         foreach ($subscribers as $subscriber) {
-            $locale = $subscriber->locale ?? app()->getLocale();
-            Mail::to($subscriber->email)->queue(new NewPostNotificationMail($this->post, $locale));
+            Mail::to($subscriber->email)->queue(new NewPostNotificationMail($this->post, $subscriber->locale));
         }
     }
 }
