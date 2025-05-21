@@ -18,14 +18,15 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->string('title');
-            $table->string('image')->nullable();
             $table->string('slug')->unique();
+            $table->string('language')->default('en');
+            $table->string('translation_key');
+            $table->index(['translation_key', 'language']);
             $table->text('content');
-            $table->text('excerpt')->nullable();
             $table->integer('reading_time');
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
-            $table->timestamp('published_at')->nullable();
+            $table->timestamp('published_at');
             $table->timestamps();
         });
     }
