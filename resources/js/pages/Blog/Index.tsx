@@ -7,7 +7,7 @@ import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { Post } from '@/types/blog';
 import { Head, Link, router } from '@inertiajs/react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
 
 interface BlogIndexProps {
@@ -27,12 +27,45 @@ interface BlogIndexProps {
 
 export default function Index({ posts, filters }: BlogIndexProps) {
     const { __, locale } = useTranslations();
-    const [search, setSearch] = useState(filters.search || '');
-    const [sort, setSort] = useState(filters.sort || '');
+    const [search, setSearch] = useState(filters.search);
+    const [sort, setSort] = useState(filters.sort);
     const [suggestions, setSuggestions] = useState<{ id: number; title: string }[]>([]);
     const [suggestionsOpen, setSuggestionsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const handleSearch = useCallback((value: string) => {
+        setSearch(value);
+        setHighlightedIndex(-1);
+    }, []);
+
+    const handleSort = useCallback((value: string) => {
+        setSort(value);
+    }, []);
+
+    const handleSuggestionSelect = useCallback((suggestion: { id: number; title: string }) => {
+        setSearch(suggestion.title);
+        setSuggestionsOpen(false);
+        setHighlightedIndex(-1);
+    }, []);
+
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setHighlightedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setHighlightedIndex((prev) => Math.max(prev - 1, 0));
+        } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+            e.preventDefault();
+            const selected = suggestions[highlightedIndex];
+            if (selected) {
+                handleSuggestionSelect(selected);
+            }
+        } else if (e.key === 'Escape') {
+            setSuggestionsOpen(false);
+        }
+    }, [suggestions, highlightedIndex, handleSuggestionSelect]);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -63,8 +96,14 @@ export default function Index({ posts, filters }: BlogIndexProps) {
         return () => window.removeEventListener('click', handleClickOutside);
     }, []);
 
-    const metaDescription = __('Browse our collection of blog posts about technology, programming, and software development.');
-    const metaTitle = __('Blog - Technology and Programming Articles');
+    const metaDescription = useMemo(() =>
+        __('Browse our collection of blog posts about technology, programming, and software development.'),
+        [__]
+    );
+    const metaTitle = useMemo(() =>
+        __('Blog - Technology and Programming Articles'),
+        [__]
+    );
 
     return (
         <AppLayout>
@@ -87,30 +126,9 @@ export default function Index({ posts, filters }: BlogIndexProps) {
                                 className="w-full"
                                 placeholder={__('Search posts...')}
                                 value={search}
-                                onChange={(e) => {
-                                    setSearch(e.target.value);
-                                    setHighlightedIndex(-1);
-                                }}
+                                onChange={(e) => handleSearch(e.target.value)}
                                 onFocus={() => setSuggestionsOpen(true)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'ArrowDown') {
-                                        e.preventDefault();
-                                        setHighlightedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
-                                    } else if (e.key === 'ArrowUp') {
-                                        e.preventDefault();
-                                        setHighlightedIndex((prev) => Math.max(prev - 1, 0));
-                                    } else if (e.key === 'Enter' && highlightedIndex >= 0) {
-                                        e.preventDefault();
-                                        const selected = suggestions[highlightedIndex];
-                                        if (selected) {
-                                            setSearch(selected.title);
-                                            setSuggestionsOpen(false);
-                                            setHighlightedIndex(-1);
-                                        }
-                                    } else if (e.key === 'Escape') {
-                                        setSuggestionsOpen(false);
-                                    }
-                                }}
+                                onKeyDown={handleKeyDown}
                                 aria-label={__('Search posts')}
                                 aria-expanded={suggestionsOpen}
                                 aria-controls="search-suggestions"
@@ -130,11 +148,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
                                             className={`cursor-pointer px-4 py-2 ${
                                                 i === highlightedIndex ? 'bg-muted font-medium' : 'hover:bg-muted'
                                             }`}
-                                            onMouseDown={() => {
-                                                setSearch(s.title);
-                                                setSuggestionsOpen(false);
-                                                setHighlightedIndex(-1);
-                                            }}
+                                            onMouseDown={() => handleSuggestionSelect(s)}
                                         >
                                             {s.title}
                                         </li>
@@ -144,7 +158,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
                         </div>
 
                         <div className="w-48">
-                            <Select value={sort} onValueChange={setSort}>
+                            <Select value={sort} onValueChange={handleSort}>
                                 <SelectTrigger aria-label={__('Sort posts')}>
                                     <SelectValue placeholder={__('Sort by')} />
                                 </SelectTrigger>
@@ -176,7 +190,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
                                 {posts.prev_page_url ? (
                                     <Link
                                         preserveScroll
-                                        href={`${posts.prev_page_url}${sort ? `&sort=${sort}` : ''}${search ? `&search=${search}` : ''}`}
+                                        href={posts.prev_page_url}
                                         prefetch
                                         aria-label={__('Previous page')}
                                     >
@@ -195,7 +209,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
                                 {posts.next_page_url ? (
                                     <Link
                                         preserveScroll
-                                        href={`${posts.next_page_url}${sort ? `&sort=${sort}` : ''}${search ? `&search=${search}` : ''}`}
+                                        href={posts.next_page_url}
                                         prefetch
                                         aria-label={__('Next page')}
                                     >

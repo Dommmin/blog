@@ -27,4 +27,13 @@ class IndexBlogRequest extends FormRequest
             'page' => ['nullable', 'integer', 'min:1'],
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'page' => $this->page ?? 1,
+            'sort' => $this->sort ?? '',
+            'search' => $this->search ?? '',
+        ]);
+    }
 }

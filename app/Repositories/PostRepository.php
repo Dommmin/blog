@@ -78,7 +78,10 @@ class PostRepository implements PostRepositoryInterface
             default => $query->latest('published_at'),
         };
 
-        return $query->paginate(6);
+        $paginator = $query->paginate(6);
+        $paginator->appends($filters);
+
+        return $paginator;
     }
 
     public function getFeaturedArticles(string $locale = 'en')
