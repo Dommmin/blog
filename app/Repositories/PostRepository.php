@@ -77,13 +77,15 @@ class PostRepository implements PostRepositoryInterface
             match ($filters['sort']) {
                 'latest' => $query->latest('published_at'),
                 'oldest' => $query->oldest('published_at'),
+                'title_asc' => $query->orderBy('title', 'asc'),
+                'title_desc' => $query->orderBy('title', 'desc'),
                 default => $query->latest('published_at'),
             };
         } else {
             $query->latest('published_at');
         }
 
-        return $query->paginate(12);
+        return $query->paginate(6);
     }
 
     public function getFeaturedArticles()
