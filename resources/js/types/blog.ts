@@ -46,7 +46,7 @@ export interface DataItem {
 export interface Comment {
     id: number;
     content: string;
-    user: User;
+    author: User;
     created_at: string;
 }
 
