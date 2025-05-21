@@ -63,7 +63,7 @@ jobs:
         run: npm ci
 
       - name: Build assets
-        run: npm run build
+        run: npm run build:ssr
 
       - name: Run code quality checks
         run: |
