@@ -20,7 +20,7 @@ interface BlogIndexProps {
 }
 
 export default function Index({ posts }: BlogIndexProps) {
-    const { __ } = useTranslations();
+    const { __, locale } = useTranslations();
     const [search, setSearch] = useState('');
     const [sort, setSort] = useState('');
     const [suggestions, setSuggestions] = useState<{ id: number; title: string }[]>([]);
@@ -56,9 +56,21 @@ export default function Index({ posts }: BlogIndexProps) {
         return () => window.removeEventListener('click', handleClickOutside);
     }, []);
 
+    const metaDescription = __('Browse our collection of blog posts about technology, programming, and software development.');
+    const metaTitle = __('Blog - Technology and Programming Articles');
+
     return (
         <AppLayout>
-            <Head title="Blog" />
+            <Head>
+                <title>{metaTitle}</title>
+                <meta name="description" content={metaDescription} />
+                <meta property="og:title" content={metaTitle} />
+                <meta property="og:description" content={metaDescription} />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={window.location.href} />
+                <link rel="canonical" href={window.location.origin + route('blog.index')} />
+                <meta name="robots" content="index, follow" />
+            </Head>
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -92,12 +104,22 @@ export default function Index({ posts }: BlogIndexProps) {
                                         setSuggestionsOpen(false);
                                     }
                                 }}
+                                aria-label={__('Search posts')}
+                                aria-expanded={suggestionsOpen}
+                                aria-controls="search-suggestions"
+                                role="combobox"
                             />
                             {suggestionsOpen && suggestions.length > 0 && (
-                                <ul className="absolute z-10 mt-1 w-full rounded-md border bg-white shadow-md dark:bg-zinc-900">
+                                <ul
+                                    id="search-suggestions"
+                                    className="absolute z-10 mt-1 w-full rounded-md border bg-white shadow-md dark:bg-zinc-900"
+                                    role="listbox"
+                                >
                                     {suggestions.map((s, i) => (
                                         <li
                                             key={s.id}
+                                            role="option"
+                                            aria-selected={i === highlightedIndex}
                                             className={`cursor-pointer px-4 py-2 ${
                                                 i === highlightedIndex ? 'bg-muted font-medium' : 'hover:bg-muted'
                                             }`}
@@ -116,7 +138,7 @@ export default function Index({ posts }: BlogIndexProps) {
 
                         <div className="w-48">
                             <Select value={sort} onValueChange={setSort}>
-                                <SelectTrigger>
+                                <SelectTrigger aria-label={__('Sort posts')}>
                                     <SelectValue placeholder={__('Sort by')} />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -145,11 +167,16 @@ export default function Index({ posts }: BlogIndexProps) {
                         <div className="mt-12">
                             <Pagination className="justify-between">
                                 {posts.prev_page_url ? (
-                                    <Link preserveScroll href={posts.prev_page_url} prefetch>
+                                    <Link
+                                        preserveScroll
+                                        href={`${posts.prev_page_url}${sort ? `&sort=${sort}` : ''}${search ? `&search=${search}` : ''}`}
+                                        prefetch
+                                        aria-label={__('Previous page')}
+                                    >
                                         <Button variant="outline">{__('Previous')}</Button>
                                     </Link>
                                 ) : (
-                                    <Button variant="outline" disabled>
+                                    <Button variant="outline" disabled aria-label={__('Previous page')}>
                                         {__('Previous')}
                                     </Button>
                                 )}
@@ -159,11 +186,16 @@ export default function Index({ posts }: BlogIndexProps) {
                                 </div>
 
                                 {posts.next_page_url ? (
-                                    <Link preserveScroll href={posts.next_page_url} prefetch>
+                                    <Link
+                                        preserveScroll
+                                        href={`${posts.next_page_url}${sort ? `&sort=${sort}` : ''}${search ? `&search=${search}` : ''}`}
+                                        prefetch
+                                        aria-label={__('Next page')}
+                                    >
                                         <Button variant="outline">{__('Next')}</Button>
                                     </Link>
                                 ) : (
-                                    <Button variant="outline" disabled>
+                                    <Button variant="outline" disabled aria-label={__('Next page')}>
                                         {__('Next')}
                                     </Button>
                                 )}

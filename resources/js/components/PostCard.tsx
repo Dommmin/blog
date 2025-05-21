@@ -11,12 +11,18 @@ export default function PostCard({ post }: { post: Post }) {
     const { __, locale } = useTranslations();
     return (
         <Card key={post.id} className="border-primary/10 flex flex-col overflow-hidden transition-all hover:shadow-md">
-            <div className="flex flex-1 flex-col p-6">
-                <div className="mb-3 flex items-center gap-2">
+            <article className="flex flex-1 flex-col p-6">
+                <header className="mb-3 flex items-center gap-2">
                     <span className="bg-primary/10 text-primary rounded-full px-2.5 py-0.5 text-xs font-medium">{post.category.name}</span>
-                    <span className="text-muted-foreground text-xs">{formatDate(post.published_at, locale)}</span>
-                </div>
-                <h3 className="mb-2 text-xl font-semibold">{post.title}</h3>
+                    <time className="text-muted-foreground text-xs" dateTime={post.published_at || post.created_at}>
+                        {formatDate(post.published_at, locale)}
+                    </time>
+                </header>
+                <h2 className="mb-2 text-xl font-semibold">
+                    <Link href={route('blog.show', { post: post.slug, locale })} className="hover:text-primary" prefetch>
+                        {post.title}
+                    </Link>
+                </h2>
                 <div className="mb-4 flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
                         <Badge key={tag.id} variant="secondary">
@@ -27,19 +33,24 @@ export default function PostCard({ post }: { post: Post }) {
                 <div>
                     {post.comments_count} {post.comments_count === 1 ? __('comment') : __('comments')}
                 </div>
-                <div className="mt-auto flex items-center justify-between">
+                <footer className="mt-auto flex items-center justify-between">
                     <span className="text-muted-foreground flex items-center gap-1 text-xs">
-                        <BookOpenIcon className="h-3 w-3" />
+                        <BookOpenIcon className="h-3 w-3" aria-hidden="true" />
                         {post.reading_time !== undefined ? `${post.reading_time} ${__('min read')}` : null}
                     </span>
-                    <Link href={route('blog.show', { post: post.slug, locale })} className="flex items-center" prefetch>
+                    <Link
+                        href={route('blog.show', { post: post.slug, locale })}
+                        className="flex items-center"
+                        prefetch
+                        aria-label={`${__('Read more about')} ${post.title}`}
+                    >
                         <Button variant="ghost" size="sm" className="gap-1">
                             {__('Read more')}
-                            <ArrowRightIcon className="h-3 w-3" />
+                            <ArrowRightIcon className="h-3 w-3" aria-hidden="true" />
                         </Button>
                     </Link>
-                </div>
-            </div>
+                </footer>
+            </article>
         </Card>
     );
 }
