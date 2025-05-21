@@ -86,9 +86,14 @@ class Post extends Model implements CacheInterface
         return $this->published_at->format('F j, Y');
     }
 
-    public function getTranslation(string $language): ?self
+    /**
+     * Get the translation of this post in the specified language.
+     */
+    public function getTranslation(string $language): ?Post
     {
-        return $this->translations()->where('language', $language)->first();
+        return static::where('translation_key', $this->translation_key)
+            ->where('language', $language)
+            ->first();
     }
 
     public function hasTranslation(string $language): bool
@@ -104,7 +109,7 @@ class Post extends Model implements CacheInterface
                 ->where('published_at', '<=', now())
                 ->take(5)
                 ->get()
-                ->map(fn($post) => [
+                ->map(fn ($post) => [
                     'id' => $post->id,
                     'title' => $post->title,
                 ])
@@ -114,8 +119,8 @@ class Post extends Model implements CacheInterface
         return self::search($query)
             ->take(5)
             ->get()
-            ->filter(fn($post) => $post->published_at < now())
-            ->map(fn($post) => [
+            ->filter(fn ($post) => $post->published_at < now())
+            ->map(fn ($post) => [
                 'id' => $post->id,
                 'title' => $post->title,
             ])

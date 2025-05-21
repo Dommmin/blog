@@ -28,7 +28,7 @@ class PostService
         unset($data['tags']);
 
         // Generate translation key for new posts
-        if (!isset($data['translation_key'])) {
+        if (! isset($data['translation_key'])) {
             $data['translation_key'] = Str::uuid()->toString();
         }
 
@@ -61,23 +61,21 @@ class PostService
         return $this->postRepository->delete($post);
     }
 
+    /**
+     * Get available translations for a post.
+     *
+     * @return array<array{language: string, slug: string, title: string}>
+     */
     public function getAvailableTranslations(Post $post): array
     {
-        $translations = $post->translations()->get();
-        $result = [
-            $post->language => [
-                'slug' => $post->slug,
-                'title' => $post->title,
-            ]
-        ];
-
-        foreach ($translations as $translation) {
-            $result[$translation->language] = [
+        return Post::where('translation_key', $post->translation_key)
+            ->where('id', '!=', $post->id)
+            ->get(['language', 'slug', 'title'])
+            ->map(fn (Post $translation) => [
+                'language' => $translation->language,
                 'slug' => $translation->slug,
                 'title' => $translation->title,
-            ];
-        }
-
-        return $result;
+            ])
+            ->toArray();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Post;
 use App\Rules\UniqueTranslationKey;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -44,7 +43,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'category_id.required' => 'The category field is required',
             'language.required' => 'The language field is required',
-            'language.in' => 'The language must be one of: ' . implode(', ', available_locales()),
+            'language.in' => 'The language must be one of: '.implode(', ', available_locales()),
         ];
     }
 }

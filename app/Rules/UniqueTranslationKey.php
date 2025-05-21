@@ -16,7 +16,7 @@ class UniqueTranslationKey implements Rule
 
     public function passes($attribute, $value): bool
     {
-        if (!$value) {
+        if (! $value) {
             return true;
         }
 
@@ -27,7 +27,7 @@ class UniqueTranslationKey implements Rule
             $query->where('id', '!=', $this->excludePostId);
         }
 
-        return !$query->exists();
+        return ! $query->exists();
     }
 
     public function message(): string

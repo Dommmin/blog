@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Health check endpoint
-Route::get('/up', fn() => 'OK');
+Route::get('/up', fn () => 'OK');
 
 $excludedRoutes = [
     'admin',
@@ -20,12 +20,12 @@ $excludedRoutes = [
     'verify-email',
     'reset-password',
     'confirm-password',
-    'settings'
+    'settings',
 ];
 
 Route::get('/{any}', function ($any = '') {
-    return redirect(app()->getLocale() . '/' . $any);
-})->where('any', '^(?!' . implode('|', $excludedRoutes) . '|(' . implode('|', available_locales()) . ')).*$');
+    return redirect(app()->getLocale().'/'.$any);
+})->where('any', '^(?!'.implode('|', $excludedRoutes).'|('.implode('|', available_locales()).')).*$');
 
 Route::group(['prefix' => '{locale?}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'web'], function () {
     Route::get('/', HomeController::class)->name('home');
@@ -42,9 +42,9 @@ Route::group(['prefix' => '{locale?}', 'where' => ['locale' => '[a-zA-Z]{2}'], '
         ->name('blog.comments.store');
 });
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/settings.php';
-require __DIR__ . '/admin.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/admin.php';
 
 Route::fallback(function () {
     return Inertia::render('Errors/404');

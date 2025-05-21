@@ -30,7 +30,7 @@ export default function PostCard({ post }: { post: Post }) {
                 <div className="mt-auto flex items-center justify-between">
                     <span className="text-muted-foreground flex items-center gap-1 text-xs">
                         <BookOpenIcon className="h-3 w-3" />
-                        {post.reading_time} {__('min read')}
+                        {post.reading_time !== undefined ? `${post.reading_time} ${__('min read')}` : null}
                     </span>
                     <Link href={route('blog.show', { post: post.slug, locale })} className="flex items-center" prefetch>
                         <Button variant="ghost" size="sm" className="gap-1">

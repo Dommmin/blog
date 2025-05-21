@@ -54,13 +54,19 @@ export default function About() {
                             <p className="text-muted-foreground mb-4 text-xl">{__('PHP Developer & DevOps Engineer')}</p>
                             <div className="prose dark:prose-invert max-w-none">
                                 <p>
-                                    {__('I\'m a passionate PHP developer with extensive experience in Laravel and Symfony frameworks. With 3 years of professional experience, I specialize in building robust, scalable web applications and implementing DevOps practices to streamline development workflows.')}
+                                    {__(
+                                        "I'm a passionate PHP developer with extensive experience in Laravel and Symfony frameworks. With 3 years of professional experience, I specialize in building robust, scalable web applications and implementing DevOps practices to streamline development workflows.",
+                                    )}
                                 </p>
                                 <p>
-                                    {__('My technical journey started with PHP, but quickly evolved to embrace modern development practices, containerization, CI/CD pipelines. I believe in clean code, thorough testing, and continuous improvement.')}
+                                    {__(
+                                        'My technical journey started with PHP, but quickly evolved to embrace modern development practices, containerization, CI/CD pipelines. I believe in clean code, thorough testing, and continuous improvement.',
+                                    )}
                                 </p>
                                 <p>
-                                    {__('Through this blog, I share my experiences, best practices, and insights into PHP development and DevOps methodologies. Whether you\'re a beginner or an experienced developer, I hope you\'ll find valuable content that helps you in your own technical journey.')}
+                                    {__(
+                                        "Through this blog, I share my experiences, best practices, and insights into PHP development and DevOps methodologies. Whether you're a beginner or an experienced developer, I hope you'll find valuable content that helps you in your own technical journey.",
+                                    )}
                                 </p>
                             </div>
                             <div className="mt-6">
@@ -126,7 +132,9 @@ export default function About() {
                                 year: __('2020 - Present'),
                                 role: __('PHP Developer & DevOps Engineer'),
                                 company: __('Ideo Sp. z o.o.'),
-                                description: __('Leading backend development with Laravel and implementing DevOps practices to streamline development workflows.'),
+                                description: __(
+                                    'Leading backend development with Laravel and implementing DevOps practices to streamline development workflows.',
+                                ),
                             },
                         ].map((item, index) => (
                             <div key={index} className="relative mb-10">

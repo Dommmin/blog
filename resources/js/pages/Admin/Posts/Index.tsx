@@ -117,7 +117,10 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('blog.show', { post: post.slug, locale: post.language })} prefetch="hover">
+                                                            <Link
+                                                                href={route('blog.show', { post: post.slug, locale: post.language })}
+                                                                prefetch="hover"
+                                                            >
                                                                 <EyeIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>

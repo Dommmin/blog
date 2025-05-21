@@ -119,7 +119,13 @@ export default function Edit({ post, categories, tags }: EditProps) {
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">Title</Label>
-                                    <Input id="title" type="text" value={form.data.title} onChange={(e) => form.setData('title', e.target.value)} required />
+                                    <Input
+                                        id="title"
+                                        type="text"
+                                        value={form.data.title}
+                                        onChange={(e) => form.setData('title', e.target.value)}
+                                        required
+                                    />
                                     {form.errors.title && <p className="text-sm text-red-500">{form.errors.title}</p>}
                                 </div>
 
