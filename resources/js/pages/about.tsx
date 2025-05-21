@@ -55,7 +55,7 @@ export default function About() {
                             <div className="prose dark:prose-invert max-w-none">
                                 <p>
                                     {__(
-                                        "I'm a passionate PHP developer with extensive experience in Laravel and Symfony frameworks. With 3 years of professional experience, I specialize in building robust, scalable web applications and implementing DevOps practices to streamline development workflows.",
+                                        "I'm a passionate PHP developer with experience in Laravel and Symfony frameworks. With 3 years of professional experience, I specialize in building robust, scalable web applications and implementing DevOps practices to streamline development workflows.",
                                     )}
                                 </p>
                                 <p>
