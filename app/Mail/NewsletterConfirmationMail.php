@@ -14,6 +14,7 @@ class NewsletterConfirmationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $subscriber;
+
     public $locale;
 
     /**
@@ -33,6 +34,7 @@ class NewsletterConfirmationMail extends Mailable
         if ($this->locale) {
             app()->setLocale($this->locale);
         }
+
         return new Envelope(
             subject: __('Newsletter Confirmation Mail'),
         );
@@ -46,7 +48,7 @@ class NewsletterConfirmationMail extends Mailable
         if ($this->locale) {
             app()->setLocale($this->locale);
         }
-        $confirmUrl = url('/newsletter/confirm/' . $this->subscriber->token);
+        $confirmUrl = url('/newsletter/confirm/'.$this->subscriber->token);
 
         return new Content(
             view: 'emails.newsletter-confirmation',

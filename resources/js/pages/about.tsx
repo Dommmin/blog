@@ -1,3 +1,4 @@
+import { AnimateOnView, AnimateStagger } from '@/components/AnimateOnView';
 import { GitHubIcon, LinkedInIcon } from '@/components/social-icons';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -6,7 +7,6 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
-import { AnimateOnView, AnimateStagger } from '@/components/AnimateOnView';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

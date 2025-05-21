@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 type AnimationType = 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'zoom-in' | 'zoom-out';
 
@@ -13,13 +13,13 @@ interface AnimateOnViewProps {
     once?: boolean;
 }
 export function AnimateOnView({
-  children,
-  animation = 'fade-up',
-  duration = 'duration-500',
-  delay = 'delay-0',
-  threshold = 0.1,
-  className = '',
-  once = true,
+    children,
+    animation = 'fade-up',
+    duration = 'duration-500',
+    delay = 'delay-0',
+    threshold = 0.1,
+    className = '',
+    once = true,
 }: AnimateOnViewProps) {
     const ref = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -49,7 +49,7 @@ export function AnimateOnView({
             {
                 threshold,
                 rootMargin: '0px',
-            }
+            },
         );
 
         const currentRef = ref.current;
@@ -67,13 +67,7 @@ export function AnimateOnView({
     return (
         <div
             ref={ref}
-            className={cn(
-                'transition',
-                duration,
-                delay,
-                !isVisible ? animationClasses[animation] : 'transform-none opacity-100',
-                className
-            )}
+            className={cn('transition', duration, delay, !isVisible ? animationClasses[animation] : 'transform-none opacity-100', className)}
         >
             {children}
         </div>
@@ -88,13 +82,7 @@ interface AnimateStaggerProps {
     className?: string;
 }
 
-export function AnimateStagger({
-   children,
-   animation = 'fade-up',
-   duration = 'duration-500',
-   stagger = 100,
-   className = '',
-}: AnimateStaggerProps) {
+export function AnimateStagger({ children, animation = 'fade-up', duration = 'duration-500', stagger = 100, className = '' }: AnimateStaggerProps) {
     return (
         <div className={className}>
             {React.Children.map(children, (child, index) => {
@@ -103,11 +91,7 @@ export function AnimateStagger({
                 const delayClass = `delay-${index * stagger}`;
 
                 return (
-                    <AnimateOnView
-                        animation={animation}
-                        duration={duration}
-                        delay={delayClass}
-                    >
+                    <AnimateOnView animation={animation} duration={duration} delay={delayClass}>
                         {child}
                     </AnimateOnView>
                 );
@@ -126,23 +110,13 @@ interface AnimateProps {
     className?: string;
 }
 
-export function Animate({
-    children,
-    animation = 'pulse',
-    duration = 'duration-1000',
-    delay = 'delay-0',
-    className = '',
-}: AnimateProps) {
+export function Animate({ children, animation = 'pulse', duration = 'duration-1000', delay = 'delay-0', className = '' }: AnimateProps) {
     const animationClasses: Record<AnimateType, string> = {
-        'pulse': 'animate-pulse',
-        'bounce': 'animate-bounce',
-        'spin': 'animate-spin',
-        'ping': 'animate-ping',
+        pulse: 'animate-pulse',
+        bounce: 'animate-bounce',
+        spin: 'animate-spin',
+        ping: 'animate-ping',
     };
 
-    return (
-        <div className={cn(animationClasses[animation], duration, delay, className)}>
-            {children}
-        </div>
-    );
+    return <div className={cn(animationClasses[animation], duration, delay, className)}>{children}</div>;
 }

@@ -1,13 +1,13 @@
+import { AnimateStagger } from '@/components/AnimateOnView';
 import { Card } from '@/components/ui/card';
 import { formatDate } from '@/helpers';
 import { useTranslations } from '@/hooks/useTranslation';
 import { type Comment } from '@/types/blog';
-import { AnimateStagger } from '@/components/AnimateOnView';
 
 export default function CommentCard({ comment }: { comment: Comment }) {
     const { __, locale } = useTranslations();
     return (
-        <Card key={comment.id} className="border-primary/10 flex flex-col overflow-hidden transition-all hover:shadow-md mb-2">
+        <Card key={comment.id} className="border-primary/10 mb-2 flex flex-col overflow-hidden transition-all hover:shadow-md">
             <AnimateStagger animation="fade-left" stagger={100}>
                 <div className="flex flex-1 flex-col p-6">
                     <div className="mb-3 flex items-center gap-2">

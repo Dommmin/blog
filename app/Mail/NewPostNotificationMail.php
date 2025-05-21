@@ -12,6 +12,7 @@ class NewPostNotificationMail extends Mailable
     use Queueable, SerializesModels;
 
     public $post;
+
     public $locale;
 
     public function __construct(Post $post, $locale = null)
@@ -25,6 +26,7 @@ class NewPostNotificationMail extends Mailable
         if ($this->locale) {
             app()->setLocale($this->locale);
         }
+
         return $this->view('emails.new-post-notification')
             ->subject(__('A new article has been published: ":title"', ['title' => $this->post->title]));
     }

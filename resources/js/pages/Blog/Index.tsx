@@ -9,7 +9,6 @@ import { Post } from '@/types/blog';
 import { Head, Link, router } from '@inertiajs/react';
 import axios from 'axios';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AnimateStagger } from '@/components/AnimateOnView';
 
 interface BlogIndexProps {
     posts: {

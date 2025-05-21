@@ -32,7 +32,7 @@ class NewsletterNewPostMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Newsletter New Post Mail',
+            subject: __('New post on the blog!'),
         );
     }
 
@@ -42,7 +42,11 @@ class NewsletterNewPostMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.newsletter-new-post',
+            with: [
+                'subscriber' => $this->subscriber,
+                'post' => $this->post,
+            ]
         );
     }
 
@@ -54,15 +58,5 @@ class NewsletterNewPostMail extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-    public function build()
-    {
-        return $this->subject('New post on the blog!')
-            ->view('emails.newsletter-new-post')
-            ->with([
-                'subscriber' => $this->subscriber,
-                'post' => $this->post,
-            ]);
     }
 }

@@ -16,6 +16,7 @@ class NewsletterController extends Controller
         $subscriber = NewsletterSubscriber::create([
             'email' => $request->get('email'),
             'token' => NewsletterSubscriber::generateToken(),
+            'locale' => $locale,
         ]);
 
         Mail::to($subscriber->email)->queue(new NewsletterConfirmationMail($subscriber, $locale));
@@ -43,7 +44,7 @@ class NewsletterController extends Controller
     {
         $subscriber = NewsletterSubscriber::where('email', $email)->firstOrFail();
 
-        if (!$subscriber->isConfirmed()) {
+        if (! $subscriber->isConfirmed()) {
             return to_route('home')->with('error', 'This subscription is not confirmed.');
         }
 

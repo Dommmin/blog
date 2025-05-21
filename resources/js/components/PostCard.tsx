@@ -1,3 +1,4 @@
+import { AnimateStagger } from '@/components/AnimateOnView';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -6,7 +7,6 @@ import { useTranslations } from '@/hooks/useTranslation';
 import { type Post } from '@/types/blog';
 import { Link } from '@inertiajs/react';
 import { ArrowRightIcon, BookOpenIcon } from 'lucide-react';
-import { AnimateStagger } from '@/components/AnimateOnView';
 
 export default function PostCard({ post }: { post: Post }) {
     const { __, locale } = useTranslations();
@@ -53,7 +53,7 @@ export default function PostCard({ post }: { post: Post }) {
                         </Link>
                     </footer>
                 </article>
-        </AnimateStagger>
-    </Card>
+            </AnimateStagger>
+        </Card>
     );
 }

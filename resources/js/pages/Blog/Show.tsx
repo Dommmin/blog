@@ -1,3 +1,4 @@
+import { AnimateOnView } from '@/components/AnimateOnView';
 import CommentCard from '@/components/CommentCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,13 +9,12 @@ import AppLayout from '@/layouts/app-layout';
 import { type CommentData, type Post } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import 'highlight.js/styles/github-dark.css';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import React, { useState, useEffect } from 'react';
-import { AnimateOnView } from '@/components/AnimateOnView';
 
 export default function Show({ post, comments }: { post: Post; comments: CommentData }) {
     const { __, locale } = useTranslations();
@@ -24,7 +24,6 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
         setTimeout(() => {
             setPostVisible(true);
         }, 100);
-
     }, []);
 
     const {
@@ -45,9 +44,9 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
             preserveScroll: true,
             onSuccess: () => {
                 reset();
-            }
+            },
         });
-    }
+    };
 
     // Structured data for SEO
     const structuredData = {

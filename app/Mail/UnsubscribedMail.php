@@ -12,6 +12,7 @@ class UnsubscribedMail extends Mailable
     use Queueable, SerializesModels;
 
     public $subscriber;
+
     public $locale;
 
     public function __construct(NewsletterSubscriber $subscriber, $locale = null)
@@ -25,6 +26,7 @@ class UnsubscribedMail extends Mailable
         if ($this->locale) {
             app()->setLocale($this->locale);
         }
+
         return $this->view('emails.unsubscribed')
             ->subject(__('You have unsubscribed from the newsletter'));
     }

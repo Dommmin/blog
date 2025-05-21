@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { AnimateOnView, AnimateStagger } from '@/components/AnimateOnView';
 import PostCard from '@/components/PostCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,7 +8,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowRightIcon, CodeIcon, GitBranchIcon, ServerIcon } from 'lucide-react';
-import { AnimateOnView, AnimateStagger } from '@/components/AnimateOnView';
+import React, { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [];
 
@@ -26,7 +26,7 @@ export default function Home({ posts }: { posts: Post[] }) {
             onSuccess: () => {
                 reset();
                 setSuccessMessage(__('You have successfully subscribed to our newsletter!'));
-            }
+            },
         });
     };
 
@@ -139,10 +139,12 @@ export default function Home({ posts }: { posts: Post[] }) {
                                                 placeholder={__('Enter your email')}
                                                 value={data.email}
                                             />
-                                            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-                                            {successMessage && <p className="text-green-500 text-sm">{successMessage}</p>}
+                                            {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                                            {successMessage && <p className="text-sm text-green-500">{successMessage}</p>}
                                         </div>
-                                        <Button type="submit" disabled={processing}>{__('Subscribe')}</Button>
+                                        <Button type="submit" disabled={processing}>
+                                            {__('Subscribe')}
+                                        </Button>
                                     </div>
                                     <p className="text-muted-foreground mt-3 text-xs">{__('I respect your privacy. Unsubscribe at any time')}.</p>
                                 </div>
