@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexBlogRequest;
 use App\Models\Post;
 use App\Repositories\CommentRepository;
 use App\Repositories\PostRepository;
@@ -19,12 +20,13 @@ class BlogController extends Controller
         private readonly PostService $postService
     ) {}
 
-    public function index(Request $request): Response
+    public function index(IndexBlogRequest $request): Response
     {
-        $filters = $request->only(['search', 'sort']);
+        $filters = $request->validated();
 
         return Inertia::render('Blog/Index', [
             'posts' => $this->repository->getPostsForBlog($filters),
+            'filters' => $filters,
         ]);
     }
 
@@ -38,9 +40,9 @@ class BlogController extends Controller
             $translation = $post->getTranslation($locale);
             if ($translation) {
                 return redirect()->route('blog.show', ['post' => $translation->slug, 'locale' => $locale]);
-            } else {
-                return redirect()->route('blog.index', ['locale' => $locale]);
             }
+
+            return redirect()->route('blog.index', ['locale' => $locale]);
         }
 
         return Inertia::render('Blog/Show', [

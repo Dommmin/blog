@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use Arr;
 use App\Models\Post;
 use App\Repositories\Contracts\PostRepositoryInterface;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 
@@ -33,26 +35,19 @@ class PostRepository implements PostRepositoryInterface
 
     public function create(array $data): Post
     {
-        $post = Post::create($data);
-        Post::flush();
-
-        return $post;
+        return Post::create($data);
     }
 
     public function update(Post $post, array $data): Post
     {
         $post->update($data);
-        Post::flush();
 
         return $post;
     }
 
     public function delete(Post $post): bool
     {
-        $result = $post->delete();
-        Post::flush();
-
-        return $result;
+        return $post->delete();
     }
 
     public function syncTags(Post $post, array $tagIds): void
@@ -63,39 +58,36 @@ class PostRepository implements PostRepositoryInterface
 
     public function getPostsForBlog(array $filters): LengthAwarePaginator
     {
+        /** @var Builder $query */
         $query = Post::query()
             ->with(['author', 'category', 'tags'])
             ->published()
             ->language(app()->getLocale());
 
-        if (isset($filters['search'])) {
+        if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {
                 $q->where('title', 'like', "%{$filters['search']}%")
                     ->orWhere('content', 'like', "%{$filters['search']}%");
             });
         }
 
-        if (isset($filters['sort'])) {
-            match ($filters['sort']) {
-                'latest' => $query->latest('published_at'),
-                'oldest' => $query->oldest('published_at'),
-                'title_asc' => $query->orderBy('title', 'asc'),
-                'title_desc' => $query->orderBy('title', 'desc'),
-                default => $query->latest('published_at'),
-            };
-        } else {
-            $query->latest('published_at');
-        }
+        match (Arr::get($filters, 'sort')) {
+            'oldest' => $query->oldest('published_at'),
+            'title_asc' => $query->orderBy('title', 'asc'),
+            'title_desc' => $query->orderBy('title', 'desc'),
+            default => $query->latest('published_at'),
+        };
 
         return $query->paginate(6);
     }
 
-    public function getFeaturedArticles()
+    public function getFeaturedArticles(string $locale = 'en')
     {
-        return Cache::tags('posts')->rememberForever('featured.articles', function () {
+        return Cache::tags('posts')->rememberForever('featured.articles.' . $locale, function () use ($locale) {
             return Post::latest('published_at')
                 ->with(['category', 'tags'])
                 ->withCount('comments')
+                ->language($locale)
                 ->published()
                 ->take(4)
                 ->get();

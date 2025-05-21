@@ -8,6 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import { Post } from '@/types/blog';
 import { Head, Link, router } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 interface BlogIndexProps {
     posts: {
@@ -16,13 +17,18 @@ interface BlogIndexProps {
         last_page: number;
         prev_page_url: string | null;
         next_page_url: string | null;
+    },
+    filters: {
+        search: string;
+        sort: string;
+        page: number;
     };
 }
 
-export default function Index({ posts }: BlogIndexProps) {
+export default function Index({ posts, filters }: BlogIndexProps) {
     const { __, locale } = useTranslations();
-    const [search, setSearch] = useState('');
-    const [sort, setSort] = useState('');
+    const [search, setSearch] = useState(filters.search || '');
+    const [sort, setSort] = useState(filters.sort || '');
     const [suggestions, setSuggestions] = useState<{ id: number; title: string }[]>([]);
     const [suggestionsOpen, setSuggestionsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -31,8 +37,9 @@ export default function Index({ posts }: BlogIndexProps) {
     useEffect(() => {
         const timeout = setTimeout(() => {
             if (search.length >= 2) {
-                fetch(`/api/suggest-posts?query=${encodeURIComponent(search)}`)
-                    .then((res) => res.json())
+                axios
+                    .get(route('blog.suggest-posts', { query: search }))
+                    .then((res) => res.data)
                     .then(setSuggestions);
             } else {
                 setSuggestions([]);

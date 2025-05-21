@@ -13,7 +13,7 @@ class HomeController extends Controller
     public function __invoke(Request $request, ?string $locale)
     {
         return Inertia::render('home', [
-            'posts' => $this->repository->getFeaturedArticles(),
+            'posts' => $this->repository->getFeaturedArticles($locale),
         ]);
     }
 }
