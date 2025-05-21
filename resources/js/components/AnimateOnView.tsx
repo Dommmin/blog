@@ -116,17 +116,6 @@ export function AnimateStagger({
     );
 }
 
-/**
- * Komponent do tworzenia prostych animacji CSS dla pojedynczych elementów.
- *
- * @param {Object} props
- * @param {React.ReactNode} props.children - Element do animacji
- * @param {string} props.animation - Nazwana animacja CSS
- * @param {string} props.duration - Czas trwania animacji
- * @param {string} props.delay - Opóźnienie animacji
- * @param {string} props.className - Dodatkowe klasy CSS
- */
-
 type AnimateType = 'pulse' | 'bounce' | 'spin' | 'ping';
 
 interface AnimateProps {
