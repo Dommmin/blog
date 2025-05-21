@@ -69,7 +69,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     <div className="lg:hidden">
                         <Sheet>
                             <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon" className="mr-2 h-[34px] w-[34px]">
+                                <Button variant="ghost" size="icon" className="mr-2 h-[34px] w-[34px]" aria-label="Open navigation menu">
                                     <Menu className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
@@ -194,9 +194,11 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Link href={route('login')} className="group w-8 cursor-pointer">
-                                <LogIn className="!size-5 opacity-80 group-hover:opacity-100" />
-                            </Link>
+                            <div className="ml-auto">
+                                <Link href={route('login', { locale })} className="group w-8 cursor-pointer" aria-label="Login">
+                                    <LogIn className="h-5 w-5" />
+                                </Link>
+                            </div>
                         )}
                     </div>
                 </div>

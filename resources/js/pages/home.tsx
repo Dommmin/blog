@@ -47,21 +47,21 @@ export default function Home({ posts }: { posts: Post[] }) {
                             <div className="bg-primary/10 mx-auto mb-4 w-fit rounded-full p-3">
                                 <CodeIcon className="text-primary h-8 w-8" />
                             </div>
-                            <h3 className="mb-2 text-xl font-semibold">{__('PHP Frameworks')}</h3>
+                            <h2 className="mb-2 text-xl font-semibold">{__('PHP Frameworks')}</h2>
                             <p className="text-muted-foreground">{__('Laravel & Symfony tips, patterns, and architectural insights')}</p>
                         </Card>
                         <Card className="border-primary/20 p-6 text-center transition-all hover:shadow-md">
                             <div className="bg-primary/10 mx-auto mb-4 w-fit rounded-full p-3">
                                 <ServerIcon className="text-primary h-8 w-8" />
                             </div>
-                            <h3 className="mb-2 text-xl font-semibold">{__('DevOps')}</h3>
+                            <h2 className="mb-2 text-xl font-semibold">{__('DevOps')}</h2>
                             <p className="text-muted-foreground">{__('CI/CD pipelines, containerization')}</p>
                         </Card>
                         <Card className="border-primary/20 p-6 text-center transition-all hover:shadow-md">
                             <div className="bg-primary/10 mx-auto mb-4 w-fit rounded-full p-3">
                                 <GitBranchIcon className="text-primary h-8 w-8" />
                             </div>
-                            <h3 className="mb-2 text-xl font-semibold">{__('Best Practices')}</h3>
+                            <h2 className="mb-2 text-xl font-semibold">{__('Best Practices')}</h2>
                             <p className="text-muted-foreground">{__('Clean code, testing strategies, and development workflows')}</p>
                         </Card>
                     </div>
