@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('token')->nullable();
             $table->timestamp('confirmed_at')->nullable();
+            $table->string('locale', 2)->default('en');
             $table->timestamps();
         });
     }

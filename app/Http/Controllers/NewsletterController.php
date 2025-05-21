@@ -2,31 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\SendNewsletterConfirmationJob;
+use App\Http\Requests\NewsletterSubscribeRequest;
+use App\Mail\NewsletterConfirmationMail;
+use App\Mail\NewsletterConfirmedMail;
+use App\Mail\UnsubscribedMail;
 use App\Models\NewsletterSubscriber;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class NewsletterController extends Controller
 {
-    public function subscribe(Request $request)
+    public function subscribe(NewsletterSubscribeRequest $request, string $locale)
     {
-        $data = $request->validate([
-            'email' => 'required|email:rfc,dns|unique:newsletter_subscribers,email',
-        ]);
-
-        $token = NewsletterSubscriber::generateToken();
         $subscriber = NewsletterSubscriber::create([
-            'email' => $data['email'],
-            'token' => $token,
+            'email' => $request->get('email'),
+            'token' => NewsletterSubscriber::generateToken(),
         ]);
 
-        // Wyślij maila z linkiem potwierdzającym
-        dispatch(new SendNewsletterConfirmationJob($subscriber));
+        Mail::to($subscriber->email)->queue(new NewsletterConfirmationMail($subscriber, $locale));
 
         return back()->with('success', 'Check your email to confirm your subscription.');
     }
 
-    public function confirm($token)
+    public function confirm(string $locale, string $token)
     {
         $subscriber = NewsletterSubscriber::where('token', $token)->firstOrFail();
         if ($subscriber->isConfirmed()) {
@@ -37,6 +34,23 @@ class NewsletterController extends Controller
             'token' => null,
         ]);
 
-        return redirect('/')->with('success', 'Subscription confirmed!');
+        Mail::to($subscriber->email)->send(new NewsletterConfirmedMail($subscriber, $locale));
+
+        return to_route('home')->with('success', 'Subscription confirmed!');
+    }
+
+    public function unsubscribe(string $locale, string $email)
+    {
+        $subscriber = NewsletterSubscriber::where('email', $email)->firstOrFail();
+
+        if (!$subscriber->isConfirmed()) {
+            return to_route('home')->with('error', 'This subscription is not confirmed.');
+        }
+
+        $subscriber->delete();
+
+        Mail::to($subscriber->email)->send(new UnsubscribedMail($subscriber, $locale));
+
+        return to_route('home')->with('success', __('You have successfully unsubscribed from our newsletter.'));
     }
 }

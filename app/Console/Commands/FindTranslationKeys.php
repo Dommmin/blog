@@ -17,6 +17,7 @@ class FindTranslationKeys extends Command
         $paths = [
             app_path(),
             resource_path('js'),
+            resource_path('views'),
         ];
 
         foreach ($paths as $path) {
