@@ -23,9 +23,11 @@ type FormData = {
     published_at: Date | null;
     category_id: string;
     tags: string[];
+    language: string;
+    translation_key: string | null;
 };
 
-export default function Create({ categories, tags }: { categories: Category[]; tags: DataItem[] }) {
+export default function Create({ categories, tags, translationKey }: { categories: Category[]; tags: DataItem[]; translationKey?: string }) {
     const { appearance } = useAppearance();
     const { __, locale } = useTranslations();
 
@@ -35,6 +37,8 @@ export default function Create({ categories, tags }: { categories: Category[]; t
         content: '',
         published_at: new Date(),
         tags: [],
+        language: locale,
+        translation_key: translationKey || null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -61,6 +65,33 @@ export default function Create({ categories, tags }: { categories: Category[]; t
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="language">{__('Language')}</Label>
+                                    <Select value={data.language} onValueChange={(value) => setData('language', value)}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder={__('Select a language')} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="en">English</SelectItem>
+                                            <SelectItem value="pl">Polski</SelectItem>
+                                            <SelectItem value="de">Deutsch</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.language && <p className="text-sm text-red-500">{errors.language}</p>}
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="translation_key">{__('Translation Key')}</Label>
+                                    <Input
+                                        id="translation_key"
+                                        type="text"
+                                        value={data.translation_key || ''}
+                                        onChange={(e) => setData('translation_key', e.target.value)}
+                                        placeholder={__('Enter a unique key to link translations')}
+                                    />
+                                    {errors.translation_key && <p className="text-sm text-red-500">{errors.translation_key}</p>}
+                                </div>
+
                                 <div className="grid gap-2">
                                     <Label htmlFor="category_id">{__('Category')}</Label>
                                     <Select value={data.category_id} onValueChange={(value) => setData('category_id', value)}>

@@ -26,6 +26,8 @@ interface Post {
     id: number;
     title: string;
     slug: string;
+    language: string;
+    translation_key: string;
     published_at: string | null;
     created_at: string;
 }
@@ -55,6 +57,19 @@ export default function Index({ posts, flash }: PostsPageProps) {
         router.delete(route('admin.posts.destroy', { post: id }));
     };
 
+    const getLanguageLabel = (language: string) => {
+        switch (language) {
+            case 'en':
+                return 'English';
+            case 'pl':
+                return 'Polish';
+            case 'de':
+                return 'German';
+            default:
+                return language;
+        }
+    };
+
     return (
         <AdminLayout>
             <Head title={__('Manage Posts')} />
@@ -76,6 +91,7 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
+                                            <TableHead>{__('Lang')}</TableHead>
                                             <TableHead>{__('Title')}</TableHead>
                                             <TableHead>{__('Status')}</TableHead>
                                             <TableHead>{__('Created')}</TableHead>
@@ -85,6 +101,9 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                     <TableBody>
                                         {posts.data.map((post) => (
                                             <TableRow key={post.id}>
+                                                <TableCell>
+                                                    <div className="font-medium">{getLanguageLabel(post.language)}</div>
+                                                </TableCell>
                                                 <TableCell>
                                                     <div className="font-medium">{post.title}</div>
                                                     <div className="text-muted-foreground text-sm">{post.slug}</div>
@@ -98,7 +117,7 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('blog.show', { post: post.slug, locale: locale })} prefetch="hover">
+                                                            <Link href={route('blog.show', { post: post.slug, locale: post.language })} prefetch="hover">
                                                                 <EyeIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>

@@ -19,10 +19,11 @@ class PostRepository implements PostRepositoryInterface
         });
     }
 
-    public function find(string $slug): ?Post
+    public function find(string $slug, string $language = 'en'): ?Post
     {
-        return Cache::tags('posts')->rememberForever('post.' . $slug, function () use ($slug) {
+        return Cache::tags('posts')->rememberForever("post.{$slug}.{$language}", function () use ($slug, $language) {
             return Post::where('slug', $slug)
+                ->where('language', $language)
                 ->withCount('comments')
                 ->first();
         });
@@ -60,27 +61,29 @@ class PostRepository implements PostRepositoryInterface
 
     public function getPostsForBlog(array $filters): LengthAwarePaginator
     {
-        $search = $filters['search'] ?? null;
-        $sort = $filters['sort'] ?? 'latest';
-        $perPage = 6;
+        $query = Post::query()
+            ->with(['author', 'category', 'tags'])
+            ->published()
+            ->language(app()->getLocale());
 
-        $query = Post::published()
-            ->with(['category', 'tags'])
-            ->withCount('comments');
-
-        if ($search && config('scout.enabled')) {
-            $ids = Post::search($search)->get()->pluck('id');
-            $query = $query->whereIn('id', $ids);
+        if (isset($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('title', 'like', "%{$filters['search']}%")
+                    ->orWhere('content', 'like', "%{$filters['search']}%");
+            });
         }
 
-        $query = match ($sort) {
-            'oldest' => $query->orderBy('published_at', 'asc'),
-            'title_asc' => $query->orderBy('title', 'asc'),
-            'title_desc' => $query->orderBy('title', 'desc'),
-            default => $query->orderBy('published_at', 'desc'),
-        };
+        if (isset($filters['sort'])) {
+            match ($filters['sort']) {
+                'latest' => $query->latest('published_at'),
+                'oldest' => $query->oldest('published_at'),
+                default => $query->latest('published_at'),
+            };
+        } else {
+            $query->latest('published_at');
+        }
 
-        return $query->paginate($perPage)->withQueryString();
+        return $query->paginate(12);
     }
 
     public function getFeaturedArticles()

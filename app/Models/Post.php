@@ -48,6 +48,12 @@ class Post extends Model implements CacheInterface
         return $this->hasMany(Comment::class);
     }
 
+    public function translations(): HasMany
+    {
+        return $this->hasMany(Post::class, 'translation_key', 'translation_key')
+            ->where('id', '!=', $this->id);
+    }
+
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('published_at', '<=', now())
@@ -58,6 +64,11 @@ class Post extends Model implements CacheInterface
     {
         return $query->whereNull('published_at')
             ->orWhere('published_at', '>', now());
+    }
+
+    public function scopeLanguage(Builder $query, string $language): Builder
+    {
+        return $query->where('language', $language);
     }
 
     public function isPublished(): bool
@@ -75,6 +86,16 @@ class Post extends Model implements CacheInterface
         return $this->published_at->format('F j, Y');
     }
 
+    public function getTranslation(string $language): ?self
+    {
+        return $this->translations()->where('language', $language)->first();
+    }
+
+    public function hasTranslation(string $language): bool
+    {
+        return $this->translations()->where('language', $language)->exists();
+    }
+
     public static function getSuggestions(string $query)
     {
         if (! config('scout.enabled')) {
@@ -83,7 +104,7 @@ class Post extends Model implements CacheInterface
                 ->where('published_at', '<=', now())
                 ->take(5)
                 ->get()
-                ->map(fn ($post) => [
+                ->map(fn($post) => [
                     'id' => $post->id,
                     'title' => $post->title,
                 ])
@@ -93,8 +114,8 @@ class Post extends Model implements CacheInterface
         return self::search($query)
             ->take(5)
             ->get()
-            ->filter(fn ($post) => $post->published_at < now())
-            ->map(fn ($post) => [
+            ->filter(fn($post) => $post->published_at < now())
+            ->map(fn($post) => [
                 'id' => $post->id,
                 'title' => $post->title,
             ])
@@ -129,6 +150,7 @@ class Post extends Model implements CacheInterface
             'category_name' => $this->category->name ?? '',
             'tags_names' => $this->tags->pluck('name')->toArray(),
             'published_at' => $this->published_at->timestamp,
+            'language' => $this->language,
         ];
     }
 

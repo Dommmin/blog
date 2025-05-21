@@ -9,7 +9,7 @@ interface PostRepositoryInterface
 {
     public function getPaginated(int $perPage = 10): LengthAwarePaginator;
 
-    public function find(string $slug): ?Post;
+    public function find(string $slug, string $language = 'en'): ?Post;
 
     public function create(array $data): Post;
 
@@ -18,4 +18,6 @@ interface PostRepositoryInterface
     public function delete(Post $post): bool;
 
     public function syncTags(Post $post, array $tagIds): void;
+
+    public function getPostsForBlog(array $filters): LengthAwarePaginator;
 }

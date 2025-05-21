@@ -23,7 +23,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <div className="mb-8 text-center">
                         <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                            {__('Exploring')} <span className="text-primary">{__('PHP')}</span> & <span className="text-primary">{__('DevOps')}</span>
+                            <span className="text-primary">{__('PHP')}</span> & <span className="text-primary">{__('DevOps')}</span>
                         </h1>
                         <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
                             {__('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions')}

@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
+use App\Rules\UniqueTranslationKey;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePostRequest extends FormRequest
 {
@@ -32,6 +35,8 @@ class StorePostRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'],
             'tags' => ['array'],
             'tags.*' => ['exists:tags,id'],
+            'language' => ['required', 'string', Rule::in(available_locales())],
+            'translation_key' => ['nullable', 'string', new UniqueTranslationKey()],
         ];
     }
 
@@ -39,6 +44,8 @@ class StorePostRequest extends FormRequest
     {
         return [
             'category_id.required' => 'The category field is required',
+            'language.required' => 'The language field is required',
+            'language.in' => 'The language must be one of: ' . implode(', ', available_locales()),
         ];
     }
 }
