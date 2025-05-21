@@ -55,17 +55,17 @@ export default function About() {
                             <div className="prose dark:prose-invert max-w-none">
                                 <p>
                                     {__(
-                                        "I'm a passionate PHP developer with experience in Laravel and Symfony frameworks. With 3 years of professional experience, I specialize in building robust, scalable web applications and implementing DevOps practices to streamline development workflows.",
+                                        "I'm a passionate PHP developer with 3 years of professional experience in Laravel and Symfony frameworks. I specialize in building robust web applications and implementing DevOps practices. I also have extensive experience in modern JavaScript development, working with React and Vue.js to create responsive and interactive user interfaces.",
                                     )}
                                 </p>
                                 <p>
                                     {__(
-                                        'My technical journey started with PHP, but quickly evolved to embrace modern development practices, containerization, CI/CD pipelines. I believe in clean code, thorough testing, and continuous improvement.',
+                                        'My technical journey started with PHP, but quickly evolved to embrace modern development practices, containerization, CI/CD pipelines, and frontend technologies. I believe in clean code, thorough testing, and continuous improvement. My full-stack approach allows me to build complete solutions from database to user interface.',
                                     )}
                                 </p>
                                 <p>
                                     {__(
-                                        "Through this blog, I share my experiences, best practices, and insights into PHP development and DevOps methodologies. Whether you're a beginner or an experienced developer, I hope you'll find valuable content that helps you in your own technical journey.",
+                                        "Through this blog, I share my experiences, best practices, and insights into PHP development, JavaScript frameworks, and DevOps methodologies. Whether you're a beginner or an experienced developer, I hope you'll find valuable content that helps you in your own technical journey.",
                                     )}
                                 </p>
                             </div>
@@ -89,9 +89,10 @@ export default function About() {
                             <div className="bg-primary/10 mb-4 flex h-12 w-12 items-center justify-center rounded-full">
                                 <CodeIcon className="text-primary h-6 w-6" />
                             </div>
-                            <h3 className="mb-2 text-xl font-semibold">{__('Backend Development')}</h3>
+                            <h3 className="mb-2 text-xl font-semibold">{__('Fullstack Development')}</h3>
                             <ul className="text-muted-foreground space-y-2">
                                 <li>{__('PHP (Laravel, Symfony)')}</li>
+                                <li>{__('Javascript (React, Vue)')}</li>
                                 <li>{__('API Design & Development')}</li>
                                 <li>{__('Performance Optimization')}</li>
                                 <li>{__('Testing (PHPUnit, Pest)')}</li>
@@ -105,7 +106,8 @@ export default function About() {
                             <h3 className="mb-2 text-xl font-semibold">{__('DevOps')}</h3>
                             <ul className="text-muted-foreground space-y-2">
                                 <li>{__('Docker, Linux')}</li>
-                                <li>{__('CI/CD (GitHub Actions, GitLab CI)')}</li>
+                                <li>{__('Continuous Integration & Deployment')}</li>
+                                <li>{__('(GitHub Actions, GitLab CI)')}</li>
                             </ul>
                         </Card>
                         <Card className="p-6">
@@ -129,11 +131,11 @@ export default function About() {
                     <div className="border-primary/20 relative border-l pl-8">
                         {[
                             {
-                                year: __('2020 - Present'),
+                                year: __('2022 - Present'),
                                 role: __('PHP Developer & DevOps Engineer'),
                                 company: __('Ideo Sp. z o.o.'),
                                 description: __(
-                                    'Leading backend development with Laravel and implementing DevOps practices to streamline development workflows.',
+                                    'Responsible for developing and maintaining web applications using Laravel and React. Implementing DevOps practices including Docker containerization, CI/CD pipelines, and automated testing. Leading technical decisions and mentoring junior developers. Optimizing application performance and ensuring code quality through code reviews and best practices.'
                                 ),
                             },
                         ].map((item, index) => (
