@@ -144,5 +144,8 @@
     "Newsletter Confirmation Mail": "Potwierdzenie subskrypcji newslettera",
     "Newsletter Confirmed": "Subskrypcja newslettera potwierdzona",
     "A new article has been published: \" :title\"": "Opublikowano nowy artykuł: \" :title\"",
-    "A new article has been published on the blog!": "Na blogu pojawił się nowy artykuł!"
+    "A new article has been published on the blog!": "Na blogu pojawił się nowy artykuł!",
+    "This email was sent to": "Ten email został wysłany do",
+    "If you did not request this email, you can safely ignore it.": "Jeśli nie spodziewałeś się tego maila, możesz go zignorować.",
+    "All rights reserved.": "Wszelkie prawa zastrzeżone."
 }
