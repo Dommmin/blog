@@ -13,7 +13,7 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnimateOnView } from '@/components/AnimateOnView';
 
 export default function Show({ post, comments }: { post: Post; comments: CommentData }) {
@@ -33,16 +33,19 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
         post: submitForm,
         processing,
         errors,
+        reset,
     } = useForm({
         content: '',
         post_id: post.id,
     });
 
-    async function handleCommentSubmit(event: React.FormEvent) {
+    const handleCommentSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         submitForm(route('blog.comments.store', { post: post.id, locale: locale }), {
             preserveScroll: true,
-            onSuccess: () => setData('content', ''),
+            onSuccess: () => {
+                reset();
+            }
         });
     }
 
