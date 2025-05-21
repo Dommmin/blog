@@ -135,7 +135,7 @@ export default function About() {
                                 role: __('PHP Developer & DevOps Engineer'),
                                 company: __('Ideo Sp. z o.o.'),
                                 description: __(
-                                    'Responsible for developing and maintaining web applications using Laravel and React. Implementing DevOps practices including Docker containerization, CI/CD pipelines, and automated testing. Leading technical decisions and mentoring junior developers. Optimizing application performance and ensuring code quality through code reviews and best practices.'
+                                    'Responsible for developing and maintaining web applications using Laravel and React. Implementing DevOps practices including Docker containerization, CI/CD pipelines, and automated testing. Leading technical decisions and mentoring junior developers. Optimizing application performance and ensuring code quality through code reviews and best practices.',
                                 ),
                             },
                         ].map((item, index) => (
