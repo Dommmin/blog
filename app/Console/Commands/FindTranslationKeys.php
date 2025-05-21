@@ -23,11 +23,18 @@ class FindTranslationKeys extends Command
             $this->scanDirectory($path, $keys);
         }
 
-        $this->info('Found '.count($keys).' unique translation keys:');
+        $this->info('Found ' . count($keys) . ' unique translation keys:');
         sort($keys);
 
         foreach ($keys as $key) {
             $this->line($key);
+        }
+
+        // Dodajemy opcję zapisania kluczy do pliku tekstowego
+        if ($this->confirm('Would you like to export these keys to a text file for review?')) {
+            $filename = storage_path('translation_keys.txt');
+            File::put($filename, implode(PHP_EOL, $keys));
+            $this->info("Keys exported to $filename");
         }
 
         if ($this->confirm('Would you like to add missing keys to language files?')) {
@@ -55,43 +62,46 @@ class FindTranslationKeys extends Command
 
     protected function extractTranslationKeys($contents, &$keys)
     {
-        // Szukamy funkcji __() z pojedynczymi cudzysłowami
-        if (preg_match_all("/__\('((?:\\\\.|[^'])*?)'/", $contents, $matches)) {
+        // Usuwamy znaki nowej linii w ciągach wieloliniowych, aby ułatwić ich przetwarzanie
+        $contents = preg_replace('/\s*\n\s*/', ' ', $contents);
+
+        // Szukamy funkcji __() z pojedynczymi cudzysłowami - obsługa wieloliniowości
+        if (preg_match_all("/__\(\s*'((?:\\\\.|[^'])*?)'\s*[,)]/s", $contents, $matches)) {
             foreach ($matches[1] as $match) {
                 $keys[] = $this->unescapeString($match);
             }
         }
 
-        // Szukamy funkcji __() z podwójnymi cudzysłowami
-        if (preg_match_all('/__\("((?:\\\\.|[^"])*?)"/', $contents, $matches)) {
+        // Szukamy funkcji __() z podwójnymi cudzysłowami - obsługa wieloliniowości
+        if (preg_match_all('/__\(\s*"((?:\\\\.|[^"])*?)"\s*[,)]/s', $contents, $matches)) {
             foreach ($matches[1] as $match) {
                 $keys[] = $this->unescapeString($match);
             }
         }
 
-        // Szukamy funkcji trans() z pojedynczymi cudzysłowami
-        if (preg_match_all("/trans\('((?:\\\\.|[^'])*?)'/", $contents, $matches)) {
+        // Szukamy funkcji trans() z pojedynczymi cudzysłowami - obsługa wieloliniowości
+        if (preg_match_all("/trans\(\s*'((?:\\\\.|[^'])*?)'\s*[,)]/s", $contents, $matches)) {
             foreach ($matches[1] as $match) {
                 $keys[] = $this->unescapeString($match);
             }
         }
 
-        // Szukamy funkcji trans() z podwójnymi cudzysłowami
-        if (preg_match_all('/trans\("((?:\\\\.|[^"])*?)"/', $contents, $matches)) {
+        // Szukamy funkcji trans() z podwójnymi cudzysłowami - obsługa wieloliniowości
+        if (preg_match_all('/trans\(\s*"((?:\\\\.|[^"])*?)"\s*[,)]/s', $contents, $matches)) {
             foreach ($matches[1] as $match) {
                 $keys[] = $this->unescapeString($match);
             }
         }
 
-        // Szukamy wywołań __() w komponentach React z pojedynczymi cudzysłowami
-        if (preg_match_all("/\{__\('((?:\\\\.|[^'])*?)'\)\}/", $contents, $matches)) {
+        // Szukamy wywołań __() w komponentach React z pojedynczymi cudzysłowami - obsługa wieloliniowości
+        if (preg_match_all("/\{__\(\s*'((?:\\\\.|[^'])*?)'\s*[,)]\s*\)}/s", $contents, $matches)) {
             foreach ($matches[1] as $match) {
                 $keys[] = $this->unescapeString($match);
             }
         }
 
-        // Szukamy wywołań __() w komponentach React z podwójnymi cudzysłowami
-        if (preg_match_all('/\{__\("((?:\\\\.|[^"])*?)"\)\}/', $contents, $matches)) {
+        // Szukamy wywołań __() w komponentach React z podwójnymi cudzysłowami - obsługa wieloliniowości
+        if (preg_match_all('/\{__\(\s*"((?:\\\\.|[^"])*?)"\s*[,)]\s*\)}/s', $contents, $matches)) {
             foreach ($matches[1] as $match) {
                 $keys[] = $this->unescapeString($match);
             }
@@ -101,7 +111,7 @@ class FindTranslationKeys extends Command
     /**
      * Poprawnie obsługuje odkodowanie znaków escapowanych
      *
-     * @param  string  $string
+     * @param string $string
      * @return string
      */
     protected function unescapeString($string)

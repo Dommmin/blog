@@ -50,7 +50,7 @@ export default function About() {
                             </div>
                         </div>
                         <div>
-                            <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-4xl">{__('Dominik Jasiński')}</h1>
+                            <h1 className="mb-2 text-3xl font-bold tracking-tight md:text-4xl">Dominik Jasiński</h1>
                             <p className="text-muted-foreground mb-4 text-xl">{__('PHP Developer & DevOps Engineer')}</p>
                             <div className="prose dark:prose-invert max-w-none">
                                 <p>

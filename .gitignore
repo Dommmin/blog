@@ -31,3 +31,5 @@ docker/nginx/log/
 supervisord.log
 supervisord.pid
 .composer/
+
+storage/translation_keys.txt

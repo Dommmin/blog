@@ -91,7 +91,7 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>{__('Lang')}</TableHead>
+                                            <TableHead>{__('Language')}</TableHead>
                                             <TableHead>{__('Title')}</TableHead>
                                             <TableHead>{__('Status')}</TableHead>
                                             <TableHead>{__('Created')}</TableHead>
