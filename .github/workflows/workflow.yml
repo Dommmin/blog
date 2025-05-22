@@ -118,7 +118,11 @@ jobs:
 
       - name: Build assets (including SSR)
         run: |
+          # Build client assets first
+          npm run build
+          # Then build SSR
           npm run build:ssr
+          # Copy assets to SSR directory
           mkdir -p bootstrap/ssr/assets
           cp -r public/build/assets/* bootstrap/ssr/assets/
 
@@ -130,6 +134,10 @@ jobs:
           fi
           if [ ! -d "bootstrap/ssr/assets" ]; then
             echo "❌ SSR assets directory not found!"
+            exit 1
+          fi
+          if [ ! -f "public/build/manifest.json" ]; then
+            echo "❌ Vite manifest not found!"
             exit 1
           fi
           echo "✅ SSR build found"
