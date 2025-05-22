@@ -105,16 +105,6 @@ export default defineConfig({
             '~': resolve(__dirname, 'resources'),
         },
     },
-    build: {
-        ssr: true,
-        rollupOptions: {
-            input: 'resources/js/ssr.tsx',
-            output: {
-                dir: 'bootstrap/ssr',
-                format: 'esm',
-            },
-        },
-    },
     server: {
         host: '0.0.0.0',
         port: 5173,
