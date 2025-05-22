@@ -3,6 +3,7 @@
 set -e
 set -o pipefail
 
+# Configuration
 APP_USER="deployer"
 APP_GROUP="www-data"
 APP_BASE="/home/$APP_USER/laravel"
@@ -13,20 +14,33 @@ NOW=$(date +%Y-%m-%d-%H%M%S)-$(openssl rand -hex 3)
 RELEASE_DIR="$RELEASES_DIR/$NOW"
 ARCHIVE_NAME="release.tar.gz"
 
+# Load NVM
+export NVM_DIR="/home/$APP_USER/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Check Node.js and PM2
+echo "▶️ Checking Node.js..."
+node -v || { echo "❌ Node.js not found"; exit 1; }
+
+echo "▶️ Checking PM2..."
+if ! command -v pm2 &> /dev/null; then
+    echo "⚠️ PM2 not found, installing..."
+    npm install -g pm2
+fi
+pm2 --version
+
 echo "▶️ Create directories..."
 mkdir -p "$RELEASES_DIR" "$SHARED_DIR/storage" "$SHARED_DIR/bootstrap_cache"
-
-mkdir -p "$SHARED_DIR/storage/framework/views"
-mkdir -p "$SHARED_DIR/storage/framework/cache"
-mkdir -p "$SHARED_DIR/storage/framework/sessions"
+mkdir -p "$SHARED_DIR/storage/framework/"{views,cache,sessions}
 mkdir -p "$SHARED_DIR/storage/logs"
 
 echo "▶️ Unpacking release..."
-mkdir "$RELEASE_DIR"
+mkdir -p "$RELEASE_DIR"
 tar -xzf "$APP_BASE/$ARCHIVE_NAME" -C "$RELEASE_DIR"
-rm "$APP_BASE/$ARCHIVE_NAME"
+rm -f "$APP_BASE/$ARCHIVE_NAME"
 
-echo "▶️ Symlink storage..."
+echo "▶️ Setting up symlinks..."
 rm -rf "$RELEASE_DIR/storage"
 ln -s "$SHARED_DIR/storage" "$RELEASE_DIR/storage"
 
@@ -47,56 +61,61 @@ fi
 
 # Reset Redis cache if available
 if command -v redis-cli &> /dev/null; then
-    echo "▶️ Clearing Redis cache..."
+    echo "▶️ Flushing Redis cache..."
     redis-cli FLUSHALL || true
 fi
 
 php artisan optimize
 php artisan storage:link
 
-echo "▶️ Migrating database..."
+echo "▶️ Running database migrations..."
 php artisan migrate --force
 
-#echo "▶️ Checking SSR build..."
-#if [ ! -f "$RELEASE_DIR/bootstrap/ssr/ssr.js" ]; then
-#    echo "❌ SSR build not found! Check your build process."
-#    exit 1
-#fi
-#
-#echo "▶️ Managing SSR server with PM2..."
-## Stop current SSR server gracefully
-#pm2 stop inertia-ssr 2>/dev/null || echo "No previous SSR server to stop"
+echo "▶️ Verifying SSR build..."
+if [ ! -f "$RELEASE_DIR/bootstrap/ssr/ssr.js" ]; then
+    echo "❌ SSR build not found!"
+    exit 1
+fi
 
-# Update symlink first
-echo "▶️ Symlink current..."
+echo "▶️ Managing SSR server with PM2..."
+# Stop existing instance if running
+pm2 delete inertia-ssr 2>/dev/null || true
+
+# Update current symlink before starting
+echo "▶️ Updating current symlink..."
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 
-# Start SSR server from new release
-#cd "$CURRENT_LINK"
-#pm2 start ecosystem.config.ts 2>/dev/null || pm2 reload inertia-ssr
-#
-## Wait a moment for SSR to start
-#sleep 3
-#
-## Verify SSR is running
-#echo "▶️ Verifying SSR server..."
-#if ! pm2 describe inertia-ssr &>/dev/null; then
-#    echo "❌ SSR server failed to start!"
-#    exit 1
-#fi
-#
-## Test SSR endpoint
-#if curl -f http://127.0.0.1:13714 &>/dev/null; then
-#    echo "✅ SSR server is responding"
-#else
-#    echo "⚠️ SSR server may not be responding properly"
-#fi
+# Start/Restart SSR server
+cd "$CURRENT_LINK"
+pm2 start ecosystem.config.ts || pm2 reload ecosystem.config.ts
 
-echo "▶️ Cleaning old releases..."
+# Wait for SSR to initialize
+echo "▶️ Waiting for SSR server to start..."
+sleep 5
+
+# Verify SSR process
+if ! pm2 describe inertia-ssr &>/dev/null; then
+    echo "❌ SSR server failed to start!"
+    pm2 logs inertia-ssr --lines 20
+    exit 1
+fi
+
+# Test SSR endpoint
+echo "▶️ Testing SSR endpoint..."
+if curl -fsS http://localhost:13714 &>/dev/null; then
+    echo "✅ SSR server responding"
+else
+    echo "⚠️ SSR server not responding"
+    pm2 logs inertia-ssr --lines 20
+    exit 1
+fi
+
+echo "▶️ Cleaning old releases (keeping 5 latest)..."
 cd "$RELEASES_DIR"
 ls -dt */ | tail -n +6 | xargs -r rm -rf
 
-echo "▶️ PM2 status:"
+echo "▶️ Current deployment status:"
 pm2 list
 
-echo "✅ Deploy finished: $NOW"
+echo "✅ Deployment successful: $NOW"
+exit 0
