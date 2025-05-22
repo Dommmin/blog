@@ -117,12 +117,19 @@ jobs:
         run: npm ci
 
       - name: Build assets (including SSR)
-        run: npm run build:ssr
+        run: |
+          npm run build:ssr
+          mkdir -p bootstrap/ssr/assets
+          cp -r public/build/assets/* bootstrap/ssr/assets/
 
       - name: Verify SSR build
         run: |
           if [ ! -f "bootstrap/ssr/ssr.js" ]; then
             echo "❌ SSR build file not found!"
+            exit 1
+          fi
+          if [ ! -d "bootstrap/ssr/assets" ]; then
+            echo "❌ SSR assets directory not found!"
             exit 1
           fi
           echo "✅ SSR build found"
