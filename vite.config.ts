@@ -101,6 +101,18 @@ export default defineConfig({
     resolve: {
         alias: {
             'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
+            '@': resolve(__dirname, 'resources/js'),
+            '~': resolve(__dirname, 'resources'),
+        },
+    },
+    build: {
+        ssr: true,
+        rollupOptions: {
+            input: 'resources/js/ssr.tsx',
+            output: {
+                dir: 'bootstrap/ssr',
+                format: 'esm',
+            },
         },
     },
     server: {
