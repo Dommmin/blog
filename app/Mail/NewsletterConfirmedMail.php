@@ -5,8 +5,10 @@ namespace App\Mail;
 use App\Models\NewsletterSubscriber;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use URL;
 
 class NewsletterConfirmedMail extends Mailable
 {
@@ -33,6 +35,16 @@ class NewsletterConfirmedMail extends Mailable
 
         return new Envelope(
             subject: __('Newsletter Confirmed'),
+        );
+    }
+
+    public function content()
+    {
+        return new Content(
+            view: 'emails.newsletter-confirmed',
+            with: [
+                'unsubscribeUrl' => URL::signedRoute('newsletter.unsubscribe', ['locale' => $this->locale, 'email' => $this->subscriber->email]),
+            ],
         );
     }
 

@@ -26,10 +26,16 @@ class NewsletterController extends Controller
 
     public function confirm(string $locale, string $token)
     {
-        $subscriber = NewsletterSubscriber::where('token', $token)->firstOrFail();
+        $subscriber = NewsletterSubscriber::where('token', $token)->first();
+
+        if (!$subscriber) {
+            return redirect('/')->with('error', 'Invalid token!');
+        }
+
         if ($subscriber->isConfirmed()) {
             return redirect('/')->with('success', 'You are already subscribed!');
         }
+
         $subscriber->update([
             'confirmed_at' => now(),
             'token' => null,
