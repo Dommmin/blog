@@ -6,7 +6,11 @@ import { type RouteName, route } from 'ziggy-js';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-createServer((page) =>
+console.log('SSR Server starting...');
+
+createServer((page) => {
+    console.log('SSR rendering page:', page.component);
+
     createInertiaApp({
         page,
         render: ReactDOMServer.renderToString,
