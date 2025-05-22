@@ -106,7 +106,7 @@ export default defineConfig({
         },
     },
     ssr: {
-        noExternal: ['react', 'react-dom', '@inertiajs/react'],
+        noExternal: true,
     },
     server: {
         host: '0.0.0.0',
