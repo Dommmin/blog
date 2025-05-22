@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {{-- Preload critical assets --}}
+    <link rel="preload" href="{{ mix('css/app.css') }}" as="style">
+    <link rel="preload" href="{{ mix('js/app.js') }}" as="script">
+    <link rel="preload" href="{{ asset('fonts/Inter-var.woff2') }}" as="font" type="font/woff2" crossorigin>
+
     {{-- Inline script to detect system dark mode preference and apply it immediately --}}
     <script>
         (function() {
@@ -33,7 +38,7 @@
 
         /* Critical CSS for initial render */
         .text-muted-foreground {
-            color: oklch(0.5 0 0);
+            color: oklch(0.35 0 0);
         }
 
         .mx-auto {
@@ -54,6 +59,15 @@
         .font-sans {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
+
+        /* Add font-display swap for better performance */
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 100 900;
+            font-display: swap;
+            src: url('/fonts/Inter-var.woff2') format('woff2');
+        }
     </style>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -63,8 +77,11 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="{{ config('app.name', 'Laravel') }}">
+
+    {{-- Add resource hints --}}
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="Technology and Programming Articles - Learn about PHP, Laravel, Symfony, JavaScript, and DevOps practices.">
