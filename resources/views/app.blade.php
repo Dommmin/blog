@@ -38,7 +38,7 @@
 
         /* Critical CSS for initial render */
         .text-muted-foreground {
-            color: oklch(0.35 0 0);
+            color: oklch(0.5 0 0);
         }
 
         .mx-auto {
