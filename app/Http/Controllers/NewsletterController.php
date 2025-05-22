@@ -41,7 +41,7 @@ class NewsletterController extends Controller
             'token' => null,
         ]);
 
-        Mail::to($subscriber->email)->send(new NewsletterConfirmedMail($subscriber, $locale));
+        Mail::to($subscriber->email)->queue(new NewsletterConfirmedMail($subscriber, $locale));
 
         return to_route('home')->with('success', 'Subscription confirmed!');
     }
@@ -56,7 +56,7 @@ class NewsletterController extends Controller
 
         $subscriber->delete();
 
-        Mail::to($subscriber->email)->send(new UnsubscribedMail($subscriber, $locale));
+        Mail::to($subscriber->email)->queue(new UnsubscribedMail($subscriber, $locale));
 
         return to_route('home')->with('success', __('You have successfully unsubscribed from our newsletter.'));
     }
