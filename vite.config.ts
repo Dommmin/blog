@@ -105,6 +105,18 @@ export default defineConfig({
             '~': resolve(__dirname, 'resources'),
         },
     },
+    build: {
+        ssr: true,
+        rollupOptions: {
+            output: {
+                format: 'esm',
+                entryFileNames: 'ssr.js',
+            },
+        },
+    },
+    ssr: {
+        noExternal: ['react', 'react-dom', '@inertiajs/react'],
+    },
     server: {
         host: '0.0.0.0',
         port: 5173,
