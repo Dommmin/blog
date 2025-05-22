@@ -103,8 +103,8 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Build assets
-        run: npm run build
+      - name: Build assets (including SSR)
+        run: npm run build:ssr
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -116,9 +116,16 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --prefer-dist --no-interaction --no-progress
 
+      - name: Verify SSR build
+        run: |
+          if [ ! -f "bootstrap/ssr/ssr.js" ]; then
+            echo "❌ SSR build file not found!"
+            exit 1
+          fi
+          echo "✅ SSR build found"
+
       - name: Create release archive
         run: |
-          # Utwórz folder tymczasowy o nazwie "release" i skopiuj do niego projekt bez niepotrzebnych katalogów
           mkdir release
           shopt -s extglob
           cp -r !(release|.git|tests|node_modules|release.tar.gz) release/
