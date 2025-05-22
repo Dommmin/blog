@@ -19,15 +19,11 @@ export NVM_DIR="/home/$APP_USER/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-echo "▶️ Checking Node.js..."
+echo "▶️ Node.js version:"
 node -v || { echo "❌ Node.js not found"; exit 1; }
 
-echo "▶️ Checking PM2..."
-if ! command -v pm2 &> /dev/null; then
-    echo "⚠️ PM2 not found, installing..."
-    npm install -g pm2
-fi
-pm2 --version
+echo "▶️ PM2 version:"
+pm2 --version || { echo "❌ PM2 not found"; exit 1; }
 
 echo "▶️ Create directories..."
 mkdir -p "$RELEASES_DIR" "$SHARED_DIR/storage" "$SHARED_DIR/bootstrap_cache"
@@ -77,34 +73,28 @@ if [ ! -f "$RELEASE_DIR/bootstrap/ssr/ssr.js" ]; then
 fi
 
 echo "▶️ Managing SSR server with PM2..."
-if [ ! -f "$RELEASE_DIR/ecosystem.config.js" ] && [ ! -f "$RELEASE_DIR/ecosystem.config.ts" ]; then
-    echo "❌ PM2 ecosystem file not found!"
-    exit 1
-fi
-
+# Force PM2 to use Node.js instead of Bun
 export PM2_RUNTIME='node'
 
-pm2 delete inertia-ssr 2>/dev/null || true
+# Check existing process
+pm2 describe inertia-ssr >/dev/null 2>&1 && {
+    echo "🔄 Reloading existing SSR server..."
+    pm2 reload inertia-ssr --update-env
+} || {
+    echo "🆕 Starting new SSR server..."
+    cd "$RELEASE_DIR"
+    pm2 start ecosystem.config.ts --update-env
+}
 
+# Update symlink after successful PM2 operation
 echo "▶️ Updating current symlink..."
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 
-cd "$CURRENT_LINK"
-if [ -f "ecosystem.config.ts" ]; then
-    pm2 start ecosystem.config.ts
-elif [ -f "ecosystem.config.js" ]; then
-    pm2 start ecosystem.config.js
-else
-    echo "❌ No PM2 ecosystem file found!"
-    exit 1
-fi
-
-# Wait for SSR to initialize
 echo "▶️ Waiting for SSR server to start..."
 sleep 5
 
 # Verify SSR process
-if ! pm2 describe inertia-ssr &>/dev/null; then
+if ! pm2 describe inertia-ssr >/dev/null 2>&1; then
     echo "❌ SSR server failed to start!"
     pm2 logs inertia-ssr --lines 20
     exit 1
@@ -112,7 +102,7 @@ fi
 
 # Test SSR endpoint
 echo "▶️ Testing SSR endpoint..."
-if curl -fsS http://localhost:13714 &>/dev/null; then
+if curl -fsS http://localhost:13714 >/dev/null 2>&1; then
     echo "✅ SSR server responding"
 else
     echo "⚠️ SSR server not responding"
