@@ -62,7 +62,6 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      # Buduj assety dla testów
       - name: Build assets for tests
         run: npm run build
 

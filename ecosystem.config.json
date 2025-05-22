@@ -1,23 +1,19 @@
 {
     "apps": [
         {
-            "name": "project-name",
-            "script": "./bootstrap/ssr/ssr.js",
-            "interpreter": "node",
-            "instances": 2,
-            "exec_mode": "cluster",
-            "env": {
-                "NODE_ENV": "production",
-                "APP_URL": "https://laravel.bieda.it"
-            },
+            "name": "laravel",
+            "script": "artisan",
+            "args": ["inertia:start-ssr"],
+            "instances": 1,
+            "interpreter": "php",
             "wait_ready": true,
             "autorestart": true,
             "max_restarts": 10,
-            "watch": false,
+            "watch": true,
             "error_file": "/home/deployer/laravel/shared/storage/logs/err.log",
             "out_file": "/home/deployer/laravel/shared/storage/logs/out.log",
             "log_file": "/home/deployer/laravel/shared/storage/logs/combined.log",
-            "time": true
+            "time": true,
         }
     ]
 }

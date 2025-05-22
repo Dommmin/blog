@@ -72,7 +72,7 @@ php artisan migrate --force
 
 echo "▶️ Managing SSR server with PM2..."
 # Stop current SSR server gracefully
-$PM2 stop project-name 2>/dev/null || echo "No previous SSR server to stop"
+$PM2 stop laravel 2>/dev/null || echo "No previous SSR server to stop"
 
 # Update symlink first
 echo "▶️ Updating current symlink..."
@@ -81,7 +81,7 @@ ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 # Start SSR server from new release
 cd "$CURRENT_LINK"
 echo "▶️ Starting SSR server..."
-$PM2 delete project-name 2>/dev/null || true
+$PM2 delete laravel 2>/dev/null || true
 $PM2 start ecosystem.config.json
 
 # Save PM2 process list
@@ -92,7 +92,7 @@ sleep 3
 
 # Verify SSR is running
 echo "▶️ Verifying SSR server..."
-if ! $PM2 describe project-name &>/dev/null; then
+if ! $PM2 describe laravel &>/dev/null; then
     echo "❌ SSR server failed to start!"
     exit 1
 fi
