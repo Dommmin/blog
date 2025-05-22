@@ -105,15 +105,6 @@ export default defineConfig({
             '~': resolve(__dirname, 'resources'),
         },
     },
-    build: {
-        ssr: true,
-        rollupOptions: {
-            output: {
-                format: 'esm',
-                entryFileNames: 'ssr.js',
-            },
-        },
-    },
     ssr: {
         noExternal: ['react', 'react-dom', '@inertiajs/react'],
     },

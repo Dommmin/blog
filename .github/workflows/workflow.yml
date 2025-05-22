@@ -62,8 +62,12 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Build assets
+      # Buduj assety dla testów
+      - name: Build assets for tests
         run: npm run build
+
+      - name: Generate Ziggy config for tests
+        run: php artisan ziggy:generate
 
       - name: Run code quality checks
         run: |
@@ -116,31 +120,31 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Build assets (including SSR)
+      - name: Build assets and SSR
         run: |
-          # Build client assets first
+          # Build client assets
           npm run build
-          # Then build SSR
+          # Build SSR
           npm run build:ssr
-          # Copy assets to SSR directory
-          mkdir -p bootstrap/ssr/assets
-          cp -r public/build/assets/* bootstrap/ssr/assets/
 
-      - name: Verify SSR build
+      - name: Verify builds
         run: |
-          if [ ! -f "bootstrap/ssr/ssr.js" ]; then
-            echo "❌ SSR build file not found!"
-            exit 1
-          fi
-          if [ ! -d "bootstrap/ssr/assets" ]; then
-            echo "❌ SSR assets directory not found!"
-            exit 1
-          fi
+          echo "🔍 Checking build artifacts..."
           if [ ! -f "public/build/manifest.json" ]; then
             echo "❌ Vite manifest not found!"
+            ls -la public/build/
             exit 1
           fi
-          echo "✅ SSR build found"
+          if [ ! -f "bootstrap/ssr/ssr.js" ]; then
+            echo "❌ SSR build file not found!"
+            ls -la bootstrap/ssr/
+            exit 1
+          fi
+          echo "✅ All builds successful"
+          echo "📁 Client build files:"
+          ls -la public/build/
+          echo "📁 SSR build files:"
+          ls -la bootstrap/ssr/
 
       - name: Create release archive
         run: |
