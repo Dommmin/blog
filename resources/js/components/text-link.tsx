@@ -1,7 +1,8 @@
-import { Link, LinkProps } from '@inertiajs/react';
 import { cn } from '@/lib/utils';
+import { Link } from '@inertiajs/react';
+import React from 'react';
 
-export default function TextLink({ className = '', children, 'aria-label': ariaLabel, ...props }: LinkProps & { 'aria-label'?: string }) {
+export default function TextLink({ className = '', children, 'aria-label': ariaLabel, ...props }: React.ComponentProps<typeof Link>) {
     return (
         <Link
             className={cn(

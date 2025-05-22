@@ -28,7 +28,7 @@ class NewsletterController extends Controller
     {
         $subscriber = NewsletterSubscriber::where('token', $token)->first();
 
-        if (!$subscriber) {
+        if (! $subscriber) {
             return redirect('/')->with('error', 'Invalid token!');
         }
 
