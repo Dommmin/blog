@@ -19,7 +19,6 @@ export NVM_DIR="/home/$APP_USER/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# Check Node.js and PM2
 echo "▶️ Checking Node.js..."
 node -v || { echo "❌ Node.js not found"; exit 1; }
 
@@ -78,16 +77,27 @@ if [ ! -f "$RELEASE_DIR/bootstrap/ssr/ssr.js" ]; then
 fi
 
 echo "▶️ Managing SSR server with PM2..."
-# Stop existing instance if running
+if [ ! -f "$RELEASE_DIR/ecosystem.config.js" ] && [ ! -f "$RELEASE_DIR/ecosystem.config.ts" ]; then
+    echo "❌ PM2 ecosystem file not found!"
+    exit 1
+fi
+
+export PM2_RUNTIME='node'
+
 pm2 delete inertia-ssr 2>/dev/null || true
 
-# Update current symlink before starting
 echo "▶️ Updating current symlink..."
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 
-# Start/Restart SSR server
 cd "$CURRENT_LINK"
-pm2 start ecosystem.config.ts || pm2 reload ecosystem.config.ts
+if [ -f "ecosystem.config.ts" ]; then
+    pm2 start ecosystem.config.ts
+elif [ -f "ecosystem.config.js" ]; then
+    pm2 start ecosystem.config.js
+else
+    echo "❌ No PM2 ecosystem file found!"
+    exit 1
+fi
 
 # Wait for SSR to initialize
 echo "▶️ Waiting for SSR server to start..."
