@@ -70,40 +70,32 @@ php artisan storage:link
 echo "▶️ Running database migrations..."
 php artisan migrate --force
 
-#echo "▶️ Checking SSR build..."
-#if [ ! -f "$RELEASE_DIR/bootstrap/ssr/ssr.js" ]; then
-#    echo "❌ SSR build not found! Check your build process."
-#    exit 1
-#fi
-#
-#echo "▶️ Managing SSR server with PM2..."
-## Stop current SSR server gracefully
-#pm2 stop inertia-ssr 2>/dev/null || echo "No previous SSR server to stop"
+echo "▶️ Managing SSR server with PM2..."
+# Stop current SSR server gracefully
+$PM2 stop project-name 2>/dev/null || echo "No previous SSR server to stop"
 
 # Update symlink first
 echo "▶️ Updating current symlink..."
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 
 # Start SSR server from new release
-#cd "$CURRENT_LINK"
-#pm2 start ecosystem.config.ts 2>/dev/null || pm2 reload inertia-ssr
-#
-## Wait a moment for SSR to start
-#sleep 3
-#
-## Verify SSR is running
-#echo "▶️ Verifying SSR server..."
-#if ! pm2 describe inertia-ssr &>/dev/null; then
-#    echo "❌ SSR server failed to start!"
-#    exit 1
-#fi
-#
-## Test SSR endpoint
-#if curl -f http://127.0.0.1:13714 &>/dev/null; then
-#    echo "✅ SSR server is responding"
-#else
-#    echo "⚠️ SSR server may not be responding properly"
-#fi
+cd "$CURRENT_LINK"
+echo "▶️ Starting SSR server..."
+$PM2 delete project-name 2>/dev/null || true
+$PM2 start ecosystem.config.json
+
+# Save PM2 process list
+$PM2 save
+
+# Wait a moment for SSR to start
+sleep 3
+
+# Verify SSR is running
+echo "▶️ Verifying SSR server..."
+if ! $PM2 describe project-name &>/dev/null; then
+    echo "❌ SSR server failed to start!"
+    exit 1
+fi
 
 echo "▶️ Cleaning old releases (keeping 5 latest)..."
 cd "$RELEASES_DIR"
