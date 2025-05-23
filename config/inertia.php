@@ -17,7 +17,7 @@ return [
 
     'ssr' => [
         'enabled' => true,
-        'url' => env('APP_URL', 'http://localhost') . '/ssr',
+        'url' => 'http://127.0.0.1:13714',
         'bundle' => base_path('bootstrap/ssr/ssr.js'),
     ],
 
