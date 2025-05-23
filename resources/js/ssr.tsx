@@ -11,7 +11,12 @@ createServer((page) =>
         page,
         render: ReactDOMServer.renderToString,
         title: (title) => `${title} - ${appName}`,
-        resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
+        resolve: (name) => {
+            console.log('Resolving component:', name);
+            const pages = import.meta.glob('./pages/**/*.{tsx,ts,jsx,js}')
+            console.log('Available pages:', Object.keys(pages));
+            return resolvePageComponent(`./pages/${name}.tsx`, pages);
+        },
         setup: ({ App, props }) => {
             /* eslint-disable */
             // @ts-expect-error
@@ -27,5 +32,4 @@ createServer((page) =>
             return <App {...props} />;
         },
     }),
-    { cluster: true }
 );
