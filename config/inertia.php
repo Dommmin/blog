@@ -17,9 +17,8 @@ return [
 
     'ssr' => [
         'enabled' => true,
-        'url' => 'http://localhost:13714',
-        // 'bundle' => base_path('bootstrap/ssr/ssr.mjs'),
-
+        'url' => env('APP_URL', 'http://localhost') . '/ssr',
+        'bundle' => base_path('bootstrap/ssr/ssr.js'),
     ],
 
     /*
