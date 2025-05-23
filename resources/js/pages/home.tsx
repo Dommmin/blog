@@ -19,7 +19,7 @@ const HeroContent = React.memo(({ __ }: { __: (key: string) => string }) => (
         <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
             <span className="text-primary">{__('PHP')}</span> & <span className="text-primary">{__('DevOps')}</span>
         </h1>
-        <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+        <p className="text-muted-foreground mx-auto max-w-2xl text-sm md:text-base lg:text-lg">
             {__('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions')}
         </p>
     </div>
