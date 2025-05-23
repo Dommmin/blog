@@ -105,7 +105,7 @@ echo "▶️ Current deployment status:"
 $PM2 list
 
 echo "▶️ Restarting Supervisor services..."
-supervisorctl restart all
+sudo supervisorctl restart all
 
 echo "▶️ Checking health status..."
 curl https://localhost/health
