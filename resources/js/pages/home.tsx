@@ -136,20 +136,20 @@ export default function Home({ posts }: { posts: Post[] }) {
             <Head title="Home" />
 
             <section className="relative px-4 py-16 md:py-24 lg:py-28">
-                <div className="from-primary/5 to-primary/0 dark:from-primary/10 dark:to-primary/5 absolute inset-0 z-0 rounded-3xl bg-gradient-to-br" />
+                <div className="from-primary/5 to-primary/0 dark:from-primary/10 dark:to-primary/5 absolute inset-0 z-0 xl:rounded-b-3xl bg-gradient-to-br" />
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <HeroContent __={__} />
 
                     <Suspense
                         fallback={
                             <div className="mb-12 flex justify-center gap-4">
-                                <Button size="lg" asChild>
+                                <Button size="default" asChild>
                                     <Link href={route('blog.index', { locale })} prefetch>
                                         {__('Read the Blog')}
                                         <ArrowRightIcon className="ml-2 h-4 w-4" />
                                     </Link>
                                 </Button>
-                                <Button size="lg" variant="outline" asChild>
+                                <Button size="default" variant="outline" asChild>
                                     <Link href={route('about', { locale })} prefetch>
                                         {__('About me')}
                                     </Link>
