@@ -3,13 +3,13 @@ import '../css/app.css';
 import '@/helpers';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { hydrateRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import { initializeTheme } from './hooks/use-appearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-// Register service worker for PWA
+// PWA
 const updateSW = registerSW({
     onNeedRefresh() {
         if (confirm('New content available. Reload?')) {
@@ -25,12 +25,17 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
-        hydrateRoot(el, <App {...props} />);
+        if (el.hasChildNodes()) {
+            hydrateRoot(el, <App {...props} />);
+        } else {
+            createRoot(el).render(<App {...props} />);
+        }
     },
     progress: {
         color: '#4B5563',
     },
+    // @ts-expect-error ssr not yet in types
+    ssr: true,
 });
 
-// This will set light / dark mode on load...
 initializeTheme();
