@@ -2,18 +2,21 @@
     "apps": [
         {
             "name": "laravel",
-            "script": "artisan",
-            "args": ["inertia:start-ssr"],
+            "script": "/home/deployer/laravel/current/bootstrap/ssr/ssr.js",
             "instances": 1,
-            "interpreter": "php",
+            "exec_mode": "fork",
+            "interpreter": "node",
             "wait_ready": true,
             "autorestart": true,
             "max_restarts": 10,
-            "watch": true,
+            "watch": false,
             "error_file": "/home/deployer/laravel/shared/storage/logs/err.log",
             "out_file": "/home/deployer/laravel/shared/storage/logs/out.log",
             "log_file": "/home/deployer/laravel/shared/storage/logs/combined.log",
-            "time": true
+            "time": true,
+            "env": {
+                "NODE_ENV": "production"
+            }
         }
     ]
 }
