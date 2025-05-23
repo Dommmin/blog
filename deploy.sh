@@ -104,15 +104,12 @@ ls -dt */ | tail -n +6 | xargs -r rm -rf
 echo "▶️ Current deployment status:"
 $PM2 list
 
+echo "▶️ Cleaning Typesense lock files..."
+sudo rm -f /var/lib/typesense/db/LOCK
+sudo rm -f /var/lib/typesense/meta/LOCK
+
 echo "▶️ Restarting Supervisor services..."
-sudo supervisorctl restart all
-
-# Wait for services to start
-sleep 5
-
-# Check Supervisor status
-echo "▶️ Checking Supervisor status..."
-sudo supervisorctl status
+supervisorctl restart all
 
 echo "▶️ Checking health status..."
 curl https://localhost/health
