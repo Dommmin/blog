@@ -108,7 +108,7 @@ echo "▶️ Restarting Supervisor services..."
 sudo supervisorctl restart all
 
 echo "▶️ Checking health status..."
-curl https://localhost/health
+curl http://localhost/health
 
 echo "✅ Deployment successful: $NOW"
 exit 0
