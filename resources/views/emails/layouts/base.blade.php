@@ -5,88 +5,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-        }
-
-        .header {
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .content {
-            padding: 20px 0;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 20px 0;
-            border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #666;
-        }
-
-        a {
-            color: #2563eb;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #2563eb;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
-
-        .button:hover {
-            background-color: #1d4ed8;
-            text-decoration: none;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .container {
-                width: 100% !important;
-                padding: 10px !important;
-            }
-        }
-    </style>
 </head>
 
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>{{ config('app.name') }}</h1>
-        </div>
+<body class="bg-gray-100 font-sans text-gray-800 leading-normal">
+    <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="bg-blue-600 px-6 py-8 text-center">
+                <h1 class="text-2xl font-semibold text-white">{{ config('app.name') }}</h1>
+            </div>
 
-        <div class="content">
-            @yield('content')
-        </div>
+            <div class="px-6 py-8">
+                @yield('content')
+            </div>
 
-        <div class="footer">
-            <p>{{ __('This email was sent to') }} {{ $subscriber->email ?? '' }}</p>
-            <p>{{ __('If you did not request this email, you can safely ignore it.') }}</p>
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</p>
+            <div class="bg-gray-50 px-6 py-6 border-t border-gray-200 text-center">
+                <p class="text-sm text-gray-600 mb-2">{{ __('This email was sent to') }} {{ $subscriber->email ?? '' }}</p>
+                <p class="text-sm text-gray-600 mb-2">{{ __('If you did not request this email, you can safely ignore it.') }}</p>
+                <p class="text-sm text-gray-600">&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</p>
+            </div>
         </div>
     </div>
 </body>

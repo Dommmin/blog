@@ -14,7 +14,6 @@ class NewsletterNewPostMail extends Mailable
     use Queueable, SerializesModels;
 
     public $subscriber;
-
     public $post;
 
     /**
@@ -31,6 +30,10 @@ class NewsletterNewPostMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        if ($this->subscriber->locale) {
+            app()->setLocale($this->subscriber->locale);
+        }
+
         return new Envelope(
             subject: __('New post on the blog!'),
         );
@@ -41,11 +44,16 @@ class NewsletterNewPostMail extends Mailable
      */
     public function content(): Content
     {
+        if ($this->subscriber->locale) {
+            app()->setLocale($this->subscriber->locale);
+        }
+
         return new Content(
             view: 'emails.newsletter-new-post',
             with: [
                 'subscriber' => $this->subscriber,
                 'post' => $this->post,
+                'postUrl' => route('blog.show', ['locale' => $this->subscriber->locale, 'slug' => $this->post->slug]),
             ]
         );
     }

@@ -11,10 +11,12 @@ class NewsletterSubscriber extends Model
         'token',
         'confirmed_at',
         'locale',
+        'unsubscribed_at',
     ];
 
     protected $casts = [
         'confirmed_at' => 'datetime',
+        'unsubscribed_at' => 'datetime',
     ];
 
     public static function generateToken()
@@ -22,8 +24,8 @@ class NewsletterSubscriber extends Model
         return bin2hex(random_bytes(32));
     }
 
-    public function isConfirmed()
+    public function isConfirmed(): bool
     {
-        return ! is_null($this->confirmed_at);
+        return $this->confirmed_at !== null && $this->unsubscribed_at === null;
     }
 }

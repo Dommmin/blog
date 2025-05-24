@@ -37,7 +37,7 @@ class TagController extends Controller
     {
         Tag::create($request->validated());
 
-        return to_route('admin.tags.index')->with('success', 'Tag created successfully');
+        return to_route('admin.tags.index')->with('success', __('Tag created successfully'));
     }
 
     public function edit(Tag $tag): Response
@@ -51,13 +51,13 @@ class TagController extends Controller
     {
         $tag->update($request->validated());
 
-        return to_route('admin.tags.index')->with('success', 'Tag updated successfully');
+        return to_route('admin.tags.index')->with('success', __('Tag updated successfully'));
     }
 
     public function destroy(Tag $tag): RedirectResponse
     {
         $tag->delete();
 
-        return to_route('admin.tags.index')->with('success', 'Tag deleted successfully');
+        return to_route('admin.tags.index')->with('success', __('Tag deleted successfully'));
     }
 }

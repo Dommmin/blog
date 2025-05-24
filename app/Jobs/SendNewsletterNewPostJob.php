@@ -30,10 +30,12 @@ class SendNewsletterNewPostJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $subscribers = NewsletterSubscriber::whereNotNull('confirmed_at')->get();
+        $subscribers = NewsletterSubscriber::whereNotNull('confirmed_at')
+            ->where('locale', $this->post->locale)
+            ->get();
+
         foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber->email)
-                ->send(new NewsletterNewPostMail($subscriber, $this->post));
+            Mail::to($subscriber->email)->queue(new NewsletterNewPostMail($subscriber, $this->post));
         }
     }
 }

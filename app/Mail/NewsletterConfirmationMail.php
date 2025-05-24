@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class NewsletterConfirmationMail extends Mailable
 {
@@ -48,13 +49,15 @@ class NewsletterConfirmationMail extends Mailable
         if ($this->locale) {
             app()->setLocale($this->locale);
         }
-        $confirmUrl = url('/newsletter/confirm/'.$this->subscriber->token);
 
         return new Content(
             view: 'emails.newsletter-confirmation',
             with: [
-                'confirmUrl' => $confirmUrl,
-                'subscriber' => $this->subscriber,
+                'confirmUrl' => URL::temporarySignedRoute(
+                    'newsletter.confirm',
+                    now()->addDay(),
+                    ['locale' => $this->locale, 'token' => $this->subscriber->token]
+                ),
             ],
         );
     }

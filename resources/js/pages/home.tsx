@@ -7,7 +7,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowRightIcon, CodeIcon, GitBranchIcon, LucideProps, ServerIcon } from 'lucide-react';
-import React, { ComponentType, lazy, Suspense, useMemo, useState } from 'react';
+import React, { ComponentType, lazy, Suspense, useCallback, useMemo, useState } from 'react';
 
 const LazyAnimateStagger = lazy(() => import('@/components/AnimateOnView').then((module) => ({ default: module.AnimateStagger })));
 const LazyAnimateOnView = lazy(() => import('@/components/AnimateOnView').then((module) => ({ default: module.AnimateOnView })));
@@ -71,8 +71,8 @@ const NewsletterForm = React.memo(({ data, setData, handleSubmit, processing, er
                         value={data.email}
                         autoComplete="email"
                     />
-                    {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-                    {successMessage && <p className="text-sm text-green-500">{successMessage}</p>}
+                    {errors.email && <p className="text-sm text-red-500 mt-2">{errors.email}</p>}
+                    {successMessage && <p className="text-sm text-green-500 mt-2">{successMessage}</p>}
                 </div>
                 <Button type="submit" disabled={processing}>
                     {__('Subscribe')}
@@ -91,14 +91,17 @@ interface Feature {
 
 export default function Home({ posts }: { posts: Post[] }) {
     const { __, locale } = useTranslations();
-    const { data, setData, post, processing, errors, reset } = useForm<NewsletterFormData>({
+    const { data, setData, post, processing, errors, reset, clearErrors } = useForm<NewsletterFormData>({
         email: '',
     });
     const [successMessage, setSuccessMessage] = useState('');
 
-    const handleSubscribe = React.useCallback(
+    const handleSubscribe = useCallback(
         (event: React.FormEvent) => {
             event.preventDefault();
+            setSuccessMessage('');
+            clearErrors();
+
             post(route('newsletter.subscribe', { locale: locale }), {
                 preserveScroll: true,
                 onSuccess: () => {

@@ -18,10 +18,13 @@ class NewsletterConfirmedMail extends Mailable
 
     public $locale;
 
-    public function __construct(NewsletterSubscriber $subscriber, string $locale = 'en')
+    public $unsubscribeUrl;
+
+    public function __construct(NewsletterSubscriber $subscriber, string $locale, string $unsubscribeUrl)
     {
         $this->subscriber = $subscriber;
         $this->locale = $locale;
+        $this->unsubscribeUrl = $unsubscribeUrl;
     }
 
     /**
@@ -38,12 +41,16 @@ class NewsletterConfirmedMail extends Mailable
         );
     }
 
-    public function content()
+    public function content(): Content
     {
+        if ($this->locale) {
+            app()->setLocale($this->locale);
+        }
+
         return new Content(
             view: 'emails.newsletter-confirmed',
             with: [
-                'unsubscribeUrl' => URL::signedRoute('newsletter.unsubscribe', ['locale' => $this->locale, 'email' => $this->subscriber->email]),
+                'unsubscribeUrl' => $this->unsubscribeUrl,
             ],
         );
     }

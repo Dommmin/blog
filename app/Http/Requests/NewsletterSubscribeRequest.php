@@ -22,7 +22,19 @@ class NewsletterSubscribeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email:rfc', 'unique:newsletter_subscribers,email'],
+            'email' => [
+                'required',
+                'email:rfc',
+                function ($attribute, $value, $fail) {
+                    $subscriber = \App\Models\NewsletterSubscriber::where('email', $value)
+                        ->whereNull('unsubscribed_at')
+                        ->first();
+
+                    if ($subscriber && $subscriber->isConfirmed()) {
+                        $fail(__('The email is already subscribed'));
+                    }
+                },
+            ],
         ];
     }
 

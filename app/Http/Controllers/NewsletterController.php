@@ -13,15 +13,29 @@ class NewsletterController extends Controller
 {
     public function subscribe(NewsletterSubscribeRequest $request, string $locale)
     {
-        $subscriber = NewsletterSubscriber::create([
-            'email' => $request->get('email'),
-            'token' => NewsletterSubscriber::generateToken(),
-            'locale' => $locale,
-        ]);
+        $subscriber = NewsletterSubscriber::where('email', $request->get('email'))->first();
+
+        if ($subscriber) {
+            if ($subscriber->isConfirmed() && !$subscriber->unsubscribed_at) {
+                return back()->with('error', __('You are already subscribed to our newsletter.'));
+            }
+
+            $subscriber->update([
+                'token' => NewsletterSubscriber::generateToken(),
+                'locale' => $locale,
+                'unsubscribed_at' => null,
+            ]);
+        } else {
+            $subscriber = NewsletterSubscriber::create([
+                'email' => $request->get('email'),
+                'token' => NewsletterSubscriber::generateToken(),
+                'locale' => $locale,
+            ]);
+        }
 
         Mail::to($subscriber->email)->queue(new NewsletterConfirmationMail($subscriber, $locale));
 
-        return back()->with('success', 'Check your email to confirm your subscription.');
+        return back()->with('success', __('Check your email to confirm your subscription.'));
     }
 
     public function confirm(string $locale, string $token)
@@ -29,11 +43,11 @@ class NewsletterController extends Controller
         $subscriber = NewsletterSubscriber::where('token', $token)->first();
 
         if (! $subscriber) {
-            return redirect('/')->with('error', 'Invalid token!');
+            return redirect('/')->with('error', __('Invalid token!'));
         }
 
         if ($subscriber->isConfirmed()) {
-            return redirect('/')->with('success', 'You are already subscribed!');
+            return redirect('/')->with('success', __('You are already subscribed!'));
         }
 
         $subscriber->update([
@@ -41,9 +55,10 @@ class NewsletterController extends Controller
             'token' => null,
         ]);
 
-        Mail::to($subscriber->email)->queue(new NewsletterConfirmedMail($subscriber, $locale));
+        $unsubscribeUrl = url('/' . $locale . '/newsletter/unsubscribe/' . $subscriber->email);
+        Mail::to($subscriber->email)->queue(new NewsletterConfirmedMail($subscriber, $locale, $unsubscribeUrl));
 
-        return to_route('home')->with('success', 'Subscription confirmed!');
+        return view('newsletter.confirmed');
     }
 
     public function unsubscribe(string $locale, string $email)
@@ -54,7 +69,11 @@ class NewsletterController extends Controller
             return to_route('home')->with('error', 'This subscription is not confirmed.');
         }
 
-        $subscriber->delete();
+        $subscriber->update([
+            'confirmed_at' => null,
+            'token' => null,
+            'unsubscribed_at' => now(),
+        ]);
 
         Mail::to($subscriber->email)->queue(new UnsubscribedMail($subscriber, $locale));
 

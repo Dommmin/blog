@@ -42,7 +42,7 @@ class PostController extends Controller
         $data = array_merge($request->validated(), ['user_id' => auth()->id()]);
         $this->postService->createPost($data);
 
-        return to_route('admin.posts.index')->with('success', 'Post created successfully');
+        return to_route('admin.posts.index')->with('success', __('Post created successfully'));
     }
 
     public function edit(Post $post): Response
@@ -58,13 +58,13 @@ class PostController extends Controller
     {
         $this->postService->updatePost($post, $request->validated());
 
-        return to_route('admin.posts.index')->with('success', 'Post updated successfully');
+        return to_route('admin.posts.index')->with('success', __('Post updated successfully'));
     }
 
     public function destroy(Post $post): RedirectResponse
     {
         $this->postService->deletePost($post);
 
-        return to_route('admin.posts.index')->with('success', 'Post deleted successfully');
+        return to_route('admin.posts.index')->with('success', __('Post deleted successfully'));
     }
 }
