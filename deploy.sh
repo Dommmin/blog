@@ -78,6 +78,14 @@ php artisan migrate --force
 echo "▶️ Updating current symlink..."
 ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 
+echo "▶️ Restarting PHP-FPM to apply new code..."
+if sudo systemctl restart php8.3-fpm; then
+    echo "✅ PHP-FPM restarted successfully"
+else
+    echo "❌ Failed to restart PHP-FPM!"
+    exit 1
+fi
+
 # Start SSR server from new release
 #cd "$CURRENT_LINK"
 #echo "▶️ Starting SSR server..."
