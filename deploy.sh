@@ -14,19 +14,19 @@ RELEASE_DIR="$RELEASES_DIR/$NOW"
 ARCHIVE_NAME="release.tar.gz"
 
 # Load NVM and get current Node.js version
-export NVM_DIR="/home/$APP_USER/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-NODE_VERSION=$(nvm current)
-PM2="$NVM_DIR/versions/node/$NODE_VERSION/bin/pm2"
+#export NVM_DIR="/home/$APP_USER/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#NODE_VERSION=$(nvm current)
+#PM2="$NVM_DIR/versions/node/$NODE_VERSION/bin/pm2"
 
-echo "▶️ Using Node.js version: $NODE_VERSION"
-echo "▶️ PM2 path: $PM2"
+#echo "▶️ Using Node.js version: $NODE_VERSION"
+#echo "▶️ PM2 path: $PM2"
 
 # Verify PM2 exists
-if [ ! -f "$PM2" ]; then
-    echo "❌ PM2 not found at $PM2"
-    exit 1
-fi
+#if [ ! -f "$PM2" ]; then
+#    echo "❌ PM2 not found at $PM2"
+#    exit 1
+#fi
 
 echo "▶️ Create directories..."
 mkdir -p "$RELEASES_DIR" "$SHARED_DIR/storage" "$SHARED_DIR/bootstrap_cache"
