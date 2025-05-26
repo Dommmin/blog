@@ -19,6 +19,15 @@
     <meta name="description" content="{{ $description }}">
     <meta name="author" content="Dominik Jasiński">
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Tech Blog">
+    <link rel="apple-touch-icon" href="/pwa-192x192.png">
+    <meta name="msapplication-TileImage" content="/pwa-192x192.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:type" content="{{ $seo['type'] }}">
@@ -39,7 +48,7 @@
     <link rel="canonical" href="{{ $seo['canonical'] }}">
 
     <script type="application/ld+json">
-        {!!json_encode($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+        {!! json_encode($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 
     @routes
@@ -53,6 +62,18 @@
         <link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}">
     </noscript>
     @endif
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful');
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
 </head>
 
 <body class="font-sans antialiased">
