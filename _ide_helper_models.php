@@ -68,8 +68,10 @@ namespace App\Models{
  * @property string $email
  * @property string|null $token
  * @property \Illuminate\Support\Carbon|null $confirmed_at
+ * @property string $locale
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $unsubscribed_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber query()
@@ -77,7 +79,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber whereLocale($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber whereUnsubscribedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NewsletterSubscriber whereUpdatedAt($value)
  */
 	class NewsletterSubscriber extends \Eloquent {}
@@ -89,29 +93,26 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
- * @property int $category_id
  * @property string $title
- * @property string|null $image
  * @property string $slug
  * @property string $language
- * @property string|null $translation_key
+ * @property string $translation_key
  * @property string $content
- * @property string|null $excerpt
  * @property int $reading_time
- * @property string|null $meta_title
- * @property string|null $meta_description
- * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Illuminate\Support\Carbon $published_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $author
- * @property-read \App\Models\Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
+ * @property-read mixed $excerpt
  * @property-read string $published_at_formatted
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Post> $translations
  * @property-read int|null $translations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PostVisit> $visits
+ * @property-read int|null $visits_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post draft()
  * @method static \Database\Factories\PostFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post language(string $language)
@@ -119,15 +120,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post published()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereExcerpt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereLanguage($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereMetaDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereMetaTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereReadingTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereSlug($value)
@@ -137,6 +133,33 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereUserId($value)
  */
 	class Post extends \Eloquent implements \App\Models\CacheInterface {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $post_id
+ * @property int|null $user_id
+ * @property string $ip_address
+ * @property \Illuminate\Support\Carbon $visited_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Post $post
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit whereIpAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit wherePostId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PostVisit whereVisitedAt($value)
+ */
+	class PostVisit extends \Eloquent {}
 }
 
 namespace App\Models{
