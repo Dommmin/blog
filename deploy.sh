@@ -47,6 +47,7 @@ rm -rf "$RELEASE_DIR/bootstrap/cache"
 ln -s "$SHARED_DIR/bootstrap_cache" "$RELEASE_DIR/bootstrap/cache"
 
 ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
+ln -sf "$SHARED_DIR/database/database.sqlite" "$RELEASE_DIR/database/database.sqlite"
 
 echo "▶️ Optimizing application..."
 cd "$RELEASE_DIR"

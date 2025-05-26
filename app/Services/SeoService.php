@@ -9,8 +9,8 @@ class SeoService
     public function getSeoData(array $data = []): array
     {
         $defaultData = [
-            'title' => config('app.name'),
-            'description' => '',
+            'title' => __('PHP & DevOps Blog'),
+            'description' => __('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions'),
             'type' => 'website',
             'url' => url()->current(),
             'canonical' => url()->current(),
