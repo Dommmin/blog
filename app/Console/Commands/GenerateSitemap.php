@@ -21,7 +21,7 @@ class GenerateSitemap extends Command
      *
      * @var string
      */
-    protected $description = 'Generate the sitemap.';
+    protected $description = 'Generate the sitemap';
 
     /**
      * Execute the console command.
@@ -33,22 +33,16 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
 
         // Add static pages
-        $sitemap->add(Url::create('/')
-            ->setLastModificationDate(now())
+        $sitemap->add(Url::create(route('home'))
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
             ->setPriority(1.0));
 
-        $sitemap->add(Url::create('/blog')
-            ->setLastModificationDate(now())
-            ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-            ->setPriority(0.8));
-
         // Add blog posts
         Post::published()->get()->each(function (Post $post) use ($sitemap) {
-            $sitemap->add(Url::create("/blog/{$post->slug}")
+            $sitemap->add(Url::create(route('blog.show', $post->slug))
                 ->setLastModificationDate($post->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                ->setPriority(0.6));
+                ->setPriority(0.8));
         });
 
         $sitemap->writeToFile(public_path('sitemap.xml'));
