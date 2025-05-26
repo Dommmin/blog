@@ -74,7 +74,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
         const timeout = setTimeout(() => {
             if (search.length >= 2) {
                 axios
-                    .get(route('blog.suggest-posts', { query: search }))
+                    .get(route('blog.suggest-posts', { query: search, locale }))
                     .then((res) => res.data)
                     .then(setSuggestions);
             } else {

@@ -106,7 +106,7 @@ class Post extends Model implements CacheInterface
         return substr($this->content, 0, 100);
     }
 
-    public static function getSuggestions(string $query)
+    public static function getSuggestions(string $query, string $language)
     {
         // if (! config('scout.enabled')) {
         //     return self::query()
@@ -122,9 +122,10 @@ class Post extends Model implements CacheInterface
         // }
 
         return self::search($query)
+            ->query(fn(Builder $query) => $query->where('language', $language))
             ->take(5)
             ->get()
-            ->map(fn ($post) => [
+            ->map(fn($post) => [
                 'id' => $post->id,
                 'title' => $post->title,
             ])

@@ -61,12 +61,13 @@ class BlogController extends Controller
     public function suggestPosts(Request $request): JsonResponse
     {
         $query = $request->input('query');
+        $locale = $request->input('locale');
 
         if (trim($query) === '') {
             return response()->json([]);
         }
 
-        $results = Post::getSuggestions($query);
+        $results = Post::getSuggestions($query, $locale);
 
         return response()->json($results);
     }
