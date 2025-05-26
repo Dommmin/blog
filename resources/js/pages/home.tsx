@@ -110,7 +110,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                 },
             });
         },
-        [post, locale, reset, __],
+        [post, locale, reset, clearErrors, __],
     );
 
     const features = useMemo<Feature[]>(

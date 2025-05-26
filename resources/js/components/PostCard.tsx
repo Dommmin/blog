@@ -47,7 +47,7 @@ export default function PostCard({ post }: { post: Post }) {
                             aria-label={`${__('Read more about')} ${post.title}`}
                         >
                             <Button variant="ghost" size="sm" className="gap-1">
-                                {__('Read more')}
+                                {__('Read article')}
                                 <ArrowRightIcon className="h-3 w-3" aria-hidden="true" />
                             </Button>
                         </Link>

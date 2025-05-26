@@ -17,6 +17,7 @@
     <meta name="color-scheme" content="light dark">
     <meta name="title" content="{{ $title }}">
     <meta name="description" content="{{ $description }}">
+    <meta name="author" content="Dominik Jasiński">
 
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
@@ -38,9 +39,7 @@
     <link rel="canonical" href="{{ $seo['canonical'] }}">
 
     <script type="application/ld+json">
-        {
-            !!json_encode($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!
-        }
+        {!!json_encode($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 
     @routes

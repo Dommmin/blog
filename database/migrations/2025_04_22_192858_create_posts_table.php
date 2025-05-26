@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('language')->default('en');
             $table->string('translation_key');
             $table->text('content');
-            $table->integer('reading_time');
+            $table->integer('reading_time')->default(1);
             $table->timestamp('published_at');
             $table->timestamps();
 

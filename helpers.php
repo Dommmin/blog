@@ -1,11 +1,11 @@
 <?php
 
-function reading_time($content, $wpm = 200): int
+function reading_time(string $content, int $wpm = 200): int
 {
     $content = strip_tags($content);
     $wordCount = str_word_count($content);
 
-    return ceil($wordCount / $wpm) ?: 1;
+    return max(1, ceil($wordCount / $wpm));
 }
 
 function available_locales(): array
