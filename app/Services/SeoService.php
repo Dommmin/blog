@@ -8,20 +8,38 @@ class SeoService
 {
     public function getSeoData(array $data = []): array
     {
-        return array_merge(self::getDefaultSeoData(), $data);
+        $defaultData = [
+            'title' => config('app.name'),
+            'description' => '',
+            'type' => 'website',
+            'url' => url()->current(),
+            'canonical' => url()->current(),
+            'robots' => 'index, follow',
+            'structuredData' => $this->getDefaultStructuredData(),
+        ];
+
+        return array_merge($defaultData, $data);
     }
 
+    /**
+     * @param  Post  $post  // $post->author is \App\Models\User, $post->category is \App\Models\Category
+     */
     public function getPostSeoData(Post $post): array
     {
+        /** @var \App\Models\User $author */
+        $author = $post->author;
+        /** @var \App\Models\Category $category */
+        $category = $post->category;
+
         $structuredData = [
             '@context' => 'https://schema.org',
             '@type' => 'BlogPosting',
             'headline' => $post->title,
-            'datePublished' => $post->published_at?->toIso8601String(),
+            'datePublished' => $post->published_at->toIso8601String(),
             'dateModified' => $post->updated_at->toIso8601String(),
             'author' => [
                 '@type' => 'Person',
-                'name' => $post->author->name,
+                'name' => $author->name,
             ],
             'publisher' => [
                 '@type' => 'Organization',
@@ -42,19 +60,21 @@ class SeoService
             ],
         ];
 
+        $articleData = [
+            'published_time' => $post->published_at->toIso8601String(),
+            'modified_time' => $post->updated_at->toIso8601String(),
+            'author' => $author->name,
+            'section' => $category->name,
+            'tags' => $post->tags->pluck('name')->toArray(),
+        ];
+
         return $this->getSeoData([
             'title' => $post->title,
             'description' => $post->excerpt,
             'type' => 'article',
             'url' => route('blog.show', ['post' => $post->slug, 'locale' => $post->language]),
             'canonical' => route('blog.show', ['post' => $post->slug, 'locale' => $post->language]),
-            'article' => [
-                'published_time' => $post->published_at?->toIso8601String(),
-                'modified_time' => $post->updated_at->toIso8601String(),
-                'author' => $post->author->name,
-                'section' => $post->category->name,
-                'tags' => $post->tags->pluck('name')->toArray(),
-            ],
+            'article' => $articleData,
             'structuredData' => $structuredData,
         ]);
     }
@@ -113,20 +133,7 @@ class SeoService
         ]);
     }
 
-    public static function getDefaultSeoData(): array
-    {
-        return [
-            'title' => __('PHP & DevOps Blog'),
-            'description' => __('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions'),
-            'type' => 'website',
-            'url' => url()->current(),
-            'canonical' => url()->current(),
-            'robots' => 'index, follow',
-            'structuredData' => self::getDefaultStructuredData(),
-        ];
-    }
-
-    public static function getDefaultStructuredData(): array
+    private function getDefaultStructuredData(): array
     {
         return [
             '@context' => 'https://schema.org',

@@ -7,7 +7,7 @@ import { formatDate } from '@/helpers';
 import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type CommentData, type Post } from '@/types/blog';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import 'highlight.js/styles/github-dark.css';
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
