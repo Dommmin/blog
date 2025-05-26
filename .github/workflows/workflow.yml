@@ -10,18 +10,18 @@ jobs:
     name: 🧪 Test & Lint
     runs-on: ubuntu-latest
     services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: laravel_test
-          MYSQL_ROOT_PASSWORD: secret
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=5s
-          --health-timeout=2s
-          --health-retries=2
+#      mysql:
+#        image: mysql:8.0
+#        env:
+#          MYSQL_DATABASE: laravel_test
+#          MYSQL_ROOT_PASSWORD: secret
+#        ports:
+#          - 3306:3306
+#        options: >-
+#          --health-cmd="mysqladmin ping --silent"
+#          --health-interval=5s
+#          --health-timeout=2s
+#          --health-retries=2
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -78,14 +78,12 @@ jobs:
 
       - name: Run tests (with Pest)
         env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: laravel_test
-          DB_USERNAME: root
-          DB_PASSWORD: secret
-          REDIS_HOST: 127.0.0.1
-          REDIS_PORT: 6379
+          DB_CONNECTION: sqlite
+#          DB_HOST: 127.0.0.1
+#          DB_PORT: 3306
+#          DB_DATABASE: laravel_test
+#          DB_USERNAME: root
+#          DB_PASSWORD: secret
           SESSION_DRIVER: array
         run: ./vendor/bin/pest
 
