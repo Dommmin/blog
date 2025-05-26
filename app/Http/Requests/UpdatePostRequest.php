@@ -30,7 +30,7 @@ class UpdatePostRequest extends FormRequest
             'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'published_at' => 'nullable|date',
-            'category_id' => 'required|exists:categories,id',
+            //            'category_id' => 'required|exists:categories,id',
             'tags' => 'array',
             'tags.*' => 'exists:tags,id',
             'language' => ['required', 'string', Rule::in(available_locales())],
@@ -41,9 +41,9 @@ class UpdatePostRequest extends FormRequest
     public function messages()
     {
         return [
-            'category_id.required' => 'The category field is required',
-            'language.required' => 'The language field is required',
-            'language.in' => 'The language must be one of: '.implode(', ', available_locales()),
+            //            'category_id.required' => 'The category field is required',
+            'language.required' => __('The language field is required'),
+            'language.in' => __('The language must be one of: ').implode(', ', available_locales()),
         ];
     }
 }

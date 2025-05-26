@@ -21,7 +21,7 @@ type FormData = {
     title: string;
     content: string;
     published_at: Date | null;
-    category_id: string;
+    // category_id: string;
     tags: string[];
     language: string;
     translation_key: string | null;
@@ -32,7 +32,7 @@ export default function Create({ categories, tags, translationKey }: { categorie
     const { __, locale } = useTranslations();
 
     const { data, setData, post, processing, errors } = useForm<FormData>({
-        category_id: '',
+        // category_id: '',
         title: '',
         content: '',
         published_at: new Date(),
@@ -92,22 +92,22 @@ export default function Create({ categories, tags, translationKey }: { categorie
                                     {errors.translation_key && <p className="text-sm text-red-500">{errors.translation_key}</p>}
                                 </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="category_id">{__('Category')}</Label>
-                                    <Select value={data.category_id} onValueChange={(value) => setData('category_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={__('Select a category')} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {categories.map((category) => (
-                                                <SelectItem key={category.id} value={category.id.toString()}>
-                                                    {category.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {errors.category_id && <p className="text-sm text-red-500">{errors.category_id}</p>}
-                                </div>
+                                {/*<div className="grid gap-2">*/}
+                                {/*    <Label htmlFor="category_id">{__('Category')}</Label>*/}
+                                {/*    <Select value={data.category_id} onValueChange={(value) => setData('category_id', value)}>*/}
+                                {/*        <SelectTrigger>*/}
+                                {/*            <SelectValue placeholder={__('Select a category')} />*/}
+                                {/*        </SelectTrigger>*/}
+                                {/*        <SelectContent>*/}
+                                {/*            {categories.map((category) => (*/}
+                                {/*                <SelectItem key={category.id} value={category.id.toString()}>*/}
+                                {/*                    {category.name}*/}
+                                {/*                </SelectItem>*/}
+                                {/*            ))}*/}
+                                {/*        </SelectContent>*/}
+                                {/*    </Select>*/}
+                                {/*    {errors.category_id && <p className="text-sm text-red-500">{errors.category_id}</p>}*/}
+                                {/*</div>*/}
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">{__('Title')}</Label>

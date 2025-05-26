@@ -188,7 +188,7 @@ return [
                     'fields' => [
                         ['name' => 'title',         'type' => 'string'],
                         ['name' => 'content',       'type' => 'string'],
-//                        ['name' => 'category_name', 'type' => 'string'],
+                        //                        ['name' => 'category_name', 'type' => 'string'],
                         ['name' => 'tags_names',    'type' => 'string[]'],
                         ['name' => 'published_at',  'type' => 'int32'],
                     ],

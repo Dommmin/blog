@@ -27,7 +27,7 @@ type FormData = Record<string, string | string[] | Date | null> & {
     title: string;
     content: string;
     published_at: Date | null;
-    category_id: string;
+    // category_id: string;
     tags: string[];
     language: string;
     translation_key: string | null;
@@ -42,7 +42,7 @@ export default function Edit({ post, categories, tags }: EditProps) {
         title: post.title,
         content: post.content,
         published_at: post.published_at ? new Date(post.published_at) : null,
-        category_id: post.category_id.toString(),
+        // category_id: post.category_id.toString(),
         tags: post.tags?.map((tag) => tag.id.toString()) ?? [],
         language: post.language,
         translation_key: post.translation_key,
@@ -100,22 +100,22 @@ export default function Edit({ post, categories, tags }: EditProps) {
                                     {form.errors.translation_key && <p className="text-sm text-red-500">{form.errors.translation_key}</p>}
                                 </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="category_id">Category</Label>
-                                    <Select value={form.data.category_id} onValueChange={(value: string) => form.setData('category_id', value)}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select a category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {categories.map((category) => (
-                                                <SelectItem key={category.id} value={category.id.toString()}>
-                                                    {category.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    {form.errors.category_id && <p className="text-sm text-red-500">{form.errors.category_id}</p>}
-                                </div>
+                                {/*<div className="grid gap-2">*/}
+                                {/*    <Label htmlFor="category_id">Category</Label>*/}
+                                {/*    <Select value={form.data.category_id} onValueChange={(value: string) => form.setData('category_id', value)}>*/}
+                                {/*        <SelectTrigger>*/}
+                                {/*            <SelectValue placeholder="Select a category" />*/}
+                                {/*        </SelectTrigger>*/}
+                                {/*        <SelectContent>*/}
+                                {/*            {categories.map((category) => (*/}
+                                {/*                <SelectItem key={category.id} value={category.id.toString()}>*/}
+                                {/*                    {category.name}*/}
+                                {/*                </SelectItem>*/}
+                                {/*            ))}*/}
+                                {/*        </SelectContent>*/}
+                                {/*    </Select>*/}
+                                {/*    {form.errors.category_id && <p className="text-sm text-red-500">{form.errors.category_id}</p>}*/}
+                                {/*</div>*/}
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">Title</Label>

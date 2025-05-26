@@ -9,7 +9,7 @@ class SeoService
     public function getSeoData(array $data = []): array
     {
         $defaultData = [
-            'title' => __('PHP & DevOps') . ' - ' . __('Dominik Jasiński'),
+            'title' => __('PHP & DevOps').' - '.__('Dominik Jasiński'),
             'description' => __('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions'),
             'type' => 'website',
             'url' => url()->current(),
@@ -21,15 +21,12 @@ class SeoService
         return array_merge($defaultData, $data);
     }
 
-    /**
-     * @param  Post  $post  // $post->author is \App\Models\User, $post->category is \App\Models\Category
-     */
     public function getPostSeoData(Post $post): array
     {
         /** @var \App\Models\User $author */
         $author = $post->author;
-        /** @var \App\Models\Category $category */
-        $category = $post->category;
+        //        /** @var \App\Models\Category $category */
+        //        $category = $post->category;
 
         $structuredData = [
             '@context' => 'https://schema.org',
@@ -64,7 +61,7 @@ class SeoService
             'published_time' => $post->published_at->toIso8601String(),
             'modified_time' => $post->updated_at->toIso8601String(),
             'author' => $author->name,
-            'section' => $category->name,
+            'section' => $post->tags->first()->name ?? '',
             'tags' => $post->tags->pluck('name')->toArray(),
         ];
 
