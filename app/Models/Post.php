@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
@@ -124,7 +125,7 @@ class Post extends Model implements CacheInterface
         return self::search($query)
             ->take(5)
             ->get()
-            ->map(fn ($post) => [
+            ->map(fn($post) => [
                 'id' => $post->id,
                 'title' => $post->title,
             ])
@@ -166,5 +167,10 @@ class Post extends Model implements CacheInterface
     public function searchableAs(): string
     {
         return 'posts_index';
+    }
+
+    public function visits(): HasMany
+    {
+        return $this->hasMany(PostVisit::class);
     }
 }
