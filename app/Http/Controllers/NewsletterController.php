@@ -16,7 +16,7 @@ class NewsletterController extends Controller
         $subscriber = NewsletterSubscriber::where('email', $request->get('email'))->first();
 
         if ($subscriber) {
-            if ($subscriber->isConfirmed() && !$subscriber->unsubscribed_at) {
+            if ($subscriber->isConfirmed() && ! $subscriber->unsubscribed_at) {
                 return back()->with('error', __('You are already subscribed to our newsletter.'));
             }
 
@@ -55,7 +55,7 @@ class NewsletterController extends Controller
             'token' => null,
         ]);
 
-        $unsubscribeUrl = url('/' . $locale . '/newsletter/unsubscribe/' . $subscriber->email);
+        $unsubscribeUrl = url('/'.$locale.'/newsletter/unsubscribe/'.$subscriber->email);
         Mail::to($subscriber->email)->queue(new NewsletterConfirmedMail($subscriber, $locale, $unsubscribeUrl));
 
         return view('newsletter.confirmed');

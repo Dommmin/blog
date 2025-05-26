@@ -13,7 +13,7 @@ createServer((page) =>
         title: (title) => `${title} - ${appName}`,
         resolve: (name) => {
             console.log('Resolving component:', name);
-            const pages = import.meta.glob('./pages/**/*.{tsx,ts,jsx,js}')
+            const pages = import.meta.glob('./pages/**/*.{tsx,ts,jsx,js}');
             console.log('Available pages:', Object.keys(pages));
             return resolvePageComponent(`./pages/${name}.tsx`, pages);
         },

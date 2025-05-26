@@ -71,8 +71,8 @@ const NewsletterForm = React.memo(({ data, setData, handleSubmit, processing, er
                         value={data.email}
                         autoComplete="email"
                     />
-                    {errors.email && <p className="text-sm text-red-500 mt-2">{errors.email}</p>}
-                    {successMessage && <p className="text-sm text-green-500 mt-2">{successMessage}</p>}
+                    {errors.email && <p className="mt-2 text-sm text-red-500">{errors.email}</p>}
+                    {successMessage && <p className="mt-2 text-sm text-green-500">{successMessage}</p>}
                 </div>
                 <Button type="submit" disabled={processing}>
                     {__('Subscribe')}
@@ -139,7 +139,7 @@ export default function Home({ posts }: { posts: Post[] }) {
             <Head title="Home" />
 
             <section className="relative px-4 py-16 md:py-24 lg:py-28">
-                <div className="from-primary/5 to-primary/0 dark:from-primary/10 dark:to-primary/5 absolute inset-0 z-0 xl:rounded-b-3xl bg-gradient-to-br" />
+                <div className="from-primary/5 to-primary/0 dark:from-primary/10 dark:to-primary/5 absolute inset-0 z-0 bg-gradient-to-br xl:rounded-b-3xl" />
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <HeroContent __={__} />
 

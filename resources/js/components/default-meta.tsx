@@ -1,5 +1,5 @@
-import { Head } from '@inertiajs/react';
 import { useTranslations } from '@/hooks/useTranslation';
+import { Head } from '@inertiajs/react';
 
 interface DefaultMetaProps {
     title?: string;
@@ -9,7 +9,8 @@ interface DefaultMetaProps {
 export default function DefaultMeta({ title, description }: DefaultMetaProps) {
     const { __ } = useTranslations();
     const defaultTitle = title || __('PHP & DevOps Blog');
-    const defaultDescription = description || __('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions');
+    const defaultDescription =
+        description || __('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions');
 
     return (
         <Head>

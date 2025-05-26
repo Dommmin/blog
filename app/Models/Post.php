@@ -119,7 +119,7 @@ class Post extends Model implements CacheInterface
         return self::search($query)
             ->take(5)
             ->get()
-            ->map(fn($post) => [
+            ->map(fn ($post) => [
                 'id' => $post->id,
                 'title' => $post->title,
             ])

@@ -14,6 +14,7 @@ class NewsletterNewPostMail extends Mailable
     use Queueable, SerializesModels;
 
     public $subscriber;
+
     public $post;
 
     /**

@@ -28,6 +28,6 @@ class NewPostNotificationMail extends Mailable
         }
 
         return $this->view('emails.new-post-notification')
-            ->subject(__('A new article has been published:') . ' ' . $this->post->title);
+            ->subject(__('A new article has been published:').' '.$this->post->title);
     }
 }
