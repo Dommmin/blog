@@ -35,6 +35,7 @@ export interface Tag {
 
 export interface User {
     id: number;
+    admin: boolean;
     name: string;
 }
 
