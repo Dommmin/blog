@@ -33,3 +33,5 @@ supervisord.pid
 .composer/
 
 storage/translation_keys.txt
+
+public/sitemap.xml
