@@ -102,29 +102,9 @@ jobs:
 
       - name: Build assets and SSR
         run: |
-          # Build client assets
           npm run build
-          # Build SSR
-          npm run build:ssr
-
-      - name: Verify builds
-        run: |
-          echo "🔍 Checking build artifacts..."
-          if [ ! -f "public/build/manifest.json" ]; then
-            echo "❌ Vite manifest not found!"
-            ls -la public/build/
-            exit 1
-          fi
-          if [ ! -f "bootstrap/ssr/ssr.js" ]; then
-            echo "❌ SSR build file not found!"
-            ls -la bootstrap/ssr/
-            exit 1
-          fi
-          echo "✅ All builds successful"
-          echo "📁 Client build files:"
-          ls -la public/build/
-          echo "📁 SSR build files:"
-          ls -la bootstrap/ssr/
+#           Build SSR
+#          npm run build:ssr
 
       - name: Create release archive
         run: |

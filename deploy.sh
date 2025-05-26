@@ -48,6 +48,7 @@ ln -s "$SHARED_DIR/bootstrap_cache" "$RELEASE_DIR/bootstrap/cache"
 
 ln -sf "$SHARED_DIR/.env" "$RELEASE_DIR/.env"
 ln -sf "$SHARED_DIR/database/database.sqlite" "$RELEASE_DIR/database/database.sqlite"
+ln -sf "$SHARED_DIR/public/sitemap.xml" "$RELEASE_DIR/public/sitemap.xml"
 
 echo "▶️ Optimizing application..."
 cd "$RELEASE_DIR"
