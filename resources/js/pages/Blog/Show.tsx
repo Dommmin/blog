@@ -48,53 +48,8 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
         });
     };
 
-    // Structured data for SEO
-    const structuredData = {
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        headline: post.title,
-        datePublished: post.published_at,
-        dateModified: post.updated_at,
-        author: {
-            '@type': 'Person',
-            name: post.author.name,
-        },
-        publisher: {
-            '@type': 'Organization',
-            name: 'Your Blog Name',
-            logo: {
-                '@type': 'ImageObject',
-                url: `${window.location.origin}/logo.png`,
-            },
-        },
-        description: post.excerpt,
-        mainEntityOfPage: {
-            '@type': 'WebPage',
-            '@id': `${window.location.origin}/blog/${post.slug}`,
-        },
-    };
-
     return (
         <AppLayout>
-            <Head>
-                <title>{post.title}</title>
-                <meta name="description" content={post.excerpt} />
-                <meta property="og:title" content={post.title} />
-                <meta property="og:description" content={post.excerpt} />
-                <meta property="og:type" content="article" />
-                <meta property="og:url" content={`${window.location.origin}/blog/${post.slug}`} />
-                <meta property="article:published_time" content={post.published_at || ''} />
-                <meta property="article:modified_time" content={post.updated_at} />
-                <meta property="article:author" content={post.author.name} />
-                <meta property="article:section" content={post.category.name} />
-                {post.tags.map((tag) => (
-                    <meta key={tag.id} property="article:tag" content={tag.name} />
-                ))}
-                <link rel="canonical" href={`${window.location.origin}/blog/${post.slug}`} />
-                <meta name="robots" content="index, follow" />
-                <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-            </Head>
-
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className={`transform transition-all duration-700 ${postVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>

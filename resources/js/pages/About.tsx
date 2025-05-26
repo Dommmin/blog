@@ -5,22 +5,20 @@ import { Card } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
 import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'About',
-        href: '/about',
-    },
-];
 
 export default function About() {
     const { __ } = useTranslations();
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: __('About me'),
+            href: '/about',
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="About Me" />
             <div className="mx-auto max-w-5xl px-4 py-12">
                 <section className="mb-16">
                     <div className="grid items-start gap-8 md:grid-cols-[1fr_2fr]">

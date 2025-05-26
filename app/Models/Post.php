@@ -101,6 +101,11 @@ class Post extends Model implements CacheInterface
         return $this->translations()->where('language', $language)->exists();
     }
 
+    public function getExcerptAttribute()
+    {
+        return substr($this->content, 0, 100);
+    }
+
     public static function getSuggestions(string $query)
     {
         // if (! config('scout.enabled')) {

@@ -6,9 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { Post } from '@/types/blog';
-import { Head, Link, router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import axios from 'axios';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface BlogIndexProps {
     posts: {
@@ -99,22 +99,8 @@ export default function Index({ posts, filters }: BlogIndexProps) {
         return () => window.removeEventListener('click', handleClickOutside);
     }, []);
 
-    const metaDescription = useMemo(() => __('Browse our collection of blog posts about technology, programming, and software development.'), [__]);
-    const metaTitle = useMemo(() => __('Blog - Technology and Programming Articles'), [__]);
-
     return (
         <AppLayout>
-            <Head>
-                <title>{metaTitle}</title>
-                <meta name="description" content={metaDescription} />
-                <meta property="og:title" content={metaTitle} />
-                <meta property="og:description" content={metaDescription} />
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content={window.location.href} />
-                <link rel="canonical" href={window.location.origin + route('blog.index')} />
-                <meta name="robots" content="index, follow" />
-            </Head>
-
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-8 flex items-center justify-between gap-4">

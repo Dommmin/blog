@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Services\SeoService;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class AboutController extends Controller
 {
+    public function __construct(
+        private readonly SeoService $seoService
+    ) {}
+
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(): Response
     {
-        return Inertia::render('about');
+        return Inertia::render('About', [
+            'seo' => $this->seoService->getAboutSeoData(),
+        ]);
     }
 }

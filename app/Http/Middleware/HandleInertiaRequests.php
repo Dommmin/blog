@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\SeoService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -62,6 +63,10 @@ class HandleInertiaRequests extends Middleware
             ],
             'locale' => fn () => App::getLocale(),
             'translations' => $this->getTranslations(),
+            'seo' => array_merge(
+                SeoService::getDefaultSeoData(),
+                SeoService::getDefaultStructuredData(),
+            )
         ];
     }
 

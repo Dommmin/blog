@@ -7,14 +7,14 @@ import { type BreadcrumbItem } from '@/types';
 import { Post } from '@/types/blog';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowRightIcon, CodeIcon, GitBranchIcon, LucideProps, ServerIcon } from 'lucide-react';
-import React, { ComponentType, lazy, Suspense, useCallback, useMemo, useState } from 'react';
+import React, { ComponentType, lazy, memo, Suspense, useCallback, useMemo, useState } from 'react';
 
 const LazyAnimateStagger = lazy(() => import('@/components/AnimateOnView').then((module) => ({ default: module.AnimateStagger })));
 const LazyAnimateOnView = lazy(() => import('@/components/AnimateOnView').then((module) => ({ default: module.AnimateOnView })));
 
 const breadcrumbs: BreadcrumbItem[] = [];
 
-const HeroContent = React.memo(({ __ }: { __: (key: string) => string }) => (
+const HeroContent = memo(({ __ }: { __: (key: string) => string }) => (
     <div className="mb-8 text-center">
         <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
             <span className="text-primary">{__('PHP')}</span> & <span className="text-primary">{__('DevOps')}</span>
@@ -25,7 +25,7 @@ const HeroContent = React.memo(({ __ }: { __: (key: string) => string }) => (
     </div>
 ));
 
-const FeatureCard = React.memo(({ icon: Icon, title, description }: { icon: ComponentType<LucideProps>; title: string; description: string }) => (
+const FeatureCard = memo(({ icon: Icon, title, description }: { icon: ComponentType<LucideProps>; title: string; description: string }) => (
     <Card className="border-primary/20 p-6 text-center transition-all hover:shadow-md">
         <div className="bg-primary/10 mx-auto mb-4 w-fit rounded-full p-3">
             <Icon className="text-primary h-8 w-8" />
@@ -136,7 +136,7 @@ export default function Home({ posts }: { posts: Post[] }) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Home" />
+            <Head title={__('Home')} />
 
             <section className="relative px-4 py-16 md:py-24 lg:py-28">
                 <div className="from-primary/5 to-primary/0 dark:from-primary/10 dark:to-primary/5 absolute inset-0 z-0 bg-gradient-to-br xl:rounded-b-3xl" />
