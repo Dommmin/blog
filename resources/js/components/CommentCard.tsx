@@ -1,5 +1,4 @@
 import { AnimateStagger } from '@/components/AnimateOnView';
-import { Card, CardContent } from '@/components/ui/card';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -11,19 +10,20 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { formatDate } from '@/helpers';
 import { useTranslations } from '@/hooks/useTranslation';
-import { type Comment, Post } from '@/types/blog';
-import { Badge } from '@/components/ui/badge';
-import { Trash2, Clock, Shield } from 'lucide-react';
-import { router, usePage } from '@inertiajs/react';
-import { toast } from 'sonner';
 import type { SharedData } from '@/types';
+import { type Comment, Post } from '@/types/blog';
+import { router, usePage } from '@inertiajs/react';
+import { Clock, Shield, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
-export default function CommentCard({ comment, post }: { comment: Comment, post: Post }) {
+export default function CommentCard({ comment, post }: { comment: Comment; post: Post }) {
     const { __, locale } = useTranslations();
     const { auth } = usePage<SharedData>().props;
     const [isDeleting, setIsDeleting] = useState(false);
@@ -47,7 +47,7 @@ export default function CommentCard({ comment, post }: { comment: Comment, post:
     const getAuthorInitials = (name: string) => {
         return name
             .split(' ')
-            .map(n => n[0])
+            .map((n) => n[0])
             .join('')
             .toUpperCase()
             .slice(0, 2);
@@ -56,43 +56,33 @@ export default function CommentCard({ comment, post }: { comment: Comment, post:
     const isOwner = comment.author.id === auth.user?.id;
 
     return (
-        <Card className="group border-border/40 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-border hover:bg-card hover:shadow-lg hover:shadow-primary/5">
+        <Card className="group border-border/40 bg-card/50 hover:border-border hover:bg-card hover:shadow-primary/5 backdrop-blur-sm transition-all duration-300 hover:shadow-lg">
             <AnimateStagger animation="fade-left" stagger={100}>
                 <CardContent className="p-0">
                     {/* Header z avatarem i informacjami o autorze */}
                     <div className="flex items-start justify-between p-4 pb-2">
                         <div className="flex items-center gap-3">
-                            <Avatar className="h-8 w-8 ring-2 ring-background shadow-sm">
-                                <AvatarImage
-                                    src={comment.author.avatar}
-                                    alt={comment.author.name}
-                                />
-                                <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-xs font-medium">
+                            <Avatar className="ring-background h-8 w-8 shadow-sm ring-2">
+                                <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
+                                <AvatarFallback className="from-primary/20 to-primary/10 bg-gradient-to-br text-xs font-medium">
                                     {getAuthorInitials(comment.author.name)}
                                 </AvatarFallback>
                             </Avatar>
 
                             <div className="flex flex-col gap-1">
                                 <div className="flex items-center gap-2">
-                                    <span className="font-medium text-sm text-foreground">
-                                        {comment.author.name}
-                                    </span>
+                                    <span className="text-foreground text-sm font-medium">{comment.author.name}</span>
                                     {comment.author.admin && (
-                                        <Badge
-                                            variant="default"
-                                            className="flex items-center gap-1"
-                                        >
-                                            <Shield className="w-3 h-3 mr-1" />
+                                        <Badge variant="default" className="flex items-center gap-1">
+                                            <Shield className="mr-1 h-3 w-3" />
                                             {__('Admin')}
                                         </Badge>
                                     )}
                                 </div>
 
-                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                    <Clock className="w-3 h-3" />
-                                    <time dateTime={comment.created_at}>
-                                        {formatDate(comment.created_at, locale)}
-                                    </time>
+                                <div className="text-muted-foreground flex items-center gap-1 text-xs">
+                                    <Clock className="h-3 w-3" />
+                                    <time dateTime={comment.created_at}>{formatDate(comment.created_at, locale)}</time>
                                 </div>
                             </div>
                         </div>
@@ -101,11 +91,7 @@ export default function CommentCard({ comment, post }: { comment: Comment, post:
                         {isOwner && (
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        disabled={isDeleting}
-                                    >
+                                    <Button variant="ghost" size="sm" disabled={isDeleting}>
                                         <Trash2 className="h-4 w-4" />
                                         <span className="sr-only">{__('Delete comment')}</span>
                                     </Button>
@@ -114,7 +100,7 @@ export default function CommentCard({ comment, post }: { comment: Comment, post:
                                 <AlertDialogContent className="max-w-md">
                                     <AlertDialogHeader>
                                         <AlertDialogTitle className="flex items-center gap-2">
-                                            <Trash2 className="h-5 w-5 text-destructive" />
+                                            <Trash2 className="text-destructive h-5 w-5" />
                                             {__('Delete Comment')}
                                         </AlertDialogTitle>
                                         <AlertDialogDescription className="text-left">
@@ -123,9 +109,7 @@ export default function CommentCard({ comment, post }: { comment: Comment, post:
                                     </AlertDialogHeader>
 
                                     <AlertDialogFooter>
-                                        <AlertDialogCancel>
-                                            {__('Cancel')}
-                                        </AlertDialogCancel>
+                                        <AlertDialogCancel>{__('Cancel')}</AlertDialogCancel>
                                         <AlertDialogAction
                                             onClick={handleDelete}
                                             disabled={isDeleting}
@@ -142,14 +126,12 @@ export default function CommentCard({ comment, post }: { comment: Comment, post:
                     {/* Treść komentarza */}
                     <div className="px-4 pb-4">
                         <div className="prose prose-sm dark:prose-invert max-w-none">
-                            <p className="text-foreground leading-relaxed m-0">
-                                {comment.content}
-                            </p>
+                            <p className="text-foreground m-0 leading-relaxed">{comment.content}</p>
                         </div>
                     </div>
 
                     {/* Dolna linia z subtle gradient */}
-                    <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent opacity-50" />
+                    <div className="via-border h-px bg-gradient-to-r from-transparent to-transparent opacity-50" />
                 </CardContent>
             </AnimateStagger>
         </Card>

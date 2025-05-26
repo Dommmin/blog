@@ -23,7 +23,7 @@ class RecordPostVisit implements ShouldQueue
     {
         $post = Post::find($this->postId);
 
-        if (!$post) {
+        if (! $post) {
             return;
         }
 
@@ -36,7 +36,7 @@ class RecordPostVisit implements ShouldQueue
             })
             ->exists();
 
-        if (!$exists) {
+        if (! $exists) {
             $post->visits()->create([
                 'user_id' => $this->userId,
                 'ip_address' => $this->ipAddress,

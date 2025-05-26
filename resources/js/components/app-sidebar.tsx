@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { useTranslations } from '@/hooks/useTranslation';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, NotebookPen, Tag } from 'lucide-react';
+import { NotebookPen, Tag } from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {

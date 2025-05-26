@@ -65,7 +65,7 @@ export default function Edit({ post, categories, tags }: EditProps) {
                             <div className="mb-4">
                                 <Link href={route('admin.posts.index')} prefetch>
                                     <Button variant="outline" size="sm">
-                                        ← Back to all posts
+                                        ← {__('Back to all posts')}
                                     </Button>
                                 </Link>
                             </div>

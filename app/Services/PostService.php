@@ -74,7 +74,7 @@ class PostService
         return Post::where('translation_key', $post->translation_key)
             ->where('id', '!=', $post->id)
             ->get(['language', 'slug', 'title'])
-            ->map(fn(Post $translation) => [
+            ->map(fn (Post $translation) => [
                 'language' => $translation->language,
                 'slug' => $translation->slug,
                 'title' => $translation->title,

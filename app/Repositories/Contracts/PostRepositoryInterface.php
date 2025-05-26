@@ -7,7 +7,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface PostRepositoryInterface
 {
-    public function getPaginated(int $perPage = 10): LengthAwarePaginator;
+    public function getPaginated(
+        int $perPage = 10,
+        ?string $sortBy = null,
+        ?string $sortDirection = null,
+        ?string $language = null
+    ): LengthAwarePaginator;
 
     public function find(string $slug, string $language = 'en'): ?Post;
 

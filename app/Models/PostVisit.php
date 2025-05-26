@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class PostVisit extends Model
 {
@@ -36,17 +37,20 @@ class PostVisit extends Model
         $days = 30;
         $startDate = now()->subDays($days);
 
-        $visitStats = PostVisit::query()
+        $visitStats = DB::table('post_visits')
             ->where('visited_at', '>=', $startDate)
             ->selectRaw('DATE(visited_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->orderBy('date')
             ->get()
-            ->map(fn($item) => [
-                'date' => $item->date,
-                'count' => (int) $item->count
-            ])
             ->toArray();
+
+        $visitStats = array_map(function ($item) {
+            return [
+                'date' => $item->date,
+                'count' => (int) $item->count,
+            ];
+        }, $visitStats);
 
         $allDates = [];
 
@@ -62,11 +66,11 @@ class PostVisit extends Model
             }
             $allDates[] = [
                 'date' => $date,
-                'count' => $count
+                'count' => $count,
             ];
         }
 
-        usort($allDates, fn($a, $b) => strcmp($a['date'], $b['date']));
+        usort($allDates, fn ($a, $b) => strcmp($a['date'], $b['date']));
 
         return $allDates;
     }

@@ -13,7 +13,7 @@ class SetLocale
     {
         $locale = $request->route('locale');
 
-        if (!$locale) {
+        if (! $locale) {
             $locale = Session::get('locale', config('app.locale'));
         }
 

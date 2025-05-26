@@ -12,6 +12,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Pagination } from '@/components/ui/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useTranslations } from '@/hooks/useTranslation';
 import AdminLayout from '@/layouts/admin-layout';
@@ -20,7 +21,6 @@ import { Head, Link, router } from '@inertiajs/react';
 import { ArrowDownIcon, ArrowUpIcon, EyeIcon, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Post {
     id: number;
@@ -88,7 +88,7 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                 sort_direction: newDirection,
                 language: filters.language,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
@@ -100,7 +100,7 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                 sort_direction: filters.sort_direction,
                 language: value === 'all' ? null : value,
             },
-            { preserveState: true }
+            { preserveState: true },
         );
     };
 
@@ -144,21 +144,13 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>
-                                                <Button
-                                                    variant="ghost"
-                                                    onClick={() => handleSort('language')}
-                                                    className="flex items-center gap-1"
-                                                >
+                                                <Button variant="ghost" onClick={() => handleSort('language')} className="flex items-center gap-1">
                                                     {__('Language')}
                                                     {getSortIcon('language')}
                                                 </Button>
                                             </TableHead>
                                             <TableHead>
-                                                <Button
-                                                    variant="ghost"
-                                                    onClick={() => handleSort('title')}
-                                                    className="flex items-center gap-1"
-                                                >
+                                                <Button variant="ghost" onClick={() => handleSort('title')} className="flex items-center gap-1">
                                                     {__('Title')}
                                                     {getSortIcon('title')}
                                                 </Button>
@@ -173,7 +165,7 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                                     {getSortIcon('published_at')}
                                                 </Button>
                                             </TableHead>
-                                            <TableHead>
+                                            <TableHead className="flex justify-center">
                                                 <Button
                                                     variant="ghost"
                                                     onClick={() => handleSort('visits_count')}
@@ -183,7 +175,7 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                                     {getSortIcon('visits_count')}
                                                 </Button>
                                             </TableHead>
-                                            <TableHead className="text-right">{__('Actions')}</TableHead>
+                                            <TableHead className="text-center">{__('Actions')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -201,7 +193,7 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                                         {post.published_at ? 'Published' : 'Draft'}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell>{post.visits_count}</TableCell>
+                                                <TableCell className="flex justify-center">{post.visits_count}</TableCell>
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>

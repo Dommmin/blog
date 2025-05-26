@@ -1,4 +1,3 @@
-import React from 'react';
 import CommentCard from '@/components/CommentCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type CommentData, type Post } from '@/types/blog';
 import { Link, useForm } from '@inertiajs/react';
 import 'highlight.js/styles/github-dark.css';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSanitize from 'rehype-sanitize';

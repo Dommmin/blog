@@ -18,8 +18,9 @@ class PostRepository implements PostRepositoryInterface
         ?string $language = null
     ): LengthAwarePaginator {
         Post::flush();
+
         return Cache::tags('posts')->rememberForever(
-            'admin.posts.index.' . request()->get('page', 1) . '.' . $sortBy . '.' . $sortDirection . '.' . $language,
+            'admin.posts.index.'.request()->get('page', 1).'.'.$sortBy.'.'.$sortDirection.'.'.$language,
             function () use ($perPage, $sortBy, $sortDirection, $language) {
                 $query = Post::query()
                     ->with(['author'])
@@ -106,7 +107,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function getFeaturedArticles(string $locale = 'en')
     {
-        return Cache::tags('posts')->rememberForever('featured.articles.' . $locale, function () use ($locale) {
+        return Cache::tags('posts')->rememberForever('featured.articles.'.$locale, function () use ($locale) {
             return Post::latest('published_at')
                 ->with(['tags'])
                 ->withCount('comments')
