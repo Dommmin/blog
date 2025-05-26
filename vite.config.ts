@@ -47,6 +47,7 @@ export default defineConfig({
             },
             workbox: {
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+                globIgnores: ['**/node_modules/**/*', '**/sw.js', '**/workbox-*.js'],
                 runtimeCaching: [
                     {
                         urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -55,7 +56,7 @@ export default defineConfig({
                             cacheName: 'google-fonts-cache',
                             expiration: {
                                 maxEntries: 10,
-                                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                                maxAgeSeconds: 60 * 60 * 24 * 365
                             },
                             cacheableResponse: {
                                 statuses: [0, 200]
@@ -69,7 +70,7 @@ export default defineConfig({
                             cacheName: 'gstatic-fonts-cache',
                             expiration: {
                                 maxEntries: 10,
-                                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                                maxAgeSeconds: 60 * 60 * 24 * 365
                             },
                             cacheableResponse: {
                                 statuses: [0, 200]
@@ -84,14 +85,17 @@ export default defineConfig({
                             networkTimeoutSeconds: 10,
                             expiration: {
                                 maxEntries: 100,
-                                maxAgeSeconds: 60 * 60 * 24 // <== 24 hours
+                                maxAgeSeconds: 60 * 60 * 24
                             },
                             cacheableResponse: {
                                 statuses: [0, 200]
                             }
                         }
                     }
-                ]
+                ],
+                skipWaiting: true,
+                clientsClaim: true,
+                cleanupOutdatedCaches: true
             }
         })
     ],

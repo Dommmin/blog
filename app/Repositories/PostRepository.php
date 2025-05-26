@@ -61,6 +61,7 @@ class PostRepository implements PostRepositoryInterface
         /** @var Builder $query */
         $query = Post::query()
             ->with(['author', 'category', 'tags'])
+            ->withCount('comments')
             ->published()
             ->language(app()->getLocale());
 
