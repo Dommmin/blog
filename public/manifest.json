@@ -1,7 +1,7 @@
 {
-    "name": "Blog - Technology and Programming Articles",
-    "short_name": "Tech Blog",
-    "description": "Technology and Programming Articles",
+    "name": "Dominik Jasiński - Technology and Programming Blog",
+    "short_name": "Dominik Jasiński",
+    "description": "Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
