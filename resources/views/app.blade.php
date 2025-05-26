@@ -19,16 +19,6 @@
     <meta name="description" content="{{ $description }}">
     <meta name="author" content="Dominik Jasiński">
 
-    <!-- PWA -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Tech Blog">
-    <link rel="apple-touch-icon" href="/pwa-192x192.png">
-    <meta name="msapplication-TileImage" content="/pwa-192x192.png">
-    <meta name="msapplication-TileColor" content="#ffffff">
-
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:type" content="{{ $seo['type'] }}">
@@ -63,6 +53,16 @@
         <link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}">
     </noscript>
     @endif
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Tech Blog">
+    <link rel="apple-touch-icon" href="/pwa-192x192.png">
+    <meta name="msapplication-TileImage" content="/pwa-192x192.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
 </head>
 
 <body class="font-sans antialiased">

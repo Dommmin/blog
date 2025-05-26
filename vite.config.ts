@@ -76,26 +76,12 @@ export default defineConfig({
                                 statuses: [0, 200]
                             }
                         }
-                    },
-                    {
-                        urlPattern: /^https:\/\/api\.example\.com\/.*/i,
-                        handler: 'NetworkFirst',
-                        options: {
-                            cacheName: 'api-cache',
-                            networkTimeoutSeconds: 10,
-                            expiration: {
-                                maxEntries: 100,
-                                maxAgeSeconds: 60 * 60 * 24
-                            },
-                            cacheableResponse: {
-                                statuses: [0, 200]
-                            }
-                        }
                     }
                 ],
                 skipWaiting: true,
                 clientsClaim: true,
-                cleanupOutdatedCaches: true
+                cleanupOutdatedCaches: true,
+                navigateFallback: null
             }
         })
     ],
