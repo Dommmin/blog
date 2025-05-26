@@ -15,6 +15,7 @@ services:
         - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini
         - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
         - ./docker/supervisord.conf:/etc/supervisor/supervisord.conf
+        - .env:/var/www/.env
     networks:
       - laravel-network
     ports:
