@@ -36,6 +36,8 @@ export interface Tag {
 export interface User {
     id: number;
     admin: boolean;
+    avatar: string;
+    email: string;
     name: string;
 }
 
@@ -48,6 +50,7 @@ export interface Comment {
     id: number;
     content: string;
     author: User;
+    post_id: number;
     created_at: string;
 }
 

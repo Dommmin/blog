@@ -196,7 +196,7 @@ return [
                 ],
 
                 'search-parameters' => [
-                    'query_by' => 'title,content,category_name,tags_names',
+                    'query_by' => 'title,content,tags_names',
                     'query_by_weights' => '5,3,2,1',
                     'sort_by' => 'published_at:desc',
                     'filter_by' => 'published_at:<'.now()->timestamp,

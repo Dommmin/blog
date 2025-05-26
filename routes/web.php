@@ -43,6 +43,9 @@ Route::group(['prefix' => '{locale?}', 'where' => ['locale' => '[a-zA-Z]{2}'], '
     Route::post('/blog/{post}/comments', [CommentController::class, 'store'])
         ->middleware('auth')
         ->name('blog.comments.store');
+    Route::delete('/blog/{post}/comments/{comment}', [CommentController::class, 'destroy'])
+        ->middleware('auth')
+        ->name('blog.comments.destroy');
 });
 
 require __DIR__.'/auth.php';
