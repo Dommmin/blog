@@ -17,10 +17,10 @@ import { useTranslations } from '@/hooks/useTranslation';
 import AdminLayout from '@/layouts/admin-layout';
 import { PageProps } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { format } from 'date-fns';
-import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
+import { ArrowDownIcon, ArrowUpIcon, EyeIcon, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Post {
     id: number;
@@ -30,6 +30,7 @@ interface Post {
     translation_key: string;
     published_at: string | null;
     created_at: string;
+    visits_count: number;
 }
 
 interface PostsPageProps extends PageProps {
@@ -40,13 +41,21 @@ interface PostsPageProps extends PageProps {
         prev_page_url: string | null;
         next_page_url: string | null;
     };
+    filters: {
+        sort_by: string;
+        sort_direction: string;
+        language: string | null;
+    };
     flash: {
         success?: string;
     };
 }
 
-export default function Index({ posts, flash }: PostsPageProps) {
+export default function Index({ posts, filters, flash }: PostsPageProps) {
     const { __, locale } = useTranslations();
+
+    console.log(posts);
+
     useEffect(() => {
         if (flash.success) {
             toast.success(flash.success);
@@ -70,6 +79,36 @@ export default function Index({ posts, flash }: PostsPageProps) {
         }
     };
 
+    const handleSort = (column: string) => {
+        const newDirection = filters.sort_by === column && filters.sort_direction === 'asc' ? 'desc' : 'asc';
+        router.get(
+            route('admin.posts.index'),
+            {
+                sort_by: column,
+                sort_direction: newDirection,
+                language: filters.language,
+            },
+            { preserveState: true }
+        );
+    };
+
+    const handleLanguageChange = (value: string) => {
+        router.get(
+            route('admin.posts.index'),
+            {
+                sort_by: filters.sort_by,
+                sort_direction: filters.sort_direction,
+                language: value === 'all' ? null : value,
+            },
+            { preserveState: true }
+        );
+    };
+
+    const getSortIcon = (column: string) => {
+        if (filters.sort_by !== column) return null;
+        return filters.sort_direction === 'asc' ? <ArrowUpIcon className="h-4 w-4" /> : <ArrowDownIcon className="h-4 w-4" />;
+    };
+
     return (
         <AdminLayout>
             <Head title={__('Manage Posts')} />
@@ -80,21 +119,70 @@ export default function Index({ posts, flash }: PostsPageProps) {
                         <div className="dark:border-border border-b p-6">
                             <div className="mb-6 flex items-center justify-between">
                                 <h3 className="text-lg font-medium">{__('Blog Posts')}</h3>
-                                <Button asChild>
-                                    <Link href={route('admin.posts.create')} className="cursor-pointer" prefetch>
-                                        <PlusIcon className="mr-2 h-4 w-4" />
-                                        {__('Create Post')}
-                                    </Link>
-                                </Button>
+                                <div className="flex items-center gap-4">
+                                    <Select value={filters.language || 'all'} onValueChange={handleLanguageChange}>
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder={__('Select language')} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="all">{__('All languages')}</SelectItem>
+                                            <SelectItem value="en">{__('English')}</SelectItem>
+                                            <SelectItem value="pl">{__('Polish')}</SelectItem>
+                                            <SelectItem value="de">{__('German')}</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <Button asChild>
+                                        <Link href={route('admin.posts.create')} className="cursor-pointer" prefetch>
+                                            <PlusIcon className="mr-2 h-4 w-4" />
+                                            {__('Create Post')}
+                                        </Link>
+                                    </Button>
+                                </div>
                             </div>
                             {posts.data.length > 0 ? (
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>{__('Language')}</TableHead>
-                                            <TableHead>{__('Title')}</TableHead>
-                                            <TableHead>{__('Status')}</TableHead>
-                                            <TableHead>{__('Created')}</TableHead>
+                                            <TableHead>
+                                                <Button
+                                                    variant="ghost"
+                                                    onClick={() => handleSort('language')}
+                                                    className="flex items-center gap-1"
+                                                >
+                                                    {__('Language')}
+                                                    {getSortIcon('language')}
+                                                </Button>
+                                            </TableHead>
+                                            <TableHead>
+                                                <Button
+                                                    variant="ghost"
+                                                    onClick={() => handleSort('title')}
+                                                    className="flex items-center gap-1"
+                                                >
+                                                    {__('Title')}
+                                                    {getSortIcon('title')}
+                                                </Button>
+                                            </TableHead>
+                                            <TableHead>
+                                                <Button
+                                                    variant="ghost"
+                                                    onClick={() => handleSort('published_at')}
+                                                    className="flex items-center gap-1"
+                                                >
+                                                    {__('Status')}
+                                                    {getSortIcon('published_at')}
+                                                </Button>
+                                            </TableHead>
+                                            <TableHead>
+                                                <Button
+                                                    variant="ghost"
+                                                    onClick={() => handleSort('visits_count')}
+                                                    className="flex items-center gap-1"
+                                                >
+                                                    {__('Visits')}
+                                                    {getSortIcon('visits_count')}
+                                                </Button>
+                                            </TableHead>
                                             <TableHead className="text-right">{__('Actions')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
@@ -113,7 +201,7 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                                         {post.published_at ? 'Published' : 'Draft'}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell>{post.created_at ? format(new Date(post.created_at), 'yyyy-MM-dd') : ''}</TableCell>
+                                                <TableCell>{post.visits_count}</TableCell>
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
@@ -178,6 +266,10 @@ export default function Index({ posts, flash }: PostsPageProps) {
                                                 Previous
                                             </Button>
                                         )}
+
+                                        <div className="text-muted-foreground text-sm">
+                                            {__('Page')} {posts.current_page} {__('of')} {posts.last_page}
+                                        </div>
 
                                         {posts.next_page_url ? (
                                             <Button variant="outline" asChild>

@@ -12,12 +12,12 @@ export function AppSidebar() {
     const { __, locale } = useTranslations();
 
     const mainNavItems: NavItem[] = [
-        {
-            title: __('Categories'),
-            href: route('admin.categories.index'),
-            current: route().current('admin.categories.*'),
-            icon: LayoutGrid,
-        },
+        // {
+        //     title: __('Categories'),
+        //     href: route('admin.categories.index'),
+        //     current: route().current('admin.categories.*'),
+        //     icon: LayoutGrid,
+        // },
         {
             title: __('Posts'),
             href: route('admin.posts.index'),

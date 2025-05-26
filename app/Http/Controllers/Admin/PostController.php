@@ -24,8 +24,21 @@ class PostController extends Controller
 
     public function index(Request $request): Response
     {
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortDirection = $request->get('sort_direction', 'desc');
+        $language = $request->get('language');
+
         return Inertia::render('Admin/Posts/Index', [
-            'posts' => $this->postService->getPaginatedPosts(),
+            'posts' => $this->postService->getPaginatedPosts(
+                sortBy: $sortBy,
+                sortDirection: $sortDirection,
+                language: $language
+            ),
+            'filters' => [
+                'sort_by' => $sortBy,
+                'sort_direction' => $sortDirection,
+                'language' => $language,
+            ],
         ]);
     }
 

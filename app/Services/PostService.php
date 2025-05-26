@@ -11,9 +11,18 @@ class PostService
         private readonly PostRepositoryInterface $postRepository
     ) {}
 
-    public function getPaginatedPosts(int $perPage = 10)
-    {
-        return $this->postRepository->getPaginated($perPage);
+    public function getPaginatedPosts(
+        int $perPage = 10,
+        ?string $sortBy = null,
+        ?string $sortDirection = null,
+        ?string $language = null
+    ) {
+        return $this->postRepository->getPaginated(
+            perPage: $perPage,
+            sortBy: $sortBy,
+            sortDirection: $sortDirection,
+            language: $language
+        );
     }
 
     public function findPost(string $slug, string $language = 'en'): ?Post
@@ -65,7 +74,7 @@ class PostService
         return Post::where('translation_key', $post->translation_key)
             ->where('id', '!=', $post->id)
             ->get(['language', 'slug', 'title'])
-            ->map(fn (Post $translation) => [
+            ->map(fn(Post $translation) => [
                 'language' => $translation->language,
                 'slug' => $translation->slug,
                 'title' => $translation->title,

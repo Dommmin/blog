@@ -11,14 +11,33 @@ use Illuminate\Support\Facades\Cache;
 
 class PostRepository implements PostRepositoryInterface
 {
-    public function getPaginated(int $perPage = 10): LengthAwarePaginator
-    {
-        return Cache::tags('posts')->rememberForever('admin.posts.index.'.request()->get('page', 1), function () use ($perPage) {
-            return Post::query()
-                ->with('author')
-                ->latest('created_at')
-                ->paginate($perPage);
-        });
+    public function getPaginated(
+        int $perPage = 10,
+        ?string $sortBy = null,
+        ?string $sortDirection = null,
+        ?string $language = null
+    ): LengthAwarePaginator {
+        Post::flush();
+        return Cache::tags('posts')->rememberForever(
+            'admin.posts.index.' . request()->get('page', 1) . '.' . $sortBy . '.' . $sortDirection . '.' . $language,
+            function () use ($perPage, $sortBy, $sortDirection, $language) {
+                $query = Post::query()
+                    ->with(['author'])
+                    ->withCount('visits');
+
+                if ($language) {
+                    $query->where('language', $language);
+                }
+
+                if ($sortBy && $sortDirection) {
+                    $query->orderBy($sortBy, $sortDirection);
+                } else {
+                    $query->latest('created_at');
+                }
+
+                return $query->paginate($perPage);
+            }
+        );
     }
 
     public function find(string $slug, string $language = 'en'): ?Post
@@ -87,7 +106,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function getFeaturedArticles(string $locale = 'en')
     {
-        return Cache::tags('posts')->rememberForever('featured.articles.'.$locale, function () use ($locale) {
+        return Cache::tags('posts')->rememberForever('featured.articles.' . $locale, function () use ($locale) {
             return Post::latest('published_at')
                 ->with(['tags'])
                 ->withCount('comments')
