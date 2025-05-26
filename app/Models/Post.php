@@ -33,10 +33,10 @@ class Post extends Model implements CacheInterface
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
-    }
+//    public function category(): BelongsTo
+//    {
+//        return $this->belongsTo(Category::class);
+//    }
 
     public function tags(): BelongsToMany
     {
@@ -150,13 +150,13 @@ class Post extends Model implements CacheInterface
 
     public function toSearchableArray(): array
     {
-        $this->load(['category', 'tags']);
+        $this->load(['tags']);
 
         return [
             'id' => (string) $this->id,
             'title' => $this->title,
             'content' => $this->content,
-            'category_name' => $this->category->name ?? '',
+//            'category_name' => $this->category->name ?? '',
             'tags_names' => $this->tags->pluck('name')->toArray(),
             'published_at' => $this->published_at->timestamp,
             'language' => $this->language,

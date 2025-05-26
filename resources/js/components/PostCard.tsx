@@ -15,7 +15,6 @@ export default function PostCard({ post }: { post: Post }) {
             <AnimateStagger animation="fade-left" stagger={100}>
                 <article className="flex flex-1 flex-col p-6">
                     <header className="mb-3 flex items-center gap-2">
-                        <span className="bg-primary/10 text-primary rounded-full px-2.5 py-0.5 text-xs font-medium">{post.category.name}</span>
                         <time className="text-muted-foreground text-xs" dateTime={post.published_at || post.created_at}>
                             {formatDate(post.published_at, locale)}
                         </time>
@@ -27,8 +26,8 @@ export default function PostCard({ post }: { post: Post }) {
                     </h2>
                     <div className="mb-4 flex flex-wrap gap-2">
                         {post.tags.map((tag) => (
-                            <Badge key={tag.id} variant="secondary">
-                                {tag.name}
+                            <Badge key={tag.id} variant="default" className="tracking-wider">
+                                #{tag.name}
                             </Badge>
                         ))}
                     </div>

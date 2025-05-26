@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
+//            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('language')->default('en');
@@ -26,7 +26,10 @@ return new class extends Migration
             $table->timestamp('published_at');
             $table->timestamps();
 
-            $table->index(['translation_key', 'language', 'title', 'published_at', 'slug']);
+            $table->index(['translation_key', 'language']);
+            $table->index('published_at');
+            $table->index('slug');
+            $table->index('title');
         });
     }
 

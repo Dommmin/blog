@@ -27,7 +27,7 @@ class PostRepository implements PostRepositoryInterface
             return Post::where('slug', $slug)
                 ->where('language', $language)
                 ->where('published_at', '<=', now())
-                ->with(['author', 'category', 'tags'])
+                ->with(['author', 'tags'])
                 ->withCount('comments')
                 ->first();
         });
@@ -60,7 +60,7 @@ class PostRepository implements PostRepositoryInterface
     {
         /** @var Builder $query */
         $query = Post::query()
-            ->with(['author', 'category', 'tags'])
+            ->with(['author', 'tags'])
             ->withCount('comments')
             ->published()
             ->language(app()->getLocale());
@@ -89,7 +89,7 @@ class PostRepository implements PostRepositoryInterface
     {
         return Cache::tags('posts')->rememberForever('featured.articles.'.$locale, function () use ($locale) {
             return Post::latest('published_at')
-                ->with(['category', 'tags'])
+                ->with(['tags'])
                 ->withCount('comments')
                 ->language($locale)
                 ->published()
