@@ -65,6 +65,36 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $name
+ * @property string $original_name
+ * @property string $path
+ * @property string $mime_type
+ * @property string $size
+ * @property string $extension
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $url
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereExtension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereMimeType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereOriginalName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|File whereUpdatedAt($value)
+ */
+	class File extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $email
  * @property string|null $token
  * @property \Illuminate\Support\Carbon|null $confirmed_at
@@ -102,6 +132,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $published_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $file_id
  * @property-read \App\Models\User $author
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
@@ -122,6 +153,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereFileId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereLanguage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Post wherePublishedAt($value)

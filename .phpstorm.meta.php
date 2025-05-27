@@ -3219,7 +3219,11 @@ namespace PHPSTORM_META {
 'admin.categories.edit','admin.categories.update','admin.categories.destroy','admin.posts.index','admin.posts.create',
 'admin.posts.store','admin.posts.show','admin.posts.edit','admin.posts.update','admin.posts.destroy',
 'admin.tags.index','admin.tags.create','admin.tags.store','admin.tags.show','admin.tags.edit',
-'admin.tags.update','admin.tags.destroy','storage.local',);
+'admin.tags.update','admin.tags.destroy','admin.users.index','admin.users.create','admin.users.store',
+'admin.users.show','admin.users.edit','admin.users.update','admin.users.destroy','admin.visits.index',
+'admin.visits.create','admin.visits.store','admin.visits.show','admin.visits.edit','admin.visits.update',
+'admin.visits.destroy','admin.files.index','admin.files.create','admin.files.store','admin.files.show',
+'admin.files.edit','admin.files.update','admin.files.destroy','storage.local',);
         registerArgumentsSet('views', 
 'app','emails.layouts.base','emails.new-post-notification','emails.newsletter-confirmation','emails.newsletter-confirmed',
 'emails.newsletter-new-post','emails.unsubscribed','layouts.app','mail.test-mail','newsletter.confirmed',
