@@ -54,8 +54,6 @@ interface PostsPageProps extends PageProps {
 export default function Index({ posts, filters, flash }: PostsPageProps) {
     const { __, locale } = useTranslations();
 
-    console.log(posts);
-
     useEffect(() => {
         if (flash.success) {
             toast.success(flash.success);
@@ -69,11 +67,11 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
     const getLanguageLabel = (language: string) => {
         switch (language) {
             case 'en':
-                return 'English';
+                return __('English');
             case 'pl':
-                return 'Polish';
+                return __('Polish');
             case 'de':
-                return 'German';
+                return __('German');
             default:
                 return language;
         }
@@ -117,9 +115,17 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="bg-background dark:border-border overflow-hidden rounded-lg shadow-sm dark:border">
                         <div className="dark:border-border border-b p-6">
-                            <div className="mb-6 flex items-center justify-between">
-                                <h3 className="text-lg font-medium">{__('Blog Posts')}</h3>
-                                <div className="flex items-center gap-4">
+                            <div className="mb-6">
+                                <div className="flex items-center justify-between mb-2">
+                                    <h3 className="text-lg font-medium">{__('Blog Posts')}</h3>
+                                    <Button size="sm" asChild>
+                                        <Link href={route('admin.posts.create')} className="cursor-pointer" prefetch>
+                                            <PlusIcon className="mr-2 h-4 w-4" />
+                                            {__('Create Post')}
+                                        </Link>
+                                    </Button>
+                                </div>
+                                <div className="flex items-center justify-between gap-4">
                                     <Select value={filters.language || 'all'} onValueChange={handleLanguageChange}>
                                         <SelectTrigger className="w-[180px]">
                                             <SelectValue placeholder={__('Select language')} />
@@ -131,12 +137,6 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                             <SelectItem value="de">{__('German')}</SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    <Button asChild>
-                                        <Link href={route('admin.posts.create')} className="cursor-pointer" prefetch>
-                                            <PlusIcon className="mr-2 h-4 w-4" />
-                                            {__('Create Post')}
-                                        </Link>
-                                    </Button>
                                 </div>
                             </div>
                             {posts.data.length > 0 ? (
@@ -238,8 +238,8 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                 </Table>
                             ) : (
                                 <div className="p-6 text-center">
-                                    <h3 className="text-lg font-medium">No posts found</h3>
-                                    <p className="text-muted-foreground mt-2 text-sm">You have not created any posts yet.</p>
+                                    <h3 className="text-lg font-medium">{__('No posts found')}</h3>
+                                    <p className="text-muted-foreground mt-2 text-sm">{__('You have not created any posts yet.')}</p>
                                 </div>
                             )}
 
@@ -250,12 +250,12 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                         {posts.prev_page_url ? (
                                             <Button variant="outline" asChild>
                                                 <Link href={posts.prev_page_url} prefetch>
-                                                    Previous
+                                                    {__('Previous')}
                                                 </Link>
                                             </Button>
                                         ) : (
                                             <Button variant="outline" disabled>
-                                                Previous
+                                                {__('Previous')}
                                             </Button>
                                         )}
 
@@ -266,12 +266,12 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                                         {posts.next_page_url ? (
                                             <Button variant="outline" asChild>
                                                 <Link href={posts.next_page_url} prefetch>
-                                                    Next
+                                                    {__('Next')}
                                                 </Link>
                                             </Button>
                                         ) : (
                                             <Button variant="outline" disabled>
-                                                Next
+                                                {__('Next')}
                                             </Button>
                                         )}
                                     </Pagination>

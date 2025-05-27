@@ -55,3 +55,11 @@ export interface VisitStats {
     date: string;
     count: number;
 }
+
+export interface Visit {
+    id: number;
+    post: Post;
+    user: User;
+    ip_address: string;
+    visited_at: string;
+}

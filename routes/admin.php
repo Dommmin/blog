@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\PostVisitController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:admin|editor'])->prefix('admin')->name('admin.')->group(function () {
@@ -31,5 +33,16 @@ Route::middleware(['auth', 'role:admin|editor'])->prefix('admin')->name('admin.'
         'edit' => 'tags.edit',
         'update' => 'tags.update',
         'destroy' => 'tags.destroy',
+    ]);
+    Route::resource('users', UserController::class)->names([
+        'index' => 'users.index',
+        'create' => 'users.create',
+        'store' => 'users.store',
+        'edit' => 'users.edit',
+        'update' => 'users.update',
+        'destroy' => 'users.destroy',
+    ]);
+    Route::resource('visits', PostVisitController::class)->names([
+        'index' => 'visits.index',
     ]);
 });
