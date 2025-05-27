@@ -1,15 +1,15 @@
 import { User } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
+import React from 'react';
 
 interface Props {
     user: User;
 }
 
-interface FormData {
+type FormData = {
     name: string;
     email: string;
     password: string;
-    role: 'user' | 'editor' | 'admin';
 }
 
 export default function Edit({ user }: Props) {
@@ -17,7 +17,6 @@ export default function Edit({ user }: Props) {
         name: user.name,
         email: user.email,
         password: '',
-        role: user.role,
     });
 
     const submit = (e: React.FormEvent) => {
@@ -79,18 +78,6 @@ export default function Edit({ user }: Props) {
                         <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="role">
                             Role
                         </label>
-                        <select
-                            value={data.role}
-                            onChange={(e) => setData('role', e.target.value as FormData['role'])}
-                            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                            id="role"
-                            required
-                        >
-                            <option value="user">User</option>
-                            <option value="editor">Editor</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                        {errors.role && <div className="mt-1 text-xs text-red-500">{errors.role}</div>}
                     </div>
 
                     <div className="flex items-center justify-between">
