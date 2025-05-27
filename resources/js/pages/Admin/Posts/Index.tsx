@@ -116,7 +116,7 @@ export default function Index({ posts, filters, flash }: PostsPageProps) {
                     <div className="bg-background dark:border-border overflow-hidden rounded-lg shadow-sm dark:border">
                         <div className="dark:border-border border-b p-6">
                             <div className="mb-6">
-                                <div className="flex items-center justify-between mb-2">
+                                <div className="mb-2 flex items-center justify-between">
                                     <h3 className="text-lg font-medium">{__('Blog Posts')}</h3>
                                     <Button size="sm" asChild>
                                         <Link href={route('admin.posts.create')} className="cursor-pointer" prefetch>

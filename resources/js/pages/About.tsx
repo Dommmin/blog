@@ -48,8 +48,21 @@ export default function About() {
                                     </a>
                                 </div>
                             </div>
-                            <div className="badge-base LI-profile-badge" data-locale="pl_PL" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="dominik-jasiński" data-version="v1">
-                                <a className="badge-base__link LI-simple-link" href="https://pl.linkedin.com/in/dominik-jasi%C5%84ski?trk=profile-badge">Dominik Jasiński</a>
+                            <div
+                                className="badge-base LI-profile-badge"
+                                data-locale="pl_PL"
+                                data-size="medium"
+                                data-theme="dark"
+                                data-type="VERTICAL"
+                                data-vanity="dominik-jasiński"
+                                data-version="v1"
+                            >
+                                <a
+                                    className="badge-base__link LI-simple-link"
+                                    href="https://pl.linkedin.com/in/dominik-jasi%C5%84ski?trk=profile-badge"
+                                >
+                                    Dominik Jasiński
+                                </a>
                             </div>
                         </AnimateStagger>
                         <AnimateStagger animation="fade-left" stagger={100}>
