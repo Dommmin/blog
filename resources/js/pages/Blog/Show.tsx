@@ -52,7 +52,7 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                                 </Link>
                                 <div>
                                     {post.file && (
-                                        <a title={post.file.original_name} href={post.file.url} rel="noopener noreferrer" target="_blank" download>
+                                        <a title={post.file.original_name} href={post.file.url} rel="noopener noreferrer" target="_blank" download={post.file.original_name}>
                                             <Button variant="outline" size="sm">
                                                 {__('Download File')}
                                             </Button>
