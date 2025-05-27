@@ -65,8 +65,6 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
         _method: 'PUT',
     });
 
-    console.log(post);
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         submitForm(route('admin.posts.update', post.slug));
