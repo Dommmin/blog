@@ -47,7 +47,7 @@ class PostRepository implements PostRepositoryInterface
             return Post::where('slug', $slug)
                 ->where('language', $language)
                 ->where('published_at', '<=', now())
-                ->with(['author', 'tags'])
+                ->with(['author', 'tags', 'file'])
                 ->withCount('comments')
                 ->first();
         });

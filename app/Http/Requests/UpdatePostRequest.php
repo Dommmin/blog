@@ -35,6 +35,7 @@ class UpdatePostRequest extends FormRequest
             'tags.*' => 'exists:tags,id',
             'language' => ['required', 'string', Rule::in(available_locales())],
             'translation_key' => ['nullable', 'string', new UniqueTranslationKey($this->route('post')->id)],
+            'file_id' => 'nullable|exists:files,id',
         ];
     }
 

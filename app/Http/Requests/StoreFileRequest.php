@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCommentRequest extends FormRequest
+class StoreFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +22,7 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['required', 'string', 'max:500'],
-            'post_id' => ['required', 'exists:posts,id'],
-            'user_id' => ['required', 'exists:users,id'],
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,xls,xlsx,ppt,pptx|max:4096',
         ];
-    }
-
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'user_id' => auth()->id(),
-        ]);
     }
 }

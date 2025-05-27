@@ -11,7 +11,7 @@ class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request, string $locale): RedirectResponse
     {
-        Comment::create($request->validated() + ['user_id' => auth()->id()]);
+        Comment::create($request->validated());
 
         return back()->with('success', 'Comment added successfully!');
     }

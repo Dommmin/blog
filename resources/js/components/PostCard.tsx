@@ -6,14 +6,28 @@ import { formatDate } from '@/helpers';
 import { useTranslations } from '@/hooks/useTranslation';
 import { type Post } from '@/types/blog';
 import { Link } from '@inertiajs/react';
-import { ArrowRightIcon, BookOpenIcon } from 'lucide-react';
+import { ArrowRightIcon, FileIcon, BookOpenIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function PostCard({ post }: { post: Post }) {
     const { __, locale } = useTranslations();
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsVisible(true);
+        }, 100);
+    }, []);
+
     return (
-        <Card key={post.id} className="border-primary/10 flex flex-col overflow-hidden transition-all hover:shadow-md">
+        <Card key={post.id} className="border-primary/10 flex flex-col overflow-hidden transition-all hover:shadow-md relative">
+            {post.file_id && (
+                <span className="absolute right-3 top-3 z-10 text-muted-foreground opacity-80 pointer-events-none">
+                    <FileIcon className={`h-5 w-5 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} />
+                </span>
+            )}
             <AnimateStagger animation="fade-left" stagger={100}>
-                <article className="flex flex-1 flex-col p-6">
+                <article className="flex flex-1 flex-col px-6">
                     <header className="mb-3 flex items-center gap-2">
                         <time className="text-muted-foreground text-xs" dateTime={post.published_at || post.created_at}>
                             {formatDate(post.published_at, locale)}
@@ -37,7 +51,7 @@ export default function PostCard({ post }: { post: Post }) {
                     <footer className="mt-auto flex items-center justify-between">
                         <span className="text-muted-foreground flex items-center gap-1 text-xs">
                             <BookOpenIcon className="h-3 w-3" aria-hidden="true" />
-                            {post.reading_time !== undefined ? `${post.reading_time} ${__('min read')}` : null}
+                            {post.reading_time} {__('min read')}
                         </span>
                         <Link
                             href={route('blog.show', { post: post.slug, locale })}

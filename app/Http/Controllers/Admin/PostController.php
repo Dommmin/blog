@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Services\CategoryService;
 use App\Services\PostService;
 use App\Services\TagService;
+use App\Services\FileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,7 +20,8 @@ class PostController extends Controller
     public function __construct(
         private readonly PostService $postService,
         private readonly TagService $tagService,
-        private readonly CategoryService $categoryService
+        private readonly CategoryService $categoryService,
+        private readonly FileService $fileService
     ) {}
 
     public function index(Request $request): Response
@@ -47,13 +49,13 @@ class PostController extends Controller
         return Inertia::render('Admin/Posts/Create', [
             'categories' => $this->categoryService->getCategoriesForSelect(),
             'tags' => $this->tagService->getTagsForSelect(),
+            'files' => $this->fileService->getPaginated(5),
         ]);
     }
 
     public function store(StorePostRequest $request): RedirectResponse
     {
-        $data = array_merge($request->validated(), ['user_id' => auth()->id()]);
-        $this->postService->createPost($data);
+        $this->postService->createPost($request->validated());
 
         return to_route('admin.posts.index')->with('success', __('Post created successfully'));
     }
@@ -61,9 +63,10 @@ class PostController extends Controller
     public function edit(Post $post): Response
     {
         return Inertia::render('Admin/Posts/Edit', [
-            'post' => $post->load('tags'),
+            'post' => $this->postService->getPostForEdit($post),
             'categories' => $this->categoryService->getCategoriesForSelect(),
             'tags' => $this->tagService->getTagsForSelect(),
+            'files' => $this->fileService->getPaginated(5),
         ]);
     }
 

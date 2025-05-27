@@ -44,12 +44,21 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
-                            <nav aria-label="Breadcrumb" className="mb-4">
+                            <nav aria-label="Breadcrumb" className="flex justify-between mb-4">
                                 <Link href={route('blog.index', { locale: locale })} prefetch>
                                     <Button variant="outline" size="sm">
                                         ← {__('Back to all posts')}
                                     </Button>
                                 </Link>
+                                <div>
+                                    {post.file && (
+                                        <a title={post.file.original_name} href={post.file.url} rel="noopener noreferrer" target="_blank" download>
+                                            <Button variant="outline" size="sm">
+                                                {__('Download File')}
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
                             </nav>
                             <CardTitle className="text-3xl">{post.title}</CardTitle>
                             <div className="text-muted-foreground flex items-center text-sm">

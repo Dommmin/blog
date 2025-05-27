@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { useTranslations } from '@/hooks/useTranslation';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Eye, NotebookPen, Tag, Users } from 'lucide-react';
+import { Eye, NotebookPen, Tag, Users, FileIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
@@ -41,6 +41,12 @@ export function AppSidebar() {
             href: route('admin.visits.index'),
             current: route().current('admin.visits.*'),
             icon: Eye,
+        },
+        {
+            title: __('Files'),
+            href: route('admin.files.index'),
+            current: route().current('admin.files.*'),
+            icon: FileIcon,
         },
     ];
 

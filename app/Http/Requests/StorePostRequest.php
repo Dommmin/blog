@@ -13,7 +13,7 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -36,6 +36,8 @@ class StorePostRequest extends FormRequest
             'tags.*' => ['exists:tags,id'],
             'language' => ['required', 'string', Rule::in(available_locales())],
             'translation_key' => ['nullable', 'string', new UniqueTranslationKey],
+            'file_id' => ['nullable', 'exists:files,id'],
+            'user_id' => ['required', 'exists:users,id'],
         ];
     }
 
@@ -44,7 +46,14 @@ class StorePostRequest extends FormRequest
         return [
             //            'category_id.required' => __('The category field is required'),
             'language.required' => __('The language field is required'),
-            'language.in' => __('The language must be one of: ').implode(', ', available_locales()),
+            'language.in' => __('The language must be one of: ') . implode(', ', available_locales()),
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'user_id' => auth()->id(),
+        ]);
     }
 }

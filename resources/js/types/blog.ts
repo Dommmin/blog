@@ -11,12 +11,14 @@ export interface Post {
     category_id: number;
     author: User;
     category: Category;
-    tags: Tag[];
+    tags: string[];
     comments_count: number;
     language: string;
     translation_key: string;
     reading_time?: number;
     translations?: Post[];
+    file?: File;
+    file_id: number | null;
 }
 
 export interface Category {
@@ -60,4 +62,12 @@ export interface CommentData {
     last_page: number;
     prev_page_url: string | null;
     next_page_url: string | null;
+}
+
+export interface File {
+    id: number;
+    name: string;
+    original_name: string;
+    mime_type: string;
+    url: string;
 }

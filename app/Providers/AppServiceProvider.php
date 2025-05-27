@@ -10,6 +10,8 @@ use App\Repositories\Contracts\PostRepositoryInterface;
 use App\Repositories\Contracts\TagRepositoryInterface;
 use App\Repositories\PostRepository;
 use App\Repositories\TagRepository;
+use App\Repositories\Contracts\FileRepositoryInterface;
+use App\Repositories\FileRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(FileRepositoryInterface::class, FileRepository::class);
 
         Gate::policy(Post::class, PostPolicy::class);
     }

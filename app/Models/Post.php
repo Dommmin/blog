@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use App\Models\CacheInterface;
 
 #[ObservedBy(PostObserver::class)]
 class Post extends Model implements CacheInterface
@@ -52,6 +53,11 @@ class Post extends Model implements CacheInterface
     {
         return $this->hasMany(Post::class, 'translation_key', 'translation_key')
             ->where('id', '!=', $this->id);
+    }
+
+    public function file(): BelongsTo
+    {
+        return $this->belongsTo(File::class);
     }
 
     public function scopePublished(Builder $query): Builder

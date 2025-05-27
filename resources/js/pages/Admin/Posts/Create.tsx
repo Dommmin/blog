@@ -16,6 +16,8 @@ import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import React from 'react';
+import { FileManager } from '@/components/FileManager';
+import InputError from '@/components/input-error';
 
 type FormData = {
     title: string;
@@ -25,9 +27,10 @@ type FormData = {
     tags: string[];
     language: string;
     translation_key: string | null;
+    file_id: number | null;
 };
 
-export default function Create({ categories, tags, translationKey }: { categories: Category[]; tags: DataItem[]; translationKey?: string }) {
+export default function Create({ categories, tags, translationKey, files }: { categories: Category[]; tags: DataItem[]; translationKey?: string; files: any[] }) {
     const { appearance } = useAppearance();
     const { __, locale } = useTranslations();
 
@@ -39,6 +42,7 @@ export default function Create({ categories, tags, translationKey }: { categorie
         tags: [],
         language: locale,
         translation_key: translationKey || null,
+        file_id: null,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -65,6 +69,15 @@ export default function Create({ categories, tags, translationKey }: { categorie
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid gap-2">
+                                    <Label>{__('Featured Image')}</Label>
+                                    <FileManager
+                                        onSelect={(fileId) => setData('file_id', fileId)}
+                                        selectedFileId={data.file_id}
+                                        files={files}
+                                    />
+                                    <InputError message={errors.file_id} />
+                                </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="language">{__('Language')}</Label>
                                     <Select value={data.language} onValueChange={(value) => setData('language', value)}>

@@ -63,3 +63,11 @@ export interface Visit {
     ip_address: string;
     visited_at: string;
 }
+
+export interface File {
+    id: number;
+    name: string;
+    original_name: string;
+    mime_type: string;
+    url: string;
+}
