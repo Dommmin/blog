@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use Illuminate\Http\UploadedFile;
 use App\Models\File;
+use App\Repositories\Contracts\FileRepositoryInterface;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Repositories\Contracts\FileRepositoryInterface;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class FileService
 {
@@ -22,7 +22,7 @@ class FileService
 
     public function store(UploadedFile $file): File
     {
-        $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $fileName = Str::uuid().'.'.$file->getClientOriginalExtension();
         $data = [
             'name' => $fileName,
             'path' => Storage::disk('public')->putFileAs('files', $file, $fileName),
@@ -31,12 +31,14 @@ class FileService
             'size' => $file->getSize(),
             'extension' => $file->getClientOriginalExtension(),
         ];
+
         return $this->fileRepository->create($data);
     }
 
     public function delete(File $file): bool
     {
         $this->fileRepository->delete($file);
+
         return Storage::disk('public')->delete($file->path);
     }
 }

@@ -7,9 +7,9 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Services\CategoryService;
+use App\Services\FileService;
 use App\Services\PostService;
 use App\Services\TagService;
-use App\Services\FileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -49,7 +49,7 @@ class PostController extends Controller
         return Inertia::render('Admin/Posts/Create', [
             'categories' => $this->categoryService->getCategoriesForSelect(),
             'tags' => $this->tagService->getTagsForSelect(),
-            'files' => $this->fileService->getPaginated(5),
+            'files' => $this->fileService->getPaginated(20),
         ]);
     }
 
@@ -66,7 +66,7 @@ class PostController extends Controller
             'post' => $this->postService->getPostForEdit($post),
             'categories' => $this->categoryService->getCategoriesForSelect(),
             'tags' => $this->tagService->getTagsForSelect(),
-            'files' => $this->fileService->getPaginated(5),
+            'files' => $this->fileService->getPaginated(20),
         ]);
     }
 

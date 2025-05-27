@@ -10,7 +10,7 @@ type FormData = {
     name: string;
     email: string;
     password: string;
-}
+};
 
 export default function Edit({ user }: Props) {
     const { data, setData, put, processing, errors } = useForm<FormData>({

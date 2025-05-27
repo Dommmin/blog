@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use App\Models\CacheInterface;
 
 #[ObservedBy(PostObserver::class)]
 class Post extends Model implements CacheInterface

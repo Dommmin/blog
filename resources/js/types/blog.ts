@@ -11,7 +11,7 @@ export interface Post {
     category_id: number;
     author: User;
     category: Category;
-    tags: string[];
+    tags: Tag[];
     comments_count: number;
     language: string;
     translation_key: string;
@@ -19,6 +19,7 @@ export interface Post {
     translations?: Post[];
     file?: File;
     file_id: number | null;
+    tag_ids?: number[];
 }
 
 export interface Category {

@@ -4,10 +4,9 @@ namespace App\Models;
 
 use App\Observers\FileObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use App\Models\CacheInterface;
 
 #[ObservedBy(FileObserver::class)]
 class File extends Model implements CacheInterface
@@ -28,7 +27,7 @@ class File extends Model implements CacheInterface
     protected function url(): Attribute
     {
         return Attribute::make(get: function () {
-            return asset('storage/' . $this->path);
+            return asset('storage/'.$this->path);
         });
     }
 

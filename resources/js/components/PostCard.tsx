@@ -6,7 +6,7 @@ import { formatDate } from '@/helpers';
 import { useTranslations } from '@/hooks/useTranslation';
 import { type Post } from '@/types/blog';
 import { Link } from '@inertiajs/react';
-import { ArrowRightIcon, FileIcon, BookOpenIcon } from 'lucide-react';
+import { ArrowRightIcon, BookOpenIcon, FileIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function PostCard({ post }: { post: Post }) {
@@ -20,9 +20,9 @@ export default function PostCard({ post }: { post: Post }) {
     }, []);
 
     return (
-        <Card key={post.id} className="border-primary/10 flex flex-col overflow-hidden transition-all hover:shadow-md relative">
+        <Card key={post.id} className="border-primary/10 relative flex flex-col overflow-hidden transition-all hover:shadow-md">
             {post.file_id && (
-                <span className="absolute right-3 top-3 z-10 text-muted-foreground opacity-80 pointer-events-none">
+                <span className="text-muted-foreground pointer-events-none absolute top-3 right-3 z-10 opacity-80">
                     <FileIcon className={`h-5 w-5 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`} />
                 </span>
             )}

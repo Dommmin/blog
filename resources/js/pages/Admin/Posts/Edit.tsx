@@ -1,4 +1,6 @@
 import { ComboBox } from '@/components/ComboBox';
+import { FileManager } from '@/components/FileManager';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,14 +18,18 @@ import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import React from 'react';
-import { FileManager } from '@/components/FileManager';
-import InputError from '@/components/input-error';
 
 interface EditProps {
     post: Post;
     categories: Category[];
     tags: DataItem[];
-    files: FileType[];
+    files: {
+        data: FileType[];
+        current_page: number;
+        last_page: number;
+        prev_page_url: string | null;
+        next_page_url: string | null;
+    };
 }
 
 type FormData = {
@@ -31,7 +37,7 @@ type FormData = {
     content: string;
     published_at: Date | null;
     // category_id: string;
-    tags: string[];
+    tags: number[];
     language: string;
     translation_key: string | null;
     file_id: number | null;
@@ -42,16 +48,24 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
     const { appearance } = useAppearance();
     const { __ } = useTranslations();
 
-    const { data, setData, post: submitForm, errors, processing } = useForm<FormData>({
+    const {
+        data,
+        setData,
+        post: submitForm,
+        errors,
+        processing,
+    } = useForm<FormData>({
         title: post.title,
         content: post.content,
         published_at: post.published_at ? new Date(post.published_at) : null,
-        tags: post.tags,
+        tags: post.tag_ids ?? [],
         language: post.language,
         translation_key: post.translation_key,
         file_id: post.file_id ?? null,
         _method: 'PUT',
     });
+
+    console.log(post);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -79,11 +93,7 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid gap-2">
                                     <Label>{__('Featured Image')}</Label>
-                                    <FileManager
-                                        onSelect={(fileId) => setData('file_id', fileId)}
-                                        selectedFileId={data.file_id}
-                                        files={files}
-                                    />
+                                    <FileManager onSelect={(fileId) => setData('file_id', fileId)} selectedFileId={data.file_id} files={files} />
                                     <InputError message={errors.file_id} />
                                 </div>
 
@@ -133,13 +143,7 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">Title</Label>
-                                    <Input
-                                        id="title"
-                                        type="text"
-                                        value={data.title}
-                                        onChange={(e) => setData('title', e.target.value)}
-                                        required
-                                    />
+                                    <Input id="title" type="text" value={data.title} onChange={(e) => setData('title', e.target.value)} required />
                                     <InputError message={errors.title} />
                                 </div>
 
@@ -155,8 +159,8 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
                                     <Label>Tags</Label>
                                     <ComboBox
                                         data={tags}
-                                        selectedValues={data.tags}
-                                        onChange={(value: string[]) => setData('tags', value)}
+                                        selectedValues={data.tags.map(String)}
+                                        onChange={(value: string[]) => setData('tags', value.map(Number))}
                                         placeholder={__('Select tags...')}
                                     />
                                     <InputError message={errors.tags} />

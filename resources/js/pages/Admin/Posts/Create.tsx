@@ -1,4 +1,6 @@
 import { ComboBox } from '@/components/ComboBox';
+import { FileManager } from '@/components/FileManager';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,8 +18,6 @@ import MDEditor from '@uiw/react-md-editor';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import React from 'react';
-import { FileManager } from '@/components/FileManager';
-import InputError from '@/components/input-error';
 
 type FormData = {
     title: string;
@@ -30,7 +30,23 @@ type FormData = {
     file_id: number | null;
 };
 
-export default function Create({ categories, tags, translationKey, files }: { categories: Category[]; tags: DataItem[]; translationKey?: string; files: any[] }) {
+export default function Create({
+    categories,
+    tags,
+    translationKey,
+    files,
+}: {
+    categories: Category[];
+    tags: DataItem[];
+    translationKey?: string;
+    files: {
+        data: any[];
+        current_page: number;
+        last_page: number;
+        prev_page_url: string | null;
+        next_page_url: string | null;
+    };
+}) {
     const { appearance } = useAppearance();
     const { __, locale } = useTranslations();
 
@@ -71,11 +87,7 @@ export default function Create({ categories, tags, translationKey, files }: { ca
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid gap-2">
                                     <Label>{__('Featured Image')}</Label>
-                                    <FileManager
-                                        onSelect={(fileId) => setData('file_id', fileId)}
-                                        selectedFileId={data.file_id}
-                                        files={files}
-                                    />
+                                    <FileManager onSelect={(fileId) => setData('file_id', fileId)} selectedFileId={data.file_id} files={files} />
                                     <InputError message={errors.file_id} />
                                 </div>
                                 <div className="grid gap-2">

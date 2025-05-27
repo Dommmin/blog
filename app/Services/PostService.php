@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Post;
 use App\Repositories\Contracts\PostRepositoryInterface;
-use App\Models\Tag;
 
 class PostService
 {
@@ -65,17 +64,12 @@ class PostService
         return $this->postRepository->delete($post);
     }
 
-    /**
-     * Get available translations for a post.
-     *
-     * @return array<array{language: string, slug: string, title: string}>
-     */
     public function getAvailableTranslations(Post $post): array
     {
         return Post::where('translation_key', $post->translation_key)
             ->where('id', '!=', $post->id)
             ->get(['language', 'slug', 'title'])
-            ->map(fn(Post $translation) => [
+            ->map(fn (Post $translation) => [
                 'language' => $translation->language,
                 'slug' => $translation->slug,
                 'title' => $translation->title,
@@ -86,7 +80,8 @@ class PostService
     public function getPostForEdit(Post $post): Post
     {
         $post->load(['tags', 'file']);
-        $post->tags->transform(fn(Tag $tag) => $tag->id);
+        $post->setAttribute('tag_ids', $post->tags->pluck('id')->toArray());
+        $post->unsetRelation('tags');
 
         return $post;
     }

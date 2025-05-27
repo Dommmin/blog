@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\File;
 use App\Http\Requests\StoreFileRequest;
-use Inertia\Inertia;
+use App\Models\File;
 use App\Services\FileService;
+use Inertia\Inertia;
 
 class FileController extends Controller
 {

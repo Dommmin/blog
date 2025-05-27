@@ -1,14 +1,3 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Pagination } from '@/components/ui/pagination';
-import { useTranslations } from '@/hooks/useTranslation';
-import AdminLayout from '@/layouts/admin-layout';
-import { type File as FileType} from '@/types';
-import { Head, Link, router, useForm } from '@inertiajs/react';
-import { Bell, BookIcon, FileIcon, Loader2, PlusIcon, TrashIcon, XIcon } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -20,6 +9,16 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Pagination } from '@/components/ui/pagination';
+import { useTranslations } from '@/hooks/useTranslation';
+import AdminLayout from '@/layouts/admin-layout';
+import { type File as FileType } from '@/types';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { BookIcon, FileIcon, Loader2, PlusIcon, XIcon } from 'lucide-react';
+import React from 'react';
+import { toast } from 'sonner';
 
 interface FilePageProps {
     files: {
@@ -65,40 +64,28 @@ export default function Index({ files }: FilePageProps) {
     };
 
     const renderFileIcon = (file: FileType) => {
-        const imageMimeTypes = [
-            'image/jpeg',
-            'image/jpg',
-            'image/png',
-            'image/gif',
-            'image/webp',
-            'image/bmp',
-            'image/ico'
-        ];
+        const imageMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/bmp', 'image/ico'];
 
         switch (file.mime_type) {
             case 'application/pdf':
                 return (
                     <div className="flex items-center">
                         <BookIcon className="mr-2 h-12 w-12 text-red-500" />
-                        <span className="text-sm text-muted-foreground">{file.original_name}</span>
+                        <span className="text-muted-foreground text-sm">{file.original_name}</span>
                     </div>
                 );
             default:
                 if (imageMimeTypes.includes(file.mime_type)) {
                     return (
                         <div className="flex items-center">
-                            <img
-                                src={file.url}
-                                alt={file.name}
-                                className="h-20 w-20 mr-2 rounded-md object-cover"
-                            />
+                            <img src={file.url} alt={file.name} className="mr-2 h-20 w-20 rounded-md object-cover" />
                         </div>
                     );
                 }
                 return (
                     <div className="flex items-center">
                         <FileIcon className="mr-2 h-4 w-4 text-gray-500" />
-                        <span className="text-sm text-muted-foreground">{file.original_name}</span>
+                        <span className="text-muted-foreground text-sm">{file.original_name}</span>
                     </div>
                 );
         }
@@ -113,12 +100,7 @@ export default function Index({ files }: FilePageProps) {
                     <div className="bg-background dark:border-border overflow-hidden rounded-lg shadow-sm dark:border">
                         <div className="dark:border-border border-b p-6">
                             <form onSubmit={handleSubmit} className="flex items-center gap-2">
-                                <Input
-                                    id="file"
-                                    type="file"
-                                    name="file"
-                                    onChange={handleFileChange}
-                                />
+                                <Input id="file" type="file" name="file" onChange={handleFileChange} />
 
                                 <Button disabled={!data.file || processing} type="submit">
                                     <PlusIcon className="mr-2 h-4 w-4" />
@@ -126,14 +108,19 @@ export default function Index({ files }: FilePageProps) {
                                 </Button>
                             </form>
 
-                            <div className="flex flex-wrap gap-6 mt-6">
+                            <div className="mt-6 flex flex-wrap gap-6">
                                 {files.data.map((file) => (
                                     <div key={file.id} className="flex items-center">
-                                        <div className="relative group">
+                                        <div className="group relative">
                                             {renderFileIcon(file)}
                                             <AlertDialog>
                                                 <AlertDialogTrigger asChild>
-                                                    <Button onClick={e => e.stopPropagation()} variant="destructive" size="icon" className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 hidden group-hover:block items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                    <Button
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        variant="destructive"
+                                                        size="icon"
+                                                        className="absolute -top-1 -right-1 hidden h-4 w-4 items-center justify-center rounded-full p-0 text-xs opacity-0 transition-opacity duration-300 group-hover:block group-hover:opacity-100"
+                                                    >
                                                         <XIcon className="h-2 w-2" />
                                                     </Button>
                                                 </AlertDialogTrigger>
@@ -146,9 +133,7 @@ export default function Index({ files }: FilePageProps) {
                                                     </AlertDialogHeader>
                                                     <AlertDialogFooter>
                                                         <AlertDialogCancel>{__('Cancel')}</AlertDialogCancel>
-                                                        <AlertDialogAction onClick={() => handleDelete(file.id)}>
-                                                            {__('Delete')}
-                                                        </AlertDialogAction>
+                                                        <AlertDialogAction onClick={() => handleDelete(file.id)}>{__('Delete')}</AlertDialogAction>
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
                                             </AlertDialog>
