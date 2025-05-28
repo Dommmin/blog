@@ -1,17 +1,26 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark'=> ($appearance ?? 'system') === 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') === 'dark'])>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @if(app()->environment('production'))
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    @if (app()->environment('production'))
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     @endif
 
     @php
-    $seo = $page['props']['seo'];
-    $title = __(Arr::get($seo, 'title'));
-    $description = __(Arr::get($seo, 'description'));
+        $seo = $page['props']['seo'];
+        $title = __(Arr::get($seo, 'title'));
+        $description = __(Arr::get($seo, 'description'));
+    @endphp
+
+    <title>{{ $title }}</title>
+
+    @php
+        $seo = $page['props']['seo'];
+        $title = __(Arr::get($seo, 'title'));
+        $description = __(Arr::get($seo, 'description'));
     @endphp
 
     <title>{{ $title }}</title>
@@ -21,26 +30,36 @@
     <meta name="title" content="{{ $title }}">
     <meta name="description" content="{{ $description }}">
     <meta name="author" content="Dominik Jasiński">
-    <meta name="keywords" content="Dominik Dev, blog, PHP, Laravel, Docker, DevOps, programowanie, technologie, webdev, dominik-dev.pl">
+
+    <meta name="robots" content="{{ $seo['robots'] ?? 'index, follow' }}">
 
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:type" content="{{ $seo['type'] }}">
     <meta property="og:url" content="{{ $seo['url'] }}">
+    <meta property="og:image" content="{{ $seo['image'] ?? asset('logo.png') }}">
 
-    @if(isset($seo['article']))
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:description" content="{{ $description }}">
+    <meta name="twitter:image" content="{{ $seo['image'] ?? asset('logo.png') }}">
 
-    <meta property="article:published_time" content="{{ $seo['article']['published_time'] }}">
-    <meta property="article:modified_time" content="{{ $seo['article']['modified_time'] }}">
-    <meta property="article:author" content="{{ $seo['article']['author'] }}">
-    <meta property="article:section" content="{{ $seo['article']['section'] }}">
-    @foreach($seo['article']['tags'] as $tag)
-
-    <meta property="article:tag" content="{{ $tag }}">
-    @endforeach
+    @if (isset($seo['article']))
+        <meta property="article:published_time" content="{{ $seo['article']['published_time'] }}">
+        <meta property="article:modified_time" content="{{ $seo['article']['modified_time'] }}">
+        <meta property="article:author" content="{{ $seo['article']['author'] }}">
+        <meta property="article:section" content="{{ $seo['article']['section'] }}">
+        @foreach ($seo['article']['tags'] as $tag)
+            <meta property="article:tag" content="{{ $tag }}">
+        @endforeach
     @endif
 
     <link rel="canonical" href="{{ $seo['canonical'] }}">
+
+    @foreach (available_locales() as $locale)
+        <link rel="alternate" hreflang="{{ $locale }}" href="{{ url($locale . '/' . request()->path()) }}" />
+    @endforeach
+    <link rel="alternate" hreflang="x-default" href="{{ url('pl/' . request()->path()) }}" />
 
     <script type="application/ld+json">
         @json($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
@@ -51,11 +70,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.tsx'])
     @inertiaHead
 
-    @if(app()->environment('production'))
-    <link rel="preload" href="{{ Vite::asset('resources/css/app.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}">
-    </noscript>
+    @if (app()->environment('production'))
+        <link rel="preload" href="{{ Vite::asset('resources/css/app.css') }}" as="style"
+            onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}">
+        </noscript>
     @endif
 
     <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>

@@ -9,7 +9,7 @@ class SeoService
     public function getSeoData(array $data = []): array
     {
         $defaultData = [
-            'title' => __('PHP & DevOps').' - '.__('Dominik Jasiński'),
+            'title' => __('PHP & DevOps') . ' - ' . __('Dominik Jasiński'),
             'description' => __('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions'),
             'type' => 'website',
             'url' => url()->current(),
@@ -23,10 +23,8 @@ class SeoService
 
     public function getPostSeoData(Post $post): array
     {
-        /** @var \App\Models\User $author */
         $author = $post->author;
-        //        /** @var \App\Models\Category $category */
-        //        $category = $post->category;
+        $tags = $post->tags->pluck('name')->toArray();
 
         $structuredData = [
             '@context' => 'https://schema.org',
@@ -37,10 +35,12 @@ class SeoService
             'author' => [
                 '@type' => 'Person',
                 'name' => $author->name,
+                'url' => route('about'),
             ],
             'publisher' => [
                 '@type' => 'Organization',
                 'name' => config('app.name'),
+                'url' => url('/'),
                 'logo' => [
                     '@type' => 'ImageObject',
                     'url' => asset('logo.png'),
@@ -55,14 +55,7 @@ class SeoService
                 '@type' => 'ImageObject',
                 'url' => asset('logo.png'),
             ],
-        ];
-
-        $articleData = [
-            'published_time' => $post->published_at->toIso8601String(),
-            'modified_time' => $post->updated_at->toIso8601String(),
-            'author' => $author->name,
-            'section' => $post->tags->first()->name ?? '',
-            'tags' => $post->tags->pluck('name')->toArray(),
+            'inLanguage' => $post->language,
         ];
 
         return $this->getSeoData([
@@ -71,8 +64,17 @@ class SeoService
             'type' => 'article',
             'url' => route('blog.show', ['post' => $post->slug, 'locale' => $post->language]),
             'canonical' => route('blog.show', ['post' => $post->slug, 'locale' => $post->language]),
-            'article' => $articleData,
+            'robots' => 'index, follow',
+            'article' => [
+                'published_time' => $post->published_at->toIso8601String(),
+                'modified_time' => $post->updated_at->toIso8601String(),
+                'author' => $author->name,
+                'section' => $post->tags->first()->name ?? '',
+                'tags' => $tags,
+            ],
             'structuredData' => $structuredData,
+            'image' => asset('logo.png'),
+            'keywords' => implode(', ', $tags),
         ]);
     }
 
