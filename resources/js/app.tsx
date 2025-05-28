@@ -8,8 +8,6 @@ import { registerSW } from 'virtual:pwa-register';
 import { initializeTheme } from './hooks/use-appearance';
 import NProgress from 'nprogress';
 
-NProgress.start();
-
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 // PWA
