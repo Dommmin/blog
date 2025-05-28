@@ -23,23 +23,15 @@ const updateSW = registerSW({
 });
 
 const preloadCriticalComponents = () => {
-    const preload = (callback: IdleRequestCallback) => {
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(callback);
-        } else {
-            setTimeout(callback, 1);
-        }
+    const preload = () => {
+        [() => import('./components/AnimateOnView'), () => import('./components/PostCard')].forEach((load) => load().catch(() => null));
     };
 
-    preload(() => {
-        const criticalComponents = [
-            () => import('./layouts/app-layout'),
-            () => import('./components/PostCard'),
-            () => import('./components/AnimateOnView'),
-        ];
-
-        Promise.all(criticalComponents.map(component => component().catch(() => null)));
-    });
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(preload);
+    } else {
+        setTimeout(preload, 1);
+    }
 };
 
 createInertiaApp({

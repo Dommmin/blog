@@ -48,7 +48,9 @@ export default function DeleteUser() {
                     <DialogContent>
                         <DialogTitle>{__('Are you sure you want to delete your account?')}</DialogTitle>
                         <DialogDescription>
-                            {__('Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.')}
+                            {__(
+                                'Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+                            )}
                         </DialogDescription>
                         <form className="space-y-6" onSubmit={deleteUser}>
                             <div className="grid gap-2">

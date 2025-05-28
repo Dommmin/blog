@@ -14,10 +14,10 @@ import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
 import { BookUser, Laptop, LogIn, Menu, Moon, NotebookPen, Sun } from 'lucide-react';
+import React from 'react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { UserMenuContent } from './user-menu-content';
-import React from 'react';
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 

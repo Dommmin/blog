@@ -4,9 +4,9 @@ import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
 import { type BreadcrumbItem } from '@/types';
 
+import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { useTranslations } from '@/hooks/useTranslation';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -24,7 +24,7 @@ export default function Appearance() {
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title={__('Appearance settings')} description={__('Update your account\'s appearance settings')} />
+                    <HeadingSmall title={__('Appearance settings')} description={__("Update your account's appearance settings")} />
                     <AppearanceTabs />
                 </div>
             </SettingsLayout>
