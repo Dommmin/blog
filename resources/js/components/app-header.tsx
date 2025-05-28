@@ -17,6 +17,7 @@ import { BookUser, Laptop, LogIn, Menu, Moon, NotebookPen, Sun } from 'lucide-re
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { UserMenuContent } from './user-menu-content';
+import React from 'react';
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
@@ -198,7 +199,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             </DropdownMenu>
                         ) : (
                             <div className="ml-auto">
-                                <Link href={route('login', { locale })} className="group w-8 cursor-pointer" aria-label="Login">
+                                <Link href={route('login')} className="group w-8 cursor-pointer" aria-label="Login">
                                     <LogIn className="h-5 w-5" />
                                 </Link>
                             </div>

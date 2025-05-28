@@ -44,9 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json(['message' => 'Not Found'], 404);
             }
 
-            return Inertia::render('Errors/404')
-                ->toResponse($request)
-                ->setStatusCode(404);
+            return $response;
         });
         Integration::handles($exceptions);
     })->create();
