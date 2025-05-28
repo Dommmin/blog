@@ -72,6 +72,12 @@
 
     <link rel="icon" href="/favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- hreflang for international SEO -->
+    <link rel="alternate" hreflang="pl" href="https://dominik-dev.pl/pl" />
+    <link rel="alternate" hreflang="en" href="https://dominik-dev.pl/en" />
+    <link rel="alternate" hreflang="de" href="https://dominik-dev.pl/de" />
+    <link rel="alternate" hreflang="x-default" href="https://dominik-dev.pl/pl" />
 </head>
 
 <body class="font-sans antialiased">
