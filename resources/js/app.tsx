@@ -27,15 +27,13 @@ const updateSW = registerSW({
 // Preload critical components
 const preloadCriticalComponents = async () => {
     const criticalComponents = [
-        './pages/home.tsx',
-        './layouts/app-layout.tsx',
-        './components/PostCard.tsx',
+        () => import('./pages/home'),
+        () => import('./layouts/app-layout'),
+        () => import('./components/PostCard'),
     ];
 
     await Promise.all(
-        criticalComponents.map(component =>
-            import(/* @vite-ignore */ component)
-        )
+        criticalComponents.map(component => component())
     );
 };
 
