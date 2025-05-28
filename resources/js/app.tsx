@@ -6,11 +6,11 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import { initializeTheme } from './hooks/use-appearance';
-import NProgress from 'nprogress';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-// PWA
+initializeTheme();
+
 const updateSW = registerSW({
     onNeedRefresh() {
         if (confirm('New content available. Reload?')) {
@@ -22,34 +22,44 @@ const updateSW = registerSW({
     },
 });
 
-// Preload critical components
-const preloadCriticalComponents = async () => {
-    const criticalComponents = [
-        () => import('./pages/home'),
-        () => import('./layouts/app-layout'),
-        () => import('./components/PostCard'),
-    ];
+const preloadCriticalComponents = () => {
+    const preload = (callback: IdleRequestCallback) => {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(callback);
+        } else {
+            setTimeout(callback, 1);
+        }
+    };
 
-    await Promise.all(
-        criticalComponents.map(component => component())
-    );
+    preload(() => {
+        const criticalComponents = [
+            () => import('./layouts/app-layout'),
+            () => import('./components/PostCard'),
+            () => import('./components/AnimateOnView'),
+        ];
+
+        Promise.all(criticalComponents.map(component => component().catch(() => null)));
+    });
 };
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
-        preloadCriticalComponents().then(() => {
+        const renderApp = () => {
             if (el.hasChildNodes()) {
                 hydrateRoot(el, <App {...props} />);
             } else {
                 createRoot(el).render(<App {...props} />);
             }
-            NProgress.done();
-        });
+        };
+
+        renderApp();
+
+        preloadCriticalComponents();
     },
     progress: {
-        delay: 0,
+        delay: 250,
         color: '#29d',
         includeCSS: true,
         showSpinner: false,
@@ -57,5 +67,3 @@ createInertiaApp({
     // @ts-expect-error ssr not yet in types
     ssr: true,
 });
-
-initializeTheme();

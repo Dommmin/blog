@@ -25,7 +25,11 @@
 
     <title>{{ $title }}</title>
 
-    <meta name="theme-color" content="#ffffff">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <meta name="color-scheme" content="light dark">
     <meta name="title" content="{{ $title }}">
     <meta name="description" content="{{ $description }}">
