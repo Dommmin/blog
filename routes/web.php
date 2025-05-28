@@ -6,6 +6,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NewsletterController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -52,6 +53,8 @@ require __DIR__.'/auth.php';
 require __DIR__.'/settings.php';
 require __DIR__.'/admin.php';
 
-Route::fallback(function () {
-    return Inertia::render('Errors/404');
+Route::fallback(function (Request $request) {
+    return Inertia::render('Errors/404')
+        ->toResponse($request)
+        ->setStatusCode(404);
 });

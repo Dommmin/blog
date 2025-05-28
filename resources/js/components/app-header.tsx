@@ -76,7 +76,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             <SheetContent side="left" className="bg-sidebar flex h-full w-64 flex-col items-stretch justify-between">
                                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                                 <SheetHeader className="flex justify-start text-left">
-                                    <AppLogoIcon className="cursor-pointer h-6 w-6 fill-current text-black dark:text-white" onClick={() => router.visit(route('home', { locale: page.props.locale }))} />
+                                    <AppLogoIcon
+                                        className="h-6 w-6 cursor-pointer fill-current text-black dark:text-white"
+                                        onClick={() => router.visit(route('home', { locale: page.props.locale }))}
+                                    />
                                 </SheetHeader>
                                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
                                     <div className="flex h-full flex-col justify-between text-sm">
@@ -110,7 +113,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         </Sheet>
                     </div>
 
-                    <Link href={route('home', { locale })} prefetch className="hidden lg:flex items-center space-x-2">
+                    <Link href={route('home', { locale })} prefetch className="hidden items-center space-x-2 lg:flex">
                         <AppLogo />
                     </Link>
 

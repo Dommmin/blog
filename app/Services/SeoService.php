@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Models\Post;
+use App\Models\User;
 
 class SeoService
 {
     public function getSeoData(array $data = []): array
     {
         $defaultData = [
-            'title' => __('PHP & DevOps') . ' - ' . __('Dominik Jasiński'),
+            'title' => __('PHP & DevOps').' - '.__('Dominik Jasiński'),
             'description' => __('Technical insights, best practices, and deep dives into Laravel, Symfony, and modern DevOps solutions'),
             'type' => 'website',
             'url' => url()->current(),
@@ -23,6 +24,7 @@ class SeoService
 
     public function getPostSeoData(Post $post): array
     {
+        /** @var User $author */
         $author = $post->author;
         $tags = $post->tags->pluck('name')->toArray();
 

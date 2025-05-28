@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'role:admin|editor'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', HomeController::class)->name('home');
     Route::resource('categories', CategoryController::class)->names([
         'index' => 'categories.index',
