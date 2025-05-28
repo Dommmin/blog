@@ -17,26 +17,27 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const sidebarNavItems: NavItem[] = [
         {
             title: __('Profile'),
-            href: '/settings/profile',
+            href: route('profile.edit', { locale }),
+            current: route().current('profile.edit'),
             icon: null,
         },
         {
             title: __('Password'),
-            href: '/settings/password',
+            href: route('password.edit', { locale }),
+            current: route().current('password.edit'),
             icon: null,
         },
         {
             title: __('Appearance'),
-            href: '/settings/appearance',
+            href: route('appearance', { locale }),
+            current: route().current('appearance'),
             icon: null,
         },
     ];
 
-    const currentPath = window.location.pathname;
-
     return (
         <div className="px-4 py-6">
-            <Heading title="Settings" description="Manage your profile and account settings" />
+            <Heading title={__('Settings')} description={__('Manage your profile and account settings')} />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
@@ -48,7 +49,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                 variant="ghost"
                                 asChild
                                 className={cn('w-full justify-start', {
-                                    'bg-muted': currentPath === item.href,
+                                    'bg-muted': item.current,
                                 })}
                             >
                                 <Link href={item.href} prefetch>

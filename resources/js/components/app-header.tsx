@@ -45,9 +45,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const nextTheme: Appearance = themeMap[appearance];
     const mainNavItems: NavItem[] = [
         {
-            title: 'Blog',
+            title: __('Blog'),
             href: route('blog.index', { locale }),
-            current: route().current('blog.index'),
+            current: route().current('blog.*'),
             icon: NotebookPen,
         },
         {
