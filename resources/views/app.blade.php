@@ -21,6 +21,7 @@
     <meta name="title" content="{{ $title }}">
     <meta name="description" content="{{ $description }}">
     <meta name="author" content="Dominik Jasiński">
+    <meta name="keywords" content="Dominik Dev, blog, PHP, Laravel, Docker, DevOps, programowanie, technologie, webdev, dominik-dev.pl">
 
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
@@ -42,7 +43,7 @@
     <link rel="canonical" href="{{ $seo['canonical'] }}">
 
     <script type="application/ld+json">
-        {!!json_encode($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+        @json($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
     </script>
 
     @routes
@@ -68,6 +69,9 @@
     <link rel="apple-touch-icon" href="/pwa-192x192.png">
     <meta name="msapplication-TileImage" content="/pwa-192x192.png">
     <meta name="msapplication-TileColor" content="#ffffff">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
 </head>
 
 <body class="font-sans antialiased">
