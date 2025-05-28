@@ -21,7 +21,6 @@ $excludedRoutes = [
     'verify-email',
     'reset-password',
     'confirm-password',
-    'settings',
 ];
 
 Route::get('/{any}', function ($any = '') {
