@@ -134,6 +134,22 @@ export default function Home({ posts }: { posts: Post[] }) {
         [__],
     );
 
+    const renderedFeatures = useMemo(() => (
+        <div className="grid gap-6 md:grid-cols-3">
+            {features.map((feature, index) => (
+                <FeatureCard key={index} icon={feature.icon} title={feature.title} description={feature.description} />
+            ))}
+        </div>
+    ), [features]);
+
+    const renderedPosts = useMemo(() => (
+        <div className="grid gap-6 md:grid-cols-2">
+            {posts.map((post) => (
+                <PostCard key={post.id} post={post} />
+            ))}
+        </div>
+    ), [posts]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={__('Home')} />
@@ -143,23 +159,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                 <div className="relative z-10 mx-auto max-w-5xl">
                     <HeroContent __={__} />
 
-                    <Suspense
-                        fallback={
-                            <div className="mb-12 flex justify-center gap-4">
-                                <Button size="default" asChild>
-                                    <Link href={route('blog.index', { locale })} prefetch>
-                                        {__('Read the Blog')}
-                                        <ArrowRightIcon className="ml-2 h-4 w-4" />
-                                    </Link>
-                                </Button>
-                                <Button size="default" variant="outline" asChild>
-                                    <Link href={route('about', { locale })} prefetch>
-                                        {__('About me')}
-                                    </Link>
-                                </Button>
-                            </div>
-                        }
-                    >
+                    <Suspense fallback={<div className="h-12" />}>
                         <LazyAnimateOnView animation="fade-up" duration="duration-700" delay="delay-300">
                             <div className="mb-12 flex justify-center gap-4">
                                 <Button size="lg" asChild>
@@ -177,21 +177,9 @@ export default function Home({ posts }: { posts: Post[] }) {
                         </LazyAnimateOnView>
                     </Suspense>
 
-                    <Suspense
-                        fallback={
-                            <div className="grid gap-6 md:grid-cols-3">
-                                {features.map((feature, index) => (
-                                    <FeatureCard key={index} icon={feature.icon} title={feature.title} description={feature.description} />
-                                ))}
-                            </div>
-                        }
-                    >
+                    <Suspense fallback={renderedFeatures}>
                         <LazyAnimateStagger animation="fade-up" duration="duration-500" stagger={100}>
-                            <div className="grid gap-6 md:grid-cols-3">
-                                {features.map((feature, index) => (
-                                    <FeatureCard key={index} icon={feature.icon} title={feature.title} description={feature.description} />
-                                ))}
-                            </div>
+                            {renderedFeatures}
                         </LazyAnimateStagger>
                     </Suspense>
                 </div>
@@ -200,19 +188,7 @@ export default function Home({ posts }: { posts: Post[] }) {
             {posts.length > 0 && (
                 <section className="px-4 py-16">
                     <div className="mx-auto max-w-5xl">
-                        <Suspense
-                            fallback={
-                                <div className="mb-8 flex items-center justify-between">
-                                    <h2 className="text-2xl font-bold">{__('Featured Articles')}</h2>
-                                    <Button variant="ghost" size="sm" asChild className="gap-1">
-                                        <Link href={route('blog.index', { locale })} prefetch>
-                                            {__('View all')}
-                                            <ArrowRightIcon className="h-4 w-4" />
-                                        </Link>
-                                    </Button>
-                                </div>
-                            }
-                        >
+                        <Suspense fallback={<div className="h-8" />}>
                             <LazyAnimateOnView animation="fade-right">
                                 <div className="mb-8 flex items-center justify-between">
                                     <h2 className="text-2xl font-bold">{__('Featured Articles')}</h2>
@@ -226,23 +202,9 @@ export default function Home({ posts }: { posts: Post[] }) {
                             </LazyAnimateOnView>
                         </Suspense>
 
-                        <Suspense
-                            fallback={
-                                <div className="grid gap-6 md:grid-cols-2">
-                                    {posts.map((post, index) => (
-                                        <div key={post.id} className="animate-pulse">
-                                            <div className="h-48 rounded-lg bg-gray-200"></div>
-                                        </div>
-                                    ))}
-                                </div>
-                            }
-                        >
+                        <Suspense fallback={renderedPosts}>
                             <LazyAnimateStagger animation="fade-up" stagger={200}>
-                                <div className="grid gap-6 md:grid-cols-2">
-                                    {posts.map((post) => (
-                                        <PostCard key={post.id} post={post} />
-                                    ))}
-                                </div>
+                                {renderedPosts}
                             </LazyAnimateStagger>
                         </Suspense>
                     </div>
@@ -251,21 +213,7 @@ export default function Home({ posts }: { posts: Post[] }) {
 
             <section className="px-4 py-16">
                 <div className="mx-auto max-w-5xl">
-                    <Suspense
-                        fallback={
-                            <Card className="overflow-hidden">
-                                <NewsletterForm
-                                    data={data}
-                                    setData={setData}
-                                    handleSubmit={handleSubscribe}
-                                    processing={processing}
-                                    errors={errors}
-                                    successMessage={successMessage}
-                                    __={__}
-                                />
-                            </Card>
-                        }
-                    >
+                    <Suspense fallback={<div className="h-96" />}>
                         <LazyAnimateOnView animation="zoom-in" duration="duration-700">
                             <Card className="overflow-hidden">
                                 <NewsletterForm

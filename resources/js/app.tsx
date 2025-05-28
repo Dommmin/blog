@@ -6,6 +6,9 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import { initializeTheme } from './hooks/use-appearance';
+import NProgress from 'nprogress';
+
+NProgress.start();
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -21,18 +24,39 @@ const updateSW = registerSW({
     },
 });
 
+// Preload critical components
+const preloadCriticalComponents = async () => {
+    const criticalComponents = [
+        './pages/home.tsx',
+        './layouts/app-layout.tsx',
+        './components/PostCard.tsx',
+    ];
+
+    await Promise.all(
+        criticalComponents.map(component =>
+            import(/* @vite-ignore */ component)
+        )
+    );
+};
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
-        if (el.hasChildNodes()) {
-            hydrateRoot(el, <App {...props} />);
-        } else {
-            createRoot(el).render(<App {...props} />);
-        }
+        preloadCriticalComponents().then(() => {
+            if (el.hasChildNodes()) {
+                hydrateRoot(el, <App {...props} />);
+            } else {
+                createRoot(el).render(<App {...props} />);
+            }
+            NProgress.done();
+        });
     },
     progress: {
-        color: '#4B5563',
+        delay: 0,
+        color: '#29d',
+        includeCSS: true,
+        showSpinner: false,
     },
     // @ts-expect-error ssr not yet in types
     ssr: true,
