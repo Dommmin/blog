@@ -211,5 +211,9 @@
     "comment": "Kommentar",
     "comments": "Kommentare",
     "min read": "min. Lesezeit",
-    "of": "von"
+    "of": "von",
+    "Email verification": "E-Mail-Verifizierung",
+    "Please verify your email address by clicking on the link we just emailed to you.": "Bitte verifizieren Sie Ihre E-Mail-Adresse, indem Sie auf den Link klicken, den wir Ihnen gerade per E-Mail gesendet haben.",
+    "A new verification link has been sent to the email address you provided during registration.": "Ein neuer Verifizierungslink wurde an die E-Mail-Adresse gesendet, die Sie bei der Registrierung angegeben haben.",
+    "Resend verification email": "Verifizierungs-E-Mail erneut senden"
 }
