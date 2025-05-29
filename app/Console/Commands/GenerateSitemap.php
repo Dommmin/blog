@@ -39,7 +39,7 @@ class GenerateSitemap extends Command
 
         // Add blog posts
         Post::published()->get()->each(function (Post $post) use ($sitemap) {
-            $sitemap->add(Url::create(route('blog.show', ['post' => $post->slug]))
+            $sitemap->add(Url::create(route('blog.show', ['post' => $post->slug, 'locale' => $post->language]))
                 ->setLastModificationDate($post->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
                 ->setPriority(0.8));
