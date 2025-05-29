@@ -5,9 +5,8 @@ import { Card } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
 import { Head } from '@inertiajs/react';
-import React from 'react';
+import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
 
 export default function About() {
     const { __ } = useTranslations();

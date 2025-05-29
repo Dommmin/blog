@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useTranslations } from '@/hooks/useTranslation';
 import { router, usePage } from '@inertiajs/react';
 import { CheckIcon } from 'lucide-react';
-import { useTranslations } from '@/hooks/useTranslation';
 
 type Language = {
     code: string;
