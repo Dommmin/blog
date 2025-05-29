@@ -15,8 +15,6 @@
         $description = __(Arr::get($seo, 'description'));
     @endphp
 
-    <title>{{ $title }}</title>
-
     @php
         $seo = $page['props']['seo'];
         $title = __(Arr::get($seo, 'title'));
