@@ -22,7 +22,7 @@ PM2="$NVM_DIR/versions/node/$NODE_VERSION/bin/pm2"
 echo "▶️ Using Node.js version: $NODE_VERSION"
 echo "▶️ PM2 path: $PM2"
 
- Verify PM2 exists
+# Verify PM2 exists
 if [ ! -f "$PM2" ]; then
     echo "❌ PM2 not found at $PM2"
     exit 1
@@ -73,7 +73,7 @@ echo "▶️ Running database migrations..."
 php artisan migrate --force
 
 echo "▶️ Managing SSR server with PM2..."
- Stop current SSR server gracefully
+# Stop current SSR server gracefully
 $PM2 stop laravel 2>/dev/null || echo "No previous SSR server to stop"
 
 # Update symlink first
@@ -88,19 +88,19 @@ else
     exit 1
 fi
 
- Start SSR server from new release
+# Start SSR server from new release
 cd "$CURRENT_LINK"
 echo "▶️ Starting SSR server..."
 $PM2 delete laravel 2>/dev/null || true
 $PM2 start ecosystem.config.json
 
- Save PM2 process list
+# Save PM2 process list
 $PM2 save
 
- Wait a moment for SSR to start
+# Wait a moment for SSR to start
 sleep 3
 
- Verify SSR is running
+# Verify SSR is running
 echo "▶️ Verifying SSR server..."
 if ! $PM2 describe laravel &>/dev/null; then
     echo "❌ SSR server failed to start!"
