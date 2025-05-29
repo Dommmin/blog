@@ -3,14 +3,22 @@ import createServer from '@inertiajs/react/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
 import { type RouteName, route } from 'ziggy-js';
+import { useTranslations } from './hooks/useTranslation';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const { __ } = useTranslations();
+
+const appName = __('PHP & DevOps Blog') + ' | ' + __('Dominik Jasiński');
 
 createServer((page) =>
     createInertiaApp({
         page,
         render: ReactDOMServer.renderToString,
-        title: (title) => `${title} - ${appName}`,
+        title: (title) => {
+            if (title === 'Home') {
+                return appName;
+            }
+            return `${title} | ${appName}`;
+        },
         resolve: (name) => {
             console.log('Resolving component:', name);
             const pages = import.meta.glob('./pages/**/*.{tsx,ts,jsx,js}');

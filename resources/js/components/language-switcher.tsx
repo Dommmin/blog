@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { router, usePage } from '@inertiajs/react';
-import axios from 'axios';
 import { CheckIcon } from 'lucide-react';
+import { useTranslations } from '@/hooks/useTranslation';
 
 type Language = {
     code: string;
@@ -10,36 +10,33 @@ type Language = {
     flag: string;
 };
 
-const languages: Language[] = [
-    {
-        code: 'en',
-        name: 'English',
-        flag: '🇺🇸',
-    },
-    {
-        code: 'pl',
-        name: 'Polski',
-        flag: '🇵🇱',
-    },
-    {
-        code: 'de',
-        name: 'Deutsch',
-        flag: '🇩🇪',
-    },
-];
-
 export function LanguageSwitcher() {
     const props = usePage().props;
     const currentLang = props.locale;
+    const { __, locale } = useTranslations();
+
+    const languages: Language[] = [
+        {
+            code: 'en',
+            name: __('English'),
+            flag: '🇺🇸',
+        },
+        {
+            code: 'pl',
+            name: __('Polish'),
+            flag: '🇵🇱',
+        },
+        {
+            code: 'de',
+            name: __('Deutsch'),
+            flag: '🇩🇪',
+        },
+    ];
 
     const switchLanguage = (langCode: string) => {
-        axios
-            .post(route('locale.change', { locale: langCode }), {
-                locale: langCode,
-            })
-            .then(() => {
-                router.visit('/' + langCode + window.location.pathname.substring(3) + window.location.search);
-            });
+        router.post(route('locale.change', { locale }), {
+            locale: langCode,
+        });
     };
 
     return (
@@ -54,6 +51,7 @@ export function LanguageSwitcher() {
                     <DropdownMenuItem
                         key={language.code}
                         onClick={() => switchLanguage(language.code)}
+                        disabled={language.code === currentLang}
                         className="flex cursor-pointer items-center gap-2"
                     >
                         <span>{language.flag}</span>

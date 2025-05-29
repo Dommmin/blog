@@ -6,6 +6,8 @@ import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { CodeIcon, DatabaseIcon, MailIcon, ServerIcon } from 'lucide-react';
+import { Head } from '@inertiajs/react';
+import React from 'react';
 
 export default function About() {
     const { __ } = useTranslations();
@@ -19,6 +21,7 @@ export default function About() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title={__('About me')} />
             <div className="mx-auto max-w-5xl px-4 py-12">
                 <section className="mb-16">
                     <div className="grid items-start gap-8 md:grid-cols-[1fr_2fr]">

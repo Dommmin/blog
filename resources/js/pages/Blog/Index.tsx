@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { Post } from '@/types/blog';
-import { Link, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -87,7 +87,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
             });
         }, 400);
         return () => clearTimeout(timeout);
-    }, [sort, search]);
+    }, [sort, search, locale]);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -101,6 +101,7 @@ export default function Index({ posts, filters }: BlogIndexProps) {
 
     return (
         <AppLayout>
+            <Head title={__('Blog')} />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="mb-8 flex items-center justify-between gap-4">

@@ -6,7 +6,7 @@ import { formatDate } from '@/helpers';
 import { useTranslations } from '@/hooks/useTranslation';
 import AppLayout from '@/layouts/app-layout';
 import { type CommentData, type Post } from '@/types/blog';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import 'highlight.js/styles/github-dark.css';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -40,6 +40,7 @@ export default function Show({ post, comments }: { post: Post; comments: Comment
 
     return (
         <AppLayout>
+            <Head title={post.title} />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <Card>

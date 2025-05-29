@@ -5,6 +5,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+
+    <script>
+        (function() {
+            const appearance = '{{ $appearance ?? "system" }}';
+
+            if (appearance === 'system') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                if (prefersDark) {
+                    document.documentElement.classList.add('dark');
+                }
+            }
+        })();
+    </script>
+
+    <style>
+        html {
+            background-color: oklch(1 0 0);
+        }
+
+        html.dark {
+            background-color: oklch(0.145 0 0);
+        }
+    </style>
+
     @if (app()->environment('production'))
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     @endif
@@ -19,9 +45,9 @@
         $seo = $page['props']['seo'];
         $title = __(Arr::get($seo, 'title'));
         $description = __(Arr::get($seo, 'description'));
+        $currentRouteName = Route::currentRouteName();
+        $currentRouteParams = Route::current()->parameters();
     @endphp
-
-    <title>{{ $title }}</title>
 
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -35,6 +61,7 @@
 
     <meta name="robots" content="{{ $seo['robots'] ?? 'index, follow' }}">
 
+    <meta property="og:site_name" content="PHP & DevOps Blog | Dominik Jasiński">
     <meta property="og:title" content="{{ $title }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:type" content="{{ $seo['type'] }}">
@@ -47,24 +74,26 @@
     <meta name="twitter:image" content="{{ $seo['image'] ?? asset('logo.png') }}">
 
     @if (isset($seo['article']))
-        <meta property="article:published_time" content="{{ $seo['article']['published_time'] }}">
-        <meta property="article:modified_time" content="{{ $seo['article']['modified_time'] }}">
-        <meta property="article:author" content="{{ $seo['article']['author'] }}">
-        <meta property="article:section" content="{{ $seo['article']['section'] }}">
-        @foreach ($seo['article']['tags'] as $tag)
-            <meta property="article:tag" content="{{ $tag }}">
-        @endforeach
+<meta property="article:published_time" content="{{ $seo['article']['published_time'] }}">
+    <meta property="article:modified_time" content="{{ $seo['article']['modified_time'] }}">
+    <meta property="article:author" content="{{ $seo['article']['author'] }}">
+    <meta property="article:section" content="{{ $seo['article']['section'] }}">
+    @foreach ($seo['article']['tags'] as $tag)
+<meta property="article:tag" content="{{ $tag }}">
+    @endforeach
     @endif
 
     <link rel="canonical" href="{{ $seo['canonical'] }}">
 
+    @if (!Route::is('blog.show'))
     @foreach (available_locales() as $locale)
-        <link rel="alternate" hreflang="{{ $locale }}" href="{{ url($locale . '/' . request()->path()) }}" />
+    <link rel="alternate" hreflang="{{ $locale }}" href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $locale])) }}" />
     @endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ url('pl/' . request()->path()) }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => 'en'])) }}" />
+    @endif
 
     <script type="application/ld+json">
-        @json($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+    @json($seo['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
     </script>
 
     @routes
@@ -88,18 +117,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Tech Blog">
-    <link rel="apple-touch-icon" href="/pwa-192x192.png">
     <meta name="msapplication-TileImage" content="/pwa-192x192.png">
     <meta name="msapplication-TileColor" content="#ffffff">
 
     <link rel="icon" href="/favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico">
-
-    <!-- hreflang for international SEO -->
-    <link rel="alternate" hreflang="pl" href="https://dominik-dev.pl/pl" />
-    <link rel="alternate" hreflang="en" href="https://dominik-dev.pl/en" />
-    <link rel="alternate" hreflang="de" href="https://dominik-dev.pl/de" />
-    <link rel="alternate" hreflang="x-default" href="https://dominik-dev.pl/pl" />
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link rel="apple-touch-icon" href="/pwa-192x192.png">
 </head>
 
 <body class="font-sans antialiased">
