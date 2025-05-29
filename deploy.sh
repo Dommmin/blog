@@ -14,19 +14,19 @@ RELEASE_DIR="$RELEASES_DIR/$NOW"
 ARCHIVE_NAME="release.tar.gz"
 
 # Load NVM and get current Node.js version
-#export NVM_DIR="/home/$APP_USER/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-#NODE_VERSION=$(nvm current)
-#PM2="$NVM_DIR/versions/node/$NODE_VERSION/bin/pm2"
+export NVM_DIR="/home/$APP_USER/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+NODE_VERSION=$(nvm current)
+PM2="$NVM_DIR/versions/node/$NODE_VERSION/bin/pm2"
 
-#echo "▶️ Using Node.js version: $NODE_VERSION"
-#echo "▶️ PM2 path: $PM2"
+echo "▶️ Using Node.js version: $NODE_VERSION"
+echo "▶️ PM2 path: $PM2"
 
-# Verify PM2 exists
-#if [ ! -f "$PM2" ]; then
-#    echo "❌ PM2 not found at $PM2"
-#    exit 1
-#fi
+ Verify PM2 exists
+if [ ! -f "$PM2" ]; then
+    echo "❌ PM2 not found at $PM2"
+    exit 1
+fi
 
 echo "▶️ Create directories..."
 mkdir -p "$RELEASES_DIR" "$SHARED_DIR/storage" "$SHARED_DIR/bootstrap_cache"
@@ -72,9 +72,9 @@ php artisan storage:link
 echo "▶️ Running database migrations..."
 php artisan migrate --force
 
-#echo "▶️ Managing SSR server with PM2..."
-# Stop current SSR server gracefully
-#$PM2 stop laravel 2>/dev/null || echo "No previous SSR server to stop"
+echo "▶️ Managing SSR server with PM2..."
+ Stop current SSR server gracefully
+$PM2 stop laravel 2>/dev/null || echo "No previous SSR server to stop"
 
 # Update symlink first
 echo "▶️ Updating current symlink..."
@@ -88,31 +88,31 @@ else
     exit 1
 fi
 
-# Start SSR server from new release
-#cd "$CURRENT_LINK"
-#echo "▶️ Starting SSR server..."
-#$PM2 delete laravel 2>/dev/null || true
-#$PM2 start ecosystem.config.json
+ Start SSR server from new release
+cd "$CURRENT_LINK"
+echo "▶️ Starting SSR server..."
+$PM2 delete laravel 2>/dev/null || true
+$PM2 start ecosystem.config.json
 
-# Save PM2 process list
-#$PM2 save
+ Save PM2 process list
+$PM2 save
 
-# Wait a moment for SSR to start
-#sleep 3
+ Wait a moment for SSR to start
+sleep 3
 
-# Verify SSR is running
-#echo "▶️ Verifying SSR server..."
-#if ! $PM2 describe laravel &>/dev/null; then
-#    echo "❌ SSR server failed to start!"
-#    exit 1
-#fi
+ Verify SSR is running
+echo "▶️ Verifying SSR server..."
+if ! $PM2 describe laravel &>/dev/null; then
+    echo "❌ SSR server failed to start!"
+    exit 1
+fi
 
 echo "▶️ Cleaning old releases (keeping 5 latest)..."
 cd "$RELEASES_DIR"
 ls -dt */ | tail -n +6 | xargs -r rm -rf
 
-#echo "▶️ Current deployment status:"
-#$PM2 list
+echo "▶️ Current deployment status:"
+$PM2 list
 
 echo "▶️ Restarting Supervisor services..."
 sudo supervisorctl restart all

@@ -102,9 +102,7 @@ jobs:
 
       - name: Build assets and SSR
         run: |
-          npm run build
-#           Build SSR
-#          npm run build:ssr
+          npm run build:ssr
 
       - name: Create release archive
         run: |
