@@ -2,6 +2,7 @@ import { AppContent } from '@/components/app-content';
 import AppFooter from '@/components/app-footer';
 import { AppHeader } from '@/components/app-header';
 import { AppShell } from '@/components/app-shell';
+import { ScrollToTop } from '@/components/scroll-to-top';
 import { type BreadcrumbItem } from '@/types';
 import type { PropsWithChildren } from 'react';
 
@@ -11,6 +12,7 @@ export default function AppHeaderLayout({ children, breadcrumbs }: PropsWithChil
             <AppHeader breadcrumbs={breadcrumbs} />
             <AppContent>{children}</AppContent>
             <AppFooter />
+            <ScrollToTop />
         </AppShell>
     );
 }
