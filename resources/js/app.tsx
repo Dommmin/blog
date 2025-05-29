@@ -1,15 +1,13 @@
 import '../css/app.css';
-
 import '@/helpers';
+
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { createRoot, hydrateRoot } from 'react-dom/client';
-import { registerSW } from 'virtual:pwa-register';
+import { createRoot } from 'react-dom/client';
 import { initializeTheme } from './hooks/use-appearance';
+import { registerSW } from 'virtual:pwa-register';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-
-initializeTheme();
 
 const updateSW = registerSW({
     onNeedRefresh() {
@@ -22,33 +20,13 @@ const updateSW = registerSW({
     },
 });
 
-const preloadCriticalComponents = () => {
-    const preload = () => {
-        [() => import('./components/AnimateOnView'), () => import('./components/PostCard')].forEach((load) => load().catch(() => null));
-    };
-
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(preload);
-    } else {
-        setTimeout(preload, 1);
-    }
-};
-
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
-        const renderApp = () => {
-            if (el.hasChildNodes()) {
-                hydrateRoot(el, <App {...props} />);
-            } else {
-                createRoot(el).render(<App {...props} />);
-            }
-        };
+        const root = createRoot(el);
 
-        renderApp();
-
-        preloadCriticalComponents();
+        root.render(<App {...props} />);
     },
     progress: {
         delay: 250,
@@ -56,6 +34,7 @@ createInertiaApp({
         includeCSS: true,
         showSpinner: false,
     },
-    // @ts-expect-error ssr not yet in types
-    ssr: true,
 });
+
+// This will set light / dark mode on load...
+initializeTheme();
