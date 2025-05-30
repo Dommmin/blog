@@ -106,6 +106,7 @@ jobs:
 
       - name: Build assets and SSR
         run: |
+          export $(grep -v '^#' .env | xargs)
           npm run build:ssr
 
       - name: Create release archive
