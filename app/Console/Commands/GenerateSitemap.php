@@ -32,12 +32,12 @@ class GenerateSitemap extends Command
 
         $sitemap = Sitemap::create();
 
-        // Add static pages
-        $sitemap->add(Url::create(route('home'))
-            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-            ->setPriority(1.0));
+        foreach (available_locales() as $locale) {
+            $sitemap->add(Url::create(route('home', ['locale' => $locale]))
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                ->setPriority(1.0));
+        }
 
-        // Add blog posts
         Post::published()->get()->each(function (Post $post) use ($sitemap) {
             $sitemap->add(Url::create(route('blog.show', ['post' => $post->slug, 'locale' => $post->language]))
                 ->setLastModificationDate($post->updated_at)
