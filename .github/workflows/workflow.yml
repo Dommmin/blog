@@ -104,10 +104,11 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
+      - name: Install dotenv-cli
+        run: npm install -g dotenv-cli
+
       - name: Build assets and SSR
-        run: |
-          export $(grep -v '^#' .env | xargs)
-          npm run build:ssr
+        run: dotenv -e .env -- npm run build:ssr
 
       - name: Create release archive
         run: |
