@@ -9,7 +9,7 @@
 
     <script>
         (function() {
-            const appearance = '{{ $appearance ?? "system" }}';
+            const appearance = '{{ $appearance ?? 'system' }}';
 
             if (appearance === 'system') {
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -74,22 +74,24 @@
     <meta name="twitter:image" content="{{ $seo['image'] ?? asset('logo.png') }}">
 
     @if (isset($seo['article']))
-<meta property="article:published_time" content="{{ $seo['article']['published_time'] }}">
-    <meta property="article:modified_time" content="{{ $seo['article']['modified_time'] }}">
-    <meta property="article:author" content="{{ $seo['article']['author'] }}">
-    <meta property="article:section" content="{{ $seo['article']['section'] }}">
-    @foreach ($seo['article']['tags'] as $tag)
-<meta property="article:tag" content="{{ $tag }}">
-    @endforeach
+        <meta property="article:published_time" content="{{ $seo['article']['published_time'] }}">
+        <meta property="article:modified_time" content="{{ $seo['article']['modified_time'] }}">
+        <meta property="article:author" content="{{ $seo['article']['author'] }}">
+        <meta property="article:section" content="{{ $seo['article']['section'] }}">
+        @foreach ($seo['article']['tags'] as $tag)
+            <meta property="article:tag" content="{{ $tag }}">
+        @endforeach
     @endif
 
     <link rel="canonical" href="{{ $seo['canonical'] }}">
 
     @if (!Route::is('blog.show'))
-    @foreach (available_locales() as $locale)
-    <link rel="alternate" hreflang="{{ $locale }}" href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $locale])) }}" />
-    @endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => 'en'])) }}" />
+        @foreach (available_locales() as $locale)
+            <link rel="alternate" hreflang="{{ $locale }}"
+                href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => $locale])) }}" />
+        @endforeach
+        <link rel="alternate" hreflang="x-default"
+            href="{{ route($currentRouteName, array_merge($currentRouteParams, ['locale' => 'en'])) }}" />
     @endif
 
     <script type="application/ld+json">
@@ -122,8 +124,18 @@
 
     <link rel="icon" href="/favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+
+    <!-- Preload fonts -->
+    <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/inter-500.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/space-grotesk-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/space-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/space-grotesk-600.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Local fonts -->
+    <link rel="stylesheet" href="/css/fonts.css">
+
     <link rel="apple-touch-icon" href="/pwa-192x192.png">
 </head>
 
