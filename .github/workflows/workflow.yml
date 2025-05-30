@@ -78,6 +78,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create .env file from GitHub Variables
+        run: |
+          echo "${{ vars.ENV_FILE }}" > .env
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
