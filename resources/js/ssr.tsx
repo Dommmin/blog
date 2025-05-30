@@ -6,6 +6,8 @@ import { type RouteName, route } from 'ziggy-js';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+console.log('env: ', import.meta.env);
+
 createServer((page) =>
     createInertiaApp({
         page,

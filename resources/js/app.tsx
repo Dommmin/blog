@@ -9,6 +9,8 @@ import { initializeTheme } from './hooks/use-appearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+console.log('env: ', import.meta.env);
+
 const updateSW = registerSW({
     onNeedRefresh() {
         if (confirm('New content available. Reload?')) {
