@@ -71,3 +71,10 @@ export interface File {
     mime_type: string;
     url: string;
 }
+
+export interface Subscriber {
+    id: number;
+    email: string;
+    confirmed_at: string | null;
+    locale: string;
+}
