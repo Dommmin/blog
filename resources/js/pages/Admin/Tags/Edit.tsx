@@ -1,3 +1,4 @@
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,7 +10,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
 export default function Edit({ tag }: { tag: Tag }) {
-    const { locale } = useTranslations();
+    const { __ } = useTranslations();
 
     const {
         data,
@@ -29,32 +30,32 @@ export default function Edit({ tag }: { tag: Tag }) {
 
     return (
         <AdminLayout>
-            <Head title="Edit Tag" />
+            <Head title={__('Edit Tag')} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.tags.index', { locale })} prefetch>
+                                <Link href={route('admin.tags.index')} prefetch>
                                     <Button variant="outline" size="sm">
-                                        ← Back to all Tags
+                                        ← {__('Back to all Tags')}
                                     </Button>
                                 </Link>
                             </div>
-                            <CardTitle>Edit Tag</CardTitle>
+                            <CardTitle>{__('Edit Tag')}</CardTitle>
                         </CardHeader>
 
                         <CardContent>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="title">Title</Label>
+                                    <Label htmlFor="title">{__('Title')}</Label>
                                     <Input id="title" type="text" value={data.name} onChange={(e) => setData('name', e.target.value)} />
-                                    {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+                                    <InputError message={errors.name} />
                                 </div>
 
                                 <Button type="submit" disabled={processing} className="w-full">
-                                    Update Tag
+                                    {__('Update Tag')}
                                 </Button>
                             </form>
                         </CardContent>

@@ -1,3 +1,5 @@
+import InputError from '@/components/input-error';
+import { useTranslations } from '@/hooks/useTranslation';
 import { User } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
 import React from 'react';
@@ -13,6 +15,8 @@ type FormData = {
 };
 
 export default function Edit({ user }: Props) {
+    const { __ } = useTranslations();
+
     const { data, setData, put, processing, errors } = useForm<FormData>({
         name: user.name,
         email: user.email,
@@ -27,12 +31,12 @@ export default function Edit({ user }: Props) {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mx-auto max-w-2xl">
-                <h1 className="mb-6 text-2xl font-bold">Edit User</h1>
+                <h1 className="mb-6 text-2xl font-bold">{__('Edit User')}</h1>
 
                 <form onSubmit={submit} className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md">
                     <div className="mb-4">
                         <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="name">
-                            Name
+                            {__('Name')}
                         </label>
                         <input
                             value={data.name}
@@ -42,12 +46,12 @@ export default function Edit({ user }: Props) {
                             type="text"
                             required
                         />
-                        {errors.name && <div className="mt-1 text-xs text-red-500">{errors.name}</div>}
+                        <InputError message={errors.name} />
                     </div>
 
                     <div className="mb-4">
                         <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="email">
-                            Email
+                            {__('Email')}
                         </label>
                         <input
                             value={data.email}
@@ -57,12 +61,12 @@ export default function Edit({ user }: Props) {
                             type="email"
                             required
                         />
-                        {errors.email && <div className="mt-1 text-xs text-red-500">{errors.email}</div>}
+                        <InputError message={errors.email} />
                     </div>
 
                     <div className="mb-4">
                         <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="password">
-                            Password (leave blank to keep current)
+                            {__('Password (leave blank to keep current)')}
                         </label>
                         <input
                             value={data.password}
@@ -71,12 +75,12 @@ export default function Edit({ user }: Props) {
                             id="password"
                             type="password"
                         />
-                        {errors.password && <div className="mt-1 text-xs text-red-500">{errors.password}</div>}
+                        <InputError message={errors.password} />
                     </div>
 
                     <div className="mb-6">
                         <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="role">
-                            Role
+                            {__('Role')}
                         </label>
                     </div>
 
@@ -86,13 +90,13 @@ export default function Edit({ user }: Props) {
                             type="submit"
                             disabled={processing}
                         >
-                            Update User
+                            {__('Update User')}
                         </button>
                         <Link
                             href={route('admin.users.index')}
                             className="inline-block align-baseline text-sm font-bold text-blue-500 hover:text-blue-800"
                         >
-                            Cancel
+                            {__('Cancel')}
                         </Link>
                     </div>
                 </form>

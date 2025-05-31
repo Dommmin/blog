@@ -35,7 +35,7 @@ interface PostsPageProps extends PageProps {
 }
 
 export default function Index({ tags, flash }: PostsPageProps) {
-    const { __, locale } = useTranslations();
+    const { __ } = useTranslations();
 
     useEffect(() => {
         if (flash.success) {
@@ -58,7 +58,7 @@ export default function Index({ tags, flash }: PostsPageProps) {
                             <div className="mb-2 flex items-center justify-between">
                                 <h3 className="text-lg font-medium">{__('Blog Tags')}</h3>
                                 <Button size="sm" asChild>
-                                    <Link href={route('admin.tags.create', { locale })} className="cursor-pointer" prefetch>
+                                    <Link href={route('admin.tags.create')} className="cursor-pointer" prefetch>
                                         <PlusIcon className="mr-2 h-4 w-4" />
                                         {__('Create Tag')}
                                     </Link>
@@ -83,7 +83,7 @@ export default function Index({ tags, flash }: PostsPageProps) {
                                                 <TableCell className="text-right">
                                                     <div className="flex justify-end gap-2">
                                                         <Button size="sm" variant="outline" asChild>
-                                                            <Link href={route('admin.tags.edit', { tag: tag.id, locale })} prefetch="hover">
+                                                            <Link href={route('admin.tags.edit', { tag: tag.id })} prefetch="hover">
                                                                 <PencilIcon className="h-4 w-4" />
                                                             </Link>
                                                         </Button>

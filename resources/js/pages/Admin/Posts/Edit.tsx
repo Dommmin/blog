@@ -96,28 +96,28 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="language">Language</Label>
+                                    <Label htmlFor="language">{__('Language')}</Label>
                                     <Select value={data.language} onValueChange={(value: string) => setData('language', value)}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a language" />
+                                            <SelectValue placeholder={__('Select a language')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="en">English</SelectItem>
-                                            <SelectItem value="pl">Polski</SelectItem>
-                                            <SelectItem value="de">Deutsch</SelectItem>
+                                            <SelectItem value="en">{__('English')}</SelectItem>
+                                            <SelectItem value="pl">{__('Polish')}</SelectItem>
+                                            <SelectItem value="de">{__('German')}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <InputError message={errors.language} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="translation_key">Translation Key</Label>
+                                    <Label htmlFor="translation_key">{__('Translation Key')}</Label>
                                     <Input
                                         id="translation_key"
                                         type="text"
                                         value={data.translation_key || ''}
                                         onChange={(e) => setData('translation_key', e.target.value)}
-                                        placeholder="Enter a unique key to link translations"
+                                        placeholder={__('Enter a unique key to link translations')}
                                     />
                                     <InputError message={errors.translation_key} />
                                 </div>
@@ -140,13 +140,13 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
                                 {/*</div>*/}
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="title">Title</Label>
+                                    <Label htmlFor="title">{__('Title')}</Label>
                                     <Input id="title" type="text" value={data.title} onChange={(e) => setData('title', e.target.value)} required />
                                     <InputError message={errors.title} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="content">Content</Label>
+                                    <Label htmlFor="content">{__('Content')}</Label>
                                     <div data-color-mode={appearance} className="dark:data-[color-mode=light]:bg-card">
                                         <MDEditor value={data.content} onChange={(value) => setData('content', value || '')} height={400} />
                                     </div>
@@ -154,7 +154,7 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label>Tags</Label>
+                                    <Label>{__('Tags')}</Label>
                                     <ComboBox
                                         data={tags}
                                         selectedValues={data.tags.map(String)}
@@ -163,7 +163,7 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
                                     />
                                     <InputError message={errors.tags} />
                                 </div>
-                                <Label>Publish at</Label>
+                                <Label>{__('Publish at')}</Label>
                                 <div className="flex items-center space-x-2">
                                     <Popover>
                                         <PopoverTrigger asChild>
@@ -175,7 +175,7 @@ export default function Edit({ post, categories, tags, files }: EditProps) {
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {data.published_at ? format(data.published_at, 'PPP') : <span>Pick a date</span>}
+                                                {data.published_at ? format(data.published_at, 'PPP') : <span>{__('Pick a date')}</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent>

@@ -1,3 +1,4 @@
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -16,7 +17,7 @@ export default function Create() {
         name: '',
     });
 
-    const { locale, __ } = useTranslations();
+    const { __ } = useTranslations();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,7 +33,7 @@ export default function Create() {
                     <Card>
                         <CardHeader>
                             <div className="mb-4">
-                                <Link href={route('admin.tags.index', { locale })} prefetch>
+                                <Link href={route('admin.tags.index')} prefetch>
                                     <Button variant="outline" size="sm">
                                         ← {__('Back to all Tags')}
                                     </Button>
@@ -46,7 +47,7 @@ export default function Create() {
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">{__('Title')}</Label>
                                     <Input id="title" type="text" value={data.name} onChange={(e) => setData('name', e.target.value)} />
-                                    {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+                                    <InputError message={errors.name} />
                                 </div>
 
                                 <Button type="submit" disabled={processing} className="w-full">

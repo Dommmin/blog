@@ -6,8 +6,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NewsletterController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Inertia\Inertia;
 
 // Health check endpoint
@@ -55,5 +56,5 @@ require __DIR__.'/admin.php';
 Route::fallback(function (Request $request) {
     return Inertia::render('Errors/404')
         ->toResponse($request)
-        ->setStatusCode(404);
+        ->setStatusCode(Response::HTTP_NOT_FOUND);
 });

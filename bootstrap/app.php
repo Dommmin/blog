@@ -10,6 +10,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Sentry\Laravel\Integration;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +41,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
             if (request()->wantsJson()) {
-                return response()->json(['message' => 'Not Found'], 404);
+                return response()->json(['message' => 'Not Found'], Response::HTTP_NOT_FOUND);
+            }
+
+            if ($response->getStatusCode() === Response::HTTP_NOT_FOUND) {
+                return Inertia::render('Errors/404')
+                    ->toResponse($request)
+                    ->setStatusCode(Response::HTTP_NOT_FOUND);
             }
 
             return $response;

@@ -97,12 +97,12 @@ export default function Create({
                                             <SelectValue placeholder={__('Select a language')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="en">English</SelectItem>
-                                            <SelectItem value="pl">Polski</SelectItem>
-                                            <SelectItem value="de">Deutsch</SelectItem>
+                                            <SelectItem value="en">{__('English')}</SelectItem>
+                                            <SelectItem value="pl">{__('Polish')}</SelectItem>
+                                            <SelectItem value="de">{__('German')}</SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    {errors.language && <p className="text-sm text-red-500">{errors.language}</p>}
+                                    <InputError message={errors.language} />
                                 </div>
 
                                 <div className="grid gap-2">
@@ -114,7 +114,7 @@ export default function Create({
                                         onChange={(e) => setData('translation_key', e.target.value)}
                                         placeholder={__('Enter a unique key to link translations')}
                                     />
-                                    {errors.translation_key && <p className="text-sm text-red-500">{errors.translation_key}</p>}
+                                    <InputError message={errors.translation_key} />
                                 </div>
 
                                 {/*<div className="grid gap-2">*/}
@@ -137,7 +137,7 @@ export default function Create({
                                 <div className="grid gap-2">
                                     <Label htmlFor="title">{__('Title')}</Label>
                                     <Input id="title" type="text" value={data.title} onChange={(e) => setData('title', e.target.value)} />
-                                    {errors.title && <p className="text-sm text-red-500">{errors.title}</p>}
+                                    <InputError message={errors.title} />
                                 </div>
 
                                 <div className="grid gap-2">
@@ -145,7 +145,7 @@ export default function Create({
                                     <div data-color-mode={appearance} className="dark:data-[color-mode=light]:bg-card">
                                         <MDEditor value={data.content} onChange={(value) => setData('content', value || '')} height={400} />
                                     </div>
-                                    {errors.content && <p className="text-sm text-red-500">{errors.content}</p>}
+                                    <InputError message={errors.content} />
                                 </div>
 
                                 <div className="grid gap-2">
@@ -156,7 +156,7 @@ export default function Create({
                                         onChange={(value: string[]) => setData('tags', value)}
                                         placeholder={__('Select tags...')}
                                     />
-                                    {errors.tags && <p className="text-sm text-red-500">{errors.tags}</p>}
+                                    <InputError message={errors.tags} />
                                 </div>
                                 <Label>{__('Publish at')}</Label>
                                 <div className="flex items-center space-x-2">

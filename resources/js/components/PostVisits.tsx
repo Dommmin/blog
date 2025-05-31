@@ -1,7 +1,10 @@
+import { useTranslations } from '@/hooks/useTranslation';
 import { VisitStats } from '@/types';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export function PostVisits({ visitStats }: { visitStats: VisitStats[] }) {
+    const { __ } = useTranslations();
+
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('pl-PL', {
             day: 'numeric',
@@ -9,11 +12,11 @@ export function PostVisits({ visitStats }: { visitStats: VisitStats[] }) {
         });
     };
 
-    if (visitStats.length <= 0) return <div className="flex h-full items-center justify-center text-gray-500">No visit data available</div>;
+    if (visitStats.length <= 0) return <div className="flex h-full items-center justify-center text-gray-500">{__('No visit data available')}</div>;
 
     return (
         <>
-            <h2 className="mb-4 text-xl font-semibold">Post Visits last 30 days</h2>
+            <h2 className="mb-4 text-xl font-semibold">{__('Post Visits last 30 days')}</h2>
             <div className="h-[calc(100%-2rem)]">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={visitStats} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -22,7 +25,7 @@ export function PostVisits({ visitStats }: { visitStats: VisitStats[] }) {
                         <YAxis stroke="#6B7280" tick={{ fill: '#6B7280' }} />
                         <Tooltip
                             labelFormatter={formatDate}
-                            formatter={(value) => [`${value} visits`, 'Visits']}
+                            formatter={(value) => [`${value} visits`, __('Visits')]}
                             contentStyle={{
                                 backgroundColor: '#1F2937',
                                 border: 'none',
